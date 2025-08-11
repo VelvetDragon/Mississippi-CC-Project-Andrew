@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Experimental Kitchen - Mississippi Community Cookbook Project">
+  <!-- Hero Section with Background Image -->
+  <section class="hero" data-bg="kitchen">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Experimental Kitchen</h1>
+    </div>
+  </section>
+
+  <div class="content">
+    <div class="main-text">
+      <p>The University of Southern Mississippi hosts one of the largest statewide collections of community cookbooks in the United States (at least in proportion to the number of cookbooks published). Over a hundred of those cookbooks have been digitized and are available from Southern Miss' University Libraries.</p>
+
+      <p>Suwan Aryal, a talented undergraduate computer scientist at Southern Miss, and I have used artificial intelligence to parse and explore these digitized texts. As we do, we will share some of our findings on this page</p>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* Hero Section */
+  .hero {
+    position: relative;
+    height: 35vh;
+    min-height: 300px;
+    background-image: url('/images/kitchen-bg.jpeg') !important;
+    background-size: cover;
+    background-position: center 16.75%;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+  }
+
+  .hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Main Content */
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 2rem 0;
+  }
+
+  .main-text {
+    margin-bottom: 4rem;
+  }
+
+  .main-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    text-align: justify;
+  }
+
+  @media (max-width: 768px) {
+    .hero-content h1 {
+      font-size: 3rem;
+    }
+    
+    .content {
+      padding: 3rem 1rem 0;
+    }
+
+    .main-text p {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero {
+      height: 40vh;
+      min-height: 250px;
+    }
+
+    .hero-content h1 {
+      font-size: 2.5rem;
+    }
+  }
+</style> 

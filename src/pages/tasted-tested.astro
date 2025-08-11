@@ -1,0 +1,472 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Tasted and Tested - Mississippi Community Cookbook Project">
+  <!-- Hero Section with Background Image -->
+  <section class="hero" data-bg="tested">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Tasted and Tested</h1>
+    </div>
+  </section>
+
+  <div class="content">
+    <!-- Main Profile Section -->
+    <section class="profile-section">
+      <div class="profile-header">
+        <div class="profile-image-container">
+          <div class="profile-image-placeholder">
+            <p>Professor Photo</p>
+          </div>
+        </div>
+        <div class="profile-info">
+          <h2>Andrew P. Haley</h2>
+          <h3>Associate Professor of History</h3>
+          <h4>The University of Southern Mississippi</h4>
+          <p class="profile-description">This website and all its errors is the work of Andrew P. Haley, an associate professor of history at The University of Southern Mississippi. His research focuses on community cookbooks as a lens for understanding how women shaped local life in the American South.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contributors Section -->
+    <section class="content-section">
+      <h2 class="section-title">Significant Contributors</h2>
+      <div class="contributors-grid">
+        <div class="contributor-card">
+          <div class="contributor-image-placeholder">
+            <p>Contributor Photo</p>
+          </div>
+          <div class="contributor-info">
+            <h4>Jennifer Brannock</h4>
+            <p class="role">Curator of Mississippiana and Rare Books</p>
+            <p class="institution">The University of Southern Mississippi</p>
+            <p class="contribution">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+        </div>
+
+        <div class="contributor-card">
+          <div class="contributor-image-placeholder">
+            <p>Contributor Photo</p>
+          </div>
+          <div class="contributor-info">
+            <h4>Suwan Aryal</h4>
+            <p class="role">Undergraduate Computer Scientist</p>
+            <p class="institution">The University of Southern Mississippi</p>
+            <p class="contribution">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </div>
+        </div>
+
+        <div class="contributor-card">
+          <div class="contributor-image-placeholder">
+            <p>Contributor Photo</p>
+          </div>
+          <div class="contributor-info">
+            <h4>Additional Contributor</h4>
+            <p class="role">Role/Position</p>
+            <p class="institution">Institution</p>
+            <p class="contribution">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tasting & Methodology Section -->
+    <section class="content-section">
+      <h2 class="section-title">Research Methodology & Tasting</h2>
+      <div class="methodology-content">
+        <div class="methodology-text">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          
+          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          
+          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt.</p>
+        </div>
+        <div class="methodology-images">
+          <div class="image-placeholder">
+            <p>Research Process Image</p>
+          </div>
+          <div class="image-placeholder">
+            <p>Historical Cookbook Image</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Previous Works Section -->
+    <section class="content-section">
+      <h2 class="section-title">Previous Works & Publications</h2>
+      <div class="publications-grid">
+        <div class="publication-item">
+          <div class="publication-cover">
+            <p>Book Cover</p>
+          </div>
+          <div class="publication-details">
+            <h4>Publication Title</h4>
+            <p class="publication-info">Journal/Publisher • Year</p>
+            <p class="publication-description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores.</p>
+          </div>
+        </div>
+
+        <div class="publication-item">
+          <div class="publication-cover">
+            <p>Article Cover</p>
+          </div>
+          <div class="publication-details">
+            <h4>Academic Article Title</h4>
+            <p class="publication-info">Academic Journal • Year</p>
+            <p class="publication-description">Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque.</p>
+          </div>
+        </div>
+
+        <div class="publication-item">
+          <div class="publication-cover">
+            <p>Research Paper</p>
+          </div>
+          <div class="publication-details">
+            <h4>Research Study Title</h4>
+            <p class="publication-info">Conference/Institution • Year</p>
+            <p class="publication-description">Nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Hero Section */
+  .hero {
+    position: relative;
+    height: 35vh;
+    min-height: 300px;
+    background-image: url('/images/tested-bg.jpeg') !important;
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+  }
+
+  .hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Content Layout */
+  .content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .content-section {
+    margin-bottom: 5rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 2.5rem;
+    position: relative;
+    padding-bottom: 1rem;
+  }
+
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 2px;
+  }
+
+  /* Profile Section */
+  .profile-section {
+    margin-bottom: 5rem;
+  }
+
+  .profile-header {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .profile-image-container {
+    position: relative;
+  }
+
+  .profile-image-placeholder {
+    width: 200px;
+    height: 240px;
+    background: linear-gradient(135deg, var(--border), rgba(200, 118, 61, 0.1));
+    border: 2px dashed var(--primary-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .profile-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .profile-info h3 {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .profile-info h4 {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+
+  .profile-description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--text-dark);
+  }
+
+  /* Contributors Grid */
+  .contributors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .contributor-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .contributor-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+  }
+
+  .contributor-image-placeholder {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--border), rgba(200, 118, 61, 0.1));
+    border: 2px dashed var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .contributor-info h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .role {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .institution {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .contribution {
+    line-height: 1.6;
+    color: var(--text-dark);
+  }
+
+  /* Methodology Section */
+  .methodology-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .methodology-text p {
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    color: var(--text-dark);
+  }
+
+  .methodology-images {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .image-placeholder {
+    height: 120px;
+    background: linear-gradient(135deg, var(--border), rgba(200, 118, 61, 0.1));
+    border: 2px dashed var(--primary-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  /* Publications Grid */
+  .publications-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+
+  .publication-item {
+    display: flex;
+    gap: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .publication-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+  }
+
+  .publication-cover {
+    width: 80px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--border), rgba(200, 118, 61, 0.1));
+    border: 2px dashed var(--primary-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .publication-details h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .publication-info {
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .publication-description {
+    line-height: 1.6;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .hero-content h1 {
+      font-size: 2.5rem;
+    }
+
+    .content {
+      padding: 2rem 1rem;
+    }
+
+    .profile-header {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .profile-image-placeholder {
+      margin: 0 auto;
+    }
+
+    .methodology-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .contributors-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .publications-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .publication-item {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .publication-cover {
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+    }
+
+    .profile-info h2 {
+      font-size: 2rem;
+    }
+  }
+</style> 

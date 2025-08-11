@@ -1,11 +1,441 @@
+<!-- src/pages/index.astro -->
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Mississippi's Culinary Legacy" pageClass="homepage">
+  <!-- HOMEPAGE HERO SECTION -->
+  <section class="hero">
+    <h1>The Mississippi Community Cookbook Project</h1>
+    <p class="hero-subtitle">
+      The Mississippi Community Cookbook Project explores cookbooks published by charitable, civic, and church organizations in Mississippi from the 1890s through 1970 (and occasionally beyond). This inventory is one of the most complete state index of community cookbooks in the United States.
+    </p>
+  </section>
+
+  <!-- HOMEPAGE TILES GRID -->
+  <section class="tiles-section">
+    
+    <div class="tiles-grid">
+      <a href="/cookbooks" class="tile" data-bg="cookbooks">
+        <div class="tile-overlay"></div>
+        <div class="tile-content">
+          <h3>Cookbooks</h3>
+          <p> Community Cookbook Inventory </p>
+        </div>
+      </a>
+      
+      <a href="/culinary-landscapes" class="tile" data-bg="landscapes">
+        <div class="tile-overlay"></div>
+        <div class="tile-content">
+          <h3>Culinary Landscapes</h3>
+          <p> Maps </p>
+        </div>
+      </a>
+      
+      <a href="/experimental-kitchen" class="tile" data-bg="kitchen">
+        <div class="tile-overlay"></div>
+        <div class="tile-content">
+          <h3>Experimental Kitchen</h3>
+          <p> AI Insights </p>
+        </div>
+      </a>
+      
+      <a href="/cookery" class="tile" data-bg="cookery">
+        <div class="tile-overlay"></div>
+        <div class="tile-content">
+          <h3>Cookery</h3>
+          <p> The Book </p>
+        </div>
+      </a>
+      
+      <a href="/proof-pudding" class="tile" data-bg="proof">
+        <div class="tile-overlay"></div>
+        <div class="tile-content">
+          <h3>Proof is in the Pudding</h3>
+          <p> Notes on Sources </p>
+        </div>
+      </a>
+      
+      <a href="/culinary-tales" class="tile" data-bg="tales">
+        <div class="tile-overlay"></div>
+        <div class="tile-content">
+          <h3>Culinary Tales</h3>
+          <p> The Blog </p>
+        </div>
+      </a>
+      
+      <a href="/tasted-tested" class="tile" data-bg="tested">
+        <div class="tile-overlay"></div>
+        <div class="tile-content">
+          <h3>Tasted and Tested</h3>
+          <p> About </p>
+        </div>
+      </a>
+    </div>
+  </section>
+
 </Layout>
+
+<!-- STYLES SPECIFIC TO THE HOMEPAGE -->
+<style>
+  /* Modern Sleek Background Design */
+  body {
+    background: 
+      radial-gradient(ellipse at top, rgba(200, 118, 61, 0.02) 0%, transparent 60%),
+      linear-gradient(135deg, 
+        rgba(200, 118, 61, 0.01) 0%, 
+        transparent 20%, 
+        transparent 80%, 
+        rgba(200, 118, 61, 0.01) 100%
+      );
+  }
+
+
+
+
+
+
+
+  .hero {
+    text-align: center;
+    padding: 3rem 1rem 4rem 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+    border-radius: 2px;
+  }
+
+
+
+
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 700px;
+    margin: 0 auto;
+    font-weight: 400;
+  }
+
+  .tiles-section {
+    padding: 2rem 0 4rem 0;
+    position: relative;
+  }
+
+  .tiles-section::before {
+    content: '';
+    position: absolute;
+    top: -3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(200, 118, 61, 0.2), 
+      var(--primary-color), 
+      rgba(200, 118, 61, 0.2), 
+      transparent
+    );
+    border-radius: 1px;
+  }
+
+
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 3rem;
+    font-weight: 600;
+    position: relative;
+  }
+
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 2px;
+  }
+
+  .tiles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .tile {
+    position: relative;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 0;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    min-height: 220px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .tile:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-color);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.15),
+      0 0 0 2px rgba(200, 118, 61, 0.4),
+      0 0 30px rgba(200, 118, 61, 0.2);
+  }
+
+
+
+  .tile-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0.7) 100%
+    );
+    z-index: 1;
+  }
+
+
+
+  .tile-content {
+    position: relative;
+    z-index: 2;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+
+
+  .tile h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--text-dark);
+    margin: 0 0 1rem 0;
+    font-weight: 600;
+  }
+
+
+
+  .tile p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+
+
+
+  /* Background images - Add your images to /public/images/ */
+  .tile[data-bg="cookbooks"] {
+    background-image: url('/images/cookbooks-bg.jpeg');
+    background-position: center 30%; /* Adjust to show face better */
+    background-size: cover;
+  }
+
+  .tile[data-bg="landscapes"] {
+    background-image: url('/images/landscapes-bg.jpeg');
+    background-position: center 5%; /* Adjust for better centering */
+    background-size: cover;
+  }
+
+  .tile[data-bg="kitchen"] {
+    background-image: url('/images/kitchen-bg.jpeg');
+    background-position: center 25%; /* Move up to show face */
+    background-size: cover;
+  }
+
+  .tile[data-bg="cookery"] {
+    background-image: url('/images/cookery-bg.jpeg');
+    background-position: center 35%; /* Adjust for face visibility */
+    background-size: cover;
+  }
+
+  .tile[data-bg="proof"] {
+    background-image: url('/images/hero-bg.jpeg');
+    background-position: center 10%; /* Center the main subject */
+    background-size: cover;
+  }
+
+  .tile[data-bg="tales"] {
+    background-image: url('/images/tales-bg.jpeg');
+    background-position: center 30%; /* Show face better */
+    background-size: cover;
+  }
+
+  .tile[data-bg="tested"] {
+    background-image: url('/images/tested-bg.jpeg');
+    background-position: center 20%; /* Move up to show face */
+    background-size: cover;
+  }
+
+  .highlights {
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(200, 118, 61, 0.05) 100%);
+    padding: 4rem 2rem;
+    margin: 4rem 0 0 0;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .highlights::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, rgba(200, 118, 61, 0.1), transparent);
+    border-radius: 0 0 20px 0;
+  }
+
+  .highlights::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(225deg, rgba(200, 118, 61, 0.1), transparent);
+    border-radius: 20px 0 0 0;
+  }
+
+  .highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 3rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .highlight-item {
+    padding: 1rem;
+  }
+
+  .highlight-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  .highlight-text {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 2rem 1rem 3rem 1rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .tiles-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .tile {
+      min-height: 200px;
+    }
+
+    .tile-content {
+      padding: 2rem;
+    }
+
+    .tile h3 {
+      font-size: 1.3rem;
+    }
+
+    .tile p {
+      font-size: 0.95rem;
+    }
+
+    .highlights {
+      padding: 3rem 1rem;
+      margin: 3rem 0 0 0;
+    }
+
+    .highlights-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .highlight-number {
+      font-size: 2rem;
+    }
+
+    .highlight-text {
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .highlights-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>

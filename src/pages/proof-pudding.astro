@@ -1,0 +1,136 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Proof is in the Pudding - Mississippi Community Cookbook Project">
+  <!-- Hero Section with Background Image -->
+  <section class="hero" data-bg="proof">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Proof is in the Pudding</h1>
+    </div>
+  </section>
+
+  <div class="content">
+    <div class="main-text">
+      <p>When I tell people I am studying community cookbooks, they invariably are excited. I understand that enthusiasm, but it masks many of the challenges of examining books that few thought would become part of the historical record. Community cookbooks rarely have introductory material, more often than not are not dated, and are organized in idiosyncratic ways. In a series of (relatively) short essays, I explore some of the challenges of working with community cookbooks as sources.</p>
+
+      One Hundred Cookbooks
+
+      <p>Ten years ago, I approached Professor Jennifer Brannock at the McCain Library and Archives at Southern Miss about collecting community cookbooks. I explained that I was most interested in historical cookbooks published before 1970 in Mississippi and that I thought there were probably around a hundred. Today, the archives house around three hundred historic cookbooks (those published before 1970) and many hundreds published more recently as well as a remarkable collection of significant cookbooks from neighboring states and across the nation. The culinary collection now consists of over five thousand works.</p>
+
+      <p>Substantial donations, most notably from Ohr, have made this possible as well as the sustained efforts of Professor Brannock to fill in the gaps. Yet there are many, many cookbooks that have not made it into the collection. Most of these may be lost to time. Carefully collected, and used, cookbooks are often discarded when their owners pass. Others, are perhaps, squirrelled away in private collections. Over the years, I have visited dozens of universities and public libraries across the state looking for those that survived, and am deeply grateful to those librarians and archivists who had the foresight to save works that were easily dismissed. I'm especially grateful to the Clarksdale Public Library, Delta State Library, Mississippi State, the Mississippi Department of Archives and History, and the University of Mississippi for the efforts they have made to preserve and document these cookbooks. I've also visited more than my share of antique shops, thrift shops, estate sales, and yard sales looking for long forgotten works.</p>
+
+      <p>[Sources, USM, Brannock, Information and Analysis]</p>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* Hero Section */
+  .hero {
+    position: relative;
+    height: 35vh;
+    min-height: 300px;
+    background-image: url('/images/hero-bg.jpeg') !important;
+    background-size: cover;
+    background-position: center 10%;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+  }
+
+  .hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .hero-content p {
+    font-size: 1.3rem;
+    font-weight: 300;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    margin: 0;
+  }
+
+  /* Main Content */
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 2rem 0;
+  }
+
+  .main-text {
+    margin-bottom: 4rem;
+  }
+
+  .main-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    text-align: justify;
+  }
+
+  .main-text h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin: 3rem 0 1.5rem 0;
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .hero-content h1 {
+      font-size: 3rem;
+    }
+
+    .hero-content p {
+      font-size: 1.1rem;
+    }
+    
+    .content {
+      padding: 3rem 1rem 0;
+    }
+
+    .main-text p {
+      font-size: 1rem;
+    }
+
+    .main-text h3 {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero {
+      height: 40vh;
+      min-height: 250px;
+    }
+
+    .hero-content h1 {
+      font-size: 2.5rem;
+    }
+  }
+</style> 

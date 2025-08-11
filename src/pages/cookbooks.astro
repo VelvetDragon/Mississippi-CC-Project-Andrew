@@ -1,0 +1,161 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Cookbooks - Mississippi Community Cookbook Project">
+  <!-- Hero Section with Background Image -->
+  <section class="hero" data-bg="cookbooks">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Cookbooks</h1>
+    </div>
+  </section>
+
+  <div class="content">
+    <div class="main-text">
+      <p>Following the Civil War, community cookbooks—along with bake sales and craft sales—became an important means by which women raised funds to support charitable endeavors in their communities. The Mississippi Community Cookbook Project, the nucleus of a book project that I am working on, seeks to document Mississippi community cookbooks published between 1890 and 1900.</p>
+
+      <p>Most of these cookbooks are held in the archival collections of The University of Southern Mississippi. In partnership with Jennifer Brannock, Curator of Mississippiana and Rare Books at The University of Southern Mississippi, we've collected over two hundred cookbooks published between 1890 and 1970. Additional cookbooks are held at university and public libraries as well as Mississippi's Department of History and Archives.</p>
+
+      <p>Community cookbooks were used, stained, and the least favorite did not always survive. Currently, I've examined over three hundred cookbooks, but passing references in newspapers suggest that there may have been dozens, perhaps even hundreds, of cookbooks that have been lost.</p>
+
+      <p>Collectively, these cookbooks are the basis for a <em>Kissin' Don't Last, Cookery Do</em> (tentative title), a book I am preparing that looks at the history of community cookbooks as a means of understanding how women shaped local life (and how national trends in cooking, in turn, shaped women's understanding of food).</p>
+
+      <p>This website will be updated nearer to the book's publication with some of the more compelling statistical finding, but for now it serves as a sort of demographics of an object, the community cookbook in Mississippi, providing insights into when, where, and who published cookbooks in Mississippi.</p>
+    </div>
+
+    <section class="charts">
+      <div class="chart-placeholder">
+        <h3>Number of Cookbooks Published by Year Over Time</h3>
+        <p>Flourish chart on the number of cookbooks published by year over time.</p>
+      </div>
+
+      <div class="chart-placeholder">
+        <h3>Groups That Published Cookbooks</h3>
+        <p>Flourish chart showing which groups published cookbooks during the full range</p>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Hero Section */
+  .hero {
+    position: relative;
+    height: 35vh;
+    min-height: 300px;
+    background-image: url('/images/cookbooks-bg.jpeg') !important;
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+  }
+
+  .hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Main Content */
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 2rem 0;
+  }
+
+  .main-text {
+    margin-bottom: 4rem;
+  }
+
+  .main-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    text-align: justify;
+  }
+
+  .main-text em {
+    font-style: italic;
+    color: var(--primary-color);
+  }
+
+  .charts {
+    margin-top: 4rem;
+  }
+
+  .chart-placeholder {
+    background: var(--surface);
+    padding: 3rem 2rem;
+    border-radius: 12px;
+    border: 2px dashed var(--border);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .chart-placeholder h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .chart-placeholder p {
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .hero-content h1 {
+      font-size: 3rem;
+    }
+    
+    .content {
+      padding: 3rem 1rem 0;
+    }
+
+    .main-text p {
+      font-size: 1rem;
+    }
+
+    .chart-placeholder {
+      padding: 2rem 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero {
+      height: 40vh;
+      min-height: 250px;
+    }
+
+    .hero-content h1 {
+      font-size: 2.5rem;
+    }
+  }
+</style> 

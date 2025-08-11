@@ -1,0 +1,150 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Culinary Landscapes - Mississippi Community Cookbook Project">
+  <!-- Hero Section with Background Image -->
+  <section class="hero" data-bg="landscapes">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Culinary Landscape</h1>
+    </div>
+  </section>
+
+  <div class="content">
+    <div class="main-text">
+      <p>Community cookbooks were ubiquitous. In rural counties to urban centers, women fathered in their living rooms or the church hall to assemble carefully collected recipes. The map reflects the widespread embrace of community cookbooks as a means of fundraising (although, invariably, it also reflects the limits of my skills locating these cookbooks and overrepresents cookbooks from southern Mississippi where I work).</p>
+
+      <p>Cookbooks are geolocated according to the community where they were published. Click on a number to reveal a complete list of cookbooks from that town or city and click on the name of the cookbook to learn more about it, its authorship, and where it can be viewed.</p>
+    </div>
+
+    <section class="maps">
+      <div class="map-placeholder">
+        <h3>Community Cookbooks by Community</h3>
+        <p>Map of community cookbooks by community</p>
+      </div>
+
+      <div class="map-placeholder">
+        <h3>Regional Distribution</h3>
+        <p>Map of "regions" with number of cookbooks</p>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  /* Hero Section */
+  .hero {
+    position: relative;
+    height: 35vh;
+    min-height: 300px;
+    background-image: url('/images/landscapes-bg.jpeg') !important;
+    background-size: cover;
+    background-position: center 10%;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+  }
+
+  .hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Main Content */
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 2rem 0;
+  }
+
+  .main-text {
+    margin-bottom: 4rem;
+  }
+
+  .main-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    text-align: justify;
+  }
+
+  .maps {
+    margin-top: 4rem;
+  }
+
+  .map-placeholder {
+    background: var(--surface);
+    padding: 3rem 2rem;
+    border-radius: 12px;
+    border: 2px dashed var(--border);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .map-placeholder h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .map-placeholder p {
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .hero-content h1 {
+      font-size: 3rem;
+    }
+    
+    .content {
+      padding: 3rem 1rem 0;
+    }
+
+    .main-text p {
+      font-size: 1rem;
+    }
+
+    .map-placeholder {
+      padding: 2rem 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero {
+      height: 40vh;
+      min-height: 250px;
+    }
+
+    .hero-content h1 {
+      font-size: 2.5rem;
+    }
+  }
+</style> 
