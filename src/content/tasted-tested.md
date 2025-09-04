@@ -100,3 +100,4 @@ For interviews, presentations, or publicity opportunities.
 ---
 
 *The Mississippi Community Cookbook Project represents a significant contribution to understanding Southern food culture and community traditions through rigorous academic research combined with innovative digital techniques.*
+

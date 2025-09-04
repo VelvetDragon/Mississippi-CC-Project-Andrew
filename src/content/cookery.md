@@ -69,3 +69,4 @@ Available through major academic library systems and interlibrary loan programs.
 *[Information about digital editions or database access]*
 
 *This publication represents a significant contribution to Southern food history and community studies scholarship.*
+

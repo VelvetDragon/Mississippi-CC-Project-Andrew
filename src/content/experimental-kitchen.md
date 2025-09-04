@@ -78,3 +78,4 @@ Collaborating with institutions for:
 4. **Cultural Exchange Tracking**: Identifying cross-cultural recipe adoption
 
 *The Experimental Kitchen represents the intersection of traditional historical research with cutting-edge digital analysis techniques.*
+

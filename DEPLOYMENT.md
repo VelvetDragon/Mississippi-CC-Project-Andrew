@@ -31,3 +31,4 @@ npm run build
 - Built with Astro.js
 - Static site - very fast and secure
 - No database required
+

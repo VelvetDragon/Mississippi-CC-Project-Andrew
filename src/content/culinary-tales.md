@@ -67,3 +67,4 @@ Stay connected with ongoing research discoveries and new blog posts about Missis
 ---
 
 *Culinary Tales brings the academic research to life through stories, discoveries, and community connections.*
+

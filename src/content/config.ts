@@ -19,3 +19,9 @@ const blog = defineCollection({
 });
 
 export const collections = { pages, blog };
+
+
+
+
+
+

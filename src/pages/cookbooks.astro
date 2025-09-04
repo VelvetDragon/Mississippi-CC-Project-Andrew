@@ -21,20 +21,299 @@ const { Content } = await cookbooks.render();
     </div>
 
     <section class="charts">
-      <div class="chart-placeholder">
-        <h3>Number of Cookbooks Published by Year Over Time</h3>
-        <p>Flourish chart on the number of cookbooks published by year over time.</p>
+      <!-- Cookbooks by Decade -->
+      <div class="chart-section">
+        <h3>Cookbooks by Decade</h3>
+        <p class="chart-intro">The number of cookbooks published in Mississippi increased decade by decade. The first cookbook published in the state was the <em>Spinning-Wheel Cook-Book of Old Southern Recipes</em> published by the Spinning Wheel Club in Woodville, Mississippi, in 1899. (The cookbook was preserved when it was reprinted in the 1939 and then again in 1983.) It was the only community cookbook published before 1900. However, the numbers grew steadily and in the 1960s over 148 cookbooks were published.</p>
+        <p class="chart-intro">The authors of these cookbooks often did not date their cookbooks, presumably hoping that these cookbooks would be viewed as timeless and could be sold for years if not dated. Even the rise of national publishers after World War II did not lead to the regular dating of cookbooks. Just over 160 of the cookbooks included in the following chart included a printed date.</p>
+        <p class="chart-intro">Previous studies have dated the cookbooks based on their appearance and, especially for nationally produced cookbooks, this technique is not without merit. However, given the importance of demonstrating change over time for this study, I have done my best to research undated cookbooks. Using contributors' names, advertisers, and newspaper references I have dated most of these cookbooks or, at least, have narrowed the possible date so that I can be fairly certain of the decade when it was produced. Nonetheless, the dates below are in some cases estimates and are subject to revision.</p>
+        
+        <div class="chart-container">
+          <div class="decade-chart">
+            <div class="chart-bar" data-decade="1890s" data-count="1" style="height: 0.67%;">
+              <span class="bar-label">1890s</span>
+              <span class="bar-count">1</span>
+            </div>
+            <div class="chart-bar" data-decade="1900s" data-count="10" style="height: 6.76%;">
+              <span class="bar-label">1900s</span>
+              <span class="bar-count">10</span>
+            </div>
+            <div class="chart-bar" data-decade="1910s" data-count="14" style="height: 9.46%;">
+              <span class="bar-label">1910s</span>
+              <span class="bar-count">14</span>
+            </div>
+            <div class="chart-bar" data-decade="1920s" data-count="20" style="height: 13.51%;">
+              <span class="bar-label">1920s</span>
+              <span class="bar-count">20</span>
+            </div>
+            <div class="chart-bar" data-decade="1930s" data-count="9" style="height: 6.08%;">
+              <span class="bar-label">1930s</span>
+              <span class="bar-count">9</span>
+            </div>
+            <div class="chart-bar" data-decade="1940s" data-count="35" style="height: 23.65%;">
+              <span class="bar-label">1940s</span>
+              <span class="bar-count">35</span>
+            </div>
+            <div class="chart-bar" data-decade="1950s" data-count="97" style="height: 65.54%;">
+              <span class="bar-label">1950s</span>
+              <span class="bar-count">97</span>
+            </div>
+            <div class="chart-bar" data-decade="1960s" data-count="148" style="height: 100%;">
+              <span class="bar-label">1960s</span>
+              <span class="bar-count">148</span>
+            </div>
+          </div>
+          <p class="chart-total">Total Number of Cookbooks: 342</p>
+        </div>
       </div>
 
-      <div class="chart-placeholder">
-        <h3>Groups That Published Cookbooks</h3>
-        <p>Flourish chart showing which groups published cookbooks during the full range</p>
+      <!-- Publisher Types -->
+      <div class="chart-section">
+        <h3>Publisher Types: Local versus National</h3>
+        <p class="chart-intro">Anyone could create a community cookbook. The simplest, often presented as wedding presents, were handwritten cards bound with a ribbon or a metal ring. However, most were larger productions. Recipes were collected and organized, advertising was sold to pay for the cost of printing, and a hundred or more cookbooks were printed and sold to raise funds for a charitable endeavor.</p>
+        <p class="chart-intro">These cookbooks often did not include publication information. If the cookbook was printed locally at the local newspaper offices or office supply store, the publisher may not have felt there was a need to indicate the publisher, viewing the production as a "print job" rather than a book. National publishers, who first emerged at the turn of the twentieth century and rose to prominence in the postwar era, were also initially reluctant to list publication information presumably fearing that it would suggest these cookbooks were not local. The following numbers represent both my best guess as to the publisher and recorded publishers.</p>
+        
+        <div class="chart-container">
+          <div class="pie-chart-container">
+            <div class="pie-chart">
+              <div class="pie-slice local" style="--percentage: 52.9; --color: var(--primary-color)"></div>
+              <div class="pie-slice national" style="--percentage: 47.1; --color: var(--primary-light)"></div>
+            </div>
+            <div class="pie-legend">
+              <div class="legend-item">
+                <span class="legend-color" style="background-color: var(--primary-color)"></span>
+                <span class="legend-text">Local Publishers: 146 (52.9%)</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-color" style="background-color: var(--primary-light)"></span>
+                <span class="legend-text">National Publishers: 130 (47.1%)</span>
+              </div>
+            </div>
+          </div>
+          <p class="chart-total">Total: 276</p>
+        </div>
+      </div>
+
+      <!-- Organizations -->
+      <div class="chart-section">
+        <h3>Organizations That Published Cookbooks</h3>
+        <p class="chart-intro">Some cookbooks were created to forge tighter bonds with a club or community, but most were created to raise funds for charitable endeavors: remodeling a church rectory or repairing the church's roof, creating a cemetery, funding a school trip, raising funds for textbooks, or supporting local youth initiatives. The following chart classifies the groups that created these cookbooks as churches, civic organizations and clubs, and professional organizations.</p>
+        <p class="chart-intro">In most cases, church cookbooks were produced by women auxiliaries and missionary societies. Professional organization and business sponsored cookbooks (which were much more common in the 1970s than the decades before and thus are not well represented by this study) generally raised funds to support themselves or to promote their services. Civic and club cookbooks, amongst the most common, might be sponsored by a women's literary club or a parent-teacher association. Although the clubs, which existed in large part to provide opportunities to socialize, were distinct from the civic organizations, which assisted local government by supporting schools and parks, their fundraising goals were similar. In most cases, if not raising general funds to support club activities, they raised funds to support scholarships, community programs for children, hospitals, and other community services.</p>
+        
+        <div class="chart-container">
+          <div class="org-data-table">
+            <div class="table-header">
+              <div class="col-org">Organization Type</div>
+              <div class="col-count">Count</div>
+              <div class="col-percent">Percentage</div>
+              <div class="col-visual">Distribution</div>
+            </div>
+            
+            <div class="table-row civic">
+              <div class="col-org">
+                <div class="org-type">Civic & Club Organizations</div>
+                <div class="org-subtitle"></div>
+              </div>
+              <div class="col-count">170</div>
+              <div class="col-percent">49.7%</div>
+              <div class="col-visual">
+                <div class="visual-bar">
+                  <div class="bar-fill civic" style="width: 100%"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="table-row church">
+              <div class="col-org">
+                <div class="org-type">Church Organizations</div>
+                <div class="org-subtitle"></div>
+              </div>
+              <div class="col-count">154</div>
+              <div class="col-percent">45.0%</div>
+              <div class="col-visual">
+                <div class="visual-bar">
+                  <div class="bar-fill church" style="width: 90.6%"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="table-row business">
+              <div class="col-org">
+                <div class="org-type">Business & Professional</div>
+                <div class="org-subtitle"></div>
+              </div>
+              <div class="col-count">18</div>
+              <div class="col-percent">5.3%</div>
+              <div class="col-visual">
+                <div class="visual-bar">
+                  <div class="bar-fill business" style="width: 10.6%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="org-summary">
+            <div class="summary-stats">
+              <div class="stat-item">
+                <span class="stat-label">Total Organizations:</span>
+                <span class="stat-value">342</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Counties -->
+      <div class="chart-section">
+        <h3>Cookbooks by County</h3>
+        <p class="chart-intro">Mississippi has a total area of over 48,000 square miles divided into 82 counties. Many of these counties are rural and the county seat (or, in a few cases, seats) are generally the largest town. Yet communities small and large produced community cookbooks. As of this counting, all but nine of the 82 counties in Mississippi created at least one cookbook.</p>
+        <p class="chart-intro">Hinds County, home of the state capital, Jackson, created the largest number followed by Forrest, Washington, Jones, and Bolivar. The large numbers from Forrest and Jones reflect in part a collection bias, since Hattiesburg, the researcher's home, is located in Forrest and Jones is the adjacent community. However, these numbers also reflect the cultural and educational importance of the cities that produced the largest number of cookbooks. Forrest is home to The University of Southern Mississippi which, for years, housed a Home Economics Department. Jones is home to Laurel, a community with considerable lumber and oil wealth and numerous cultural institutions. The other counties with the highest counts, Washington and Bolivar Counties, were home to prominent Delta cities. Disproportionate as some of these counts may be, collectively the largest five contributors account for less than a third of the total number of cookbooks.</p>
+        
+        <!-- County Summary Stats -->
+        <div class="chart-container">
+          <div class="county-summary">
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span class="summary-number">5</span>
+                <span class="summary-label">High Production Counties (10+)</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-number">39</span>
+                <span class="summary-label">Medium Production Counties (3-9)</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-number">29</span>
+                <span class="summary-label">Low Production Counties<br>(1-2)</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-number">9</span>
+                <span class="summary-label">Counties with No Cookbooks</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <div class="county-highlights">
+            <h4>Top 10 Counties by Number of Cookbooks</h4>
+            <div class="top-counties">
+              <div class="county-item">
+                <span class="county-name">Hinds County</span>
+                <div class="county-bar">
+                  <div class="county-fill" style="width: 100%"></div>
+                  <span class="county-count">40</span>
+                </div>
+              </div>
+              <div class="county-item">
+                <span class="county-name">Forrest County</span>
+                <div class="county-bar">
+                  <div class="county-fill" style="width: 57.5%"></div>
+                  <span class="county-count">23</span>
+                </div>
+              </div>
+              <div class="county-item">
+                <span class="county-name">Washington County</span>
+                <div class="county-bar">
+                  <div class="county-fill" style="width: 42.5%"></div>
+                  <span class="county-count">17</span>
+                </div>
+              </div>
+              <div class="county-item">
+                <span class="county-name">Jones County</span>
+                <div class="county-bar">
+                  <div class="county-fill" style="width: 30%"></div>
+                  <span class="county-count">12</span>
+                </div>
+              </div>
+              <div class="county-item">
+                <span class="county-name">Bolivar County</span>
+                <div class="county-bar">
+                  <div class="county-fill" style="width: 30%"></div>
+                  <span class="county-count">12</span>
+                </div>
+              </div>
+              <div class="county-item">
+                <span class="county-name">Jackson County</span>
+                <div class="county-bar">
+                  <div class="county-fill" style="width: 22.5%"></div>
+                  <span class="county-count">9</span>
+                </div>
+              </div>
+              <div class="county-item">
+                <span class="county-name">Leflore County</span>
+                <div class="county-bar">
+                  <div class="county-fill" style="width: 22.5%"></div>
+                  <span class="county-count">9</span>
+                </div>
+              </div>
+              <div class="county-item">
+                <span class="county-name">Lauderdale County</span>
+                <div class="county-bar">
+                  <div class="county-fill" style="width: 20%"></div>
+                  <span class="county-count">8</span>
+                </div>
+              </div>
+              <div class="county-item">
+                <span class="county-name">Lincoln County</span>
+                <div class="county-bar">
+                  <div class="county-fill" style="width: 20%"></div>
+                  <span class="county-count">8</span>
+                </div>
+              </div>
+              <div class="county-item">
+                <span class="county-name">Sunflower County</span>
+                <div class="county-bar">
+                  <div class="county-fill" style="width: 20%"></div>
+                  <span class="county-count">8</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="chart-total">Total: 342 cookbooks across 73 of 82 counties</p>
+          <p class="chart-note"><em>Future updates of this website will contain more demographic information and maps.</em></p>
+        </div>
+
+        <!-- Complete County Data -->
+        <div class="complete-county-data">
+          <h4>Complete County Inventory</h4>
+          <p class="county-intro">Explore cookbook production across all 82 Mississippi counties. Use the search to find specific counties, or click the category buttons to filter by production level.</p>
+          
+          <!-- County Filters -->
+          <div class="county-filters">
+            <button class="filter-btn active" data-filter="all">All Counties (82)</button>
+            <button class="filter-btn" data-filter="high">High Production (10+)</button>
+            <button class="filter-btn" data-filter="medium">Medium Production (3-9)</button>
+            <button class="filter-btn" data-filter="low">Low Production (1-2)</button>
+            <button class="filter-btn" data-filter="none">No Cookbooks (9)</button>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="county-search">
+            <input type="text" id="countySearch" placeholder="Search for a county..." />
+            <span class="search-icon">🔎</span>
+          </div>
+
+          <!-- Pagination Info -->
+          <div class="pagination-info">
+            <span id="pageInfo">Showing 1-12 of 82 counties</span>
+            <div class="pagination-controls">
+              <button id="prevBtn" class="page-btn" disabled>← Previous</button>
+              <span id="pageNumbers" class="page-numbers"></span>
+              <button id="nextBtn" class="page-btn">Next →</button>
+            </div>
+          </div>
+
+          <!-- County Grid -->
+          <div class="county-grid" id="countyGrid">
+            <!-- Counties will be populated by JavaScript -->
+          </div>
+        </div>
       </div>
     </section>
   </div>
 </Layout>
 
-<style>
+<style is:global>
   /* Hero Section */
   .hero {
     position: relative;
@@ -83,15 +362,26 @@ const { Content } = await cookbooks.render();
   }
 
   .main-text {
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
   }
 
   .main-text p {
     font-size: 1.1rem;
-    line-height: 1.8;
+    line-height: 1.7;
     color: var(--text-dark);
     margin-bottom: 1.5rem;
-    text-align: justify;
+    text-align: left;
+    font-weight: 400;
+  }
+
+  .main-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+    font-weight: 600;
+    text-align: left;
   }
 
   .main-text em {
@@ -99,31 +389,670 @@ const { Content } = await cookbooks.render();
     color: var(--primary-color);
   }
 
+  /* Revision note styling */
+  .main-text .revision-note {
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 1rem;
+    display: block;
+    margin-top: 1rem;
+    font-weight: 400;
+  }
+
   .charts {
     margin-top: 4rem;
   }
 
-  .chart-placeholder {
-    background: var(--surface);
-    padding: 3rem 2rem;
-    border-radius: 12px;
-    border: 2px dashed var(--border);
-    margin-bottom: 2rem;
-    text-align: center;
+  .chart-section {
+    background: transparent;
+    padding: 2rem 0;
+    margin-bottom: 3rem;
   }
 
-  .chart-placeholder h3 {
+  .chart-section h3 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     color: var(--text-dark);
     margin-bottom: 1rem;
     font-weight: 600;
+    text-align: left;
   }
 
-  .chart-placeholder p {
+  .chart-section h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .chart-intro {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    text-align: left;
+    font-weight: 400;
+  }
+
+  .chart-container {
+    margin-top: 1.5rem;
+    padding: 0;
+    background: transparent;
+  }
+
+  .chart-total {
+    text-align: left;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+  }
+
+  .chart-note {
+    text-align: left;
     color: var(--text-muted);
     font-style: italic;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Decade Chart Styles */
+  .decade-chart {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    height: 320px;
+    margin: 2rem 0;
+    padding: 2rem 1rem 1rem;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    overflow: visible;
+  }
+
+  .chart-bar {
+    flex: 1;
+    margin: 0 0.5rem;
+    background: linear-gradient(to top, var(--primary-color), var(--primary-light));
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    min-height: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    max-height: 250px;
+  }
+
+  .chart-bar:hover {
+    background: linear-gradient(to top, var(--primary-dark), var(--primary-color));
+    transform: scale(1.02);
+  }
+
+  .bar-label {
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .bar-count {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    font-weight: 600;
+    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  /* Pie Chart Styles */
+  .pie-chart-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .pie-chart {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--primary-color) 0deg 190.44deg,
+      var(--primary-light) 190.44deg 360deg
+    );
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .pie-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+  }
+
+  .legend-text {
+    font-size: 1rem;
+    color: var(--text-dark);
+    font-weight: 500;
+  }
+
+  /* Organization Data Table Styles */
+  .org-data-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  .table-header {
+    display: grid;
+    grid-template-columns: 2fr 90px 120px 1.2fr;
+    gap: 2rem;
+    padding: 1rem 1.5rem;
+    background: var(--primary-color);
+    color: var(--text-light);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .table-row {
+    display: grid;
+    grid-template-columns: 2fr 90px 120px 1.2fr;
+    gap: 2rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.2s ease;
+  }
+
+  .table-row:last-child {
+    border-bottom: none;
+  }
+
+  .table-row:hover {
+    background: rgba(200, 118, 61, 0.02);
+  }
+
+  .col-org {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .org-type {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.3;
+  }
+
+  .org-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .col-count {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+  }
+
+  .col-percent {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+  }
+
+  .col-visual {
+    display: flex;
+    align-items: center;
+  }
+
+  .visual-bar {
+    width: 100%;
+    height: 12px;
+    background: rgba(200, 118, 61, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.8s ease;
+  }
+
+  .bar-fill.civic {
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+  }
+
+  .bar-fill.church {
+    background: linear-gradient(90deg, var(--primary-light), #e4a67f);
+  }
+
+  .bar-fill.business {
+    background: linear-gradient(90deg, var(--text-muted), #888888);
+  }
+
+  .org-summary {
+    margin-top: 1rem;
+    padding: 1rem 1.5rem;
+    background: rgba(200, 118, 61, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(200, 118, 61, 0.1);
+  }
+
+  .summary-stats {
+    display: flex;
+    justify-content: center;
+  }
+
+  .stat-item {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: var(--surface);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    min-width: 200px;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    font-weight: 500;
+  }
+
+  .stat-value {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    font-weight: 700;
+  }
+
+  /* County Styles */
+  .county-highlights {
+    margin: 2rem 0;
+  }
+
+  .top-counties {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .county-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+
+  .county-name {
+    min-width: 150px;
+    font-weight: 500;
+    color: var(--text-dark);
+  }
+
+  .county-bar {
+    flex: 1;
+    height: 25px;
+    background: rgba(200, 118, 61, 0.1);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .county-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+    border-radius: 12px;
+    transition: width 0.8s ease;
+  }
+
+  .county-count {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+
+  /* Complete County Data Styles */
+  .complete-county-data {
+    margin-top: 3rem;
+    padding-top: 0;
+  }
+
+  .county-intro {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    text-align: left;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+  }
+
+  /* County Filters */
+  .county-filters {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-btn {
+    background: rgba(200, 118, 61, 0.1);
+    border: 2px solid #c8763d;
+    color: #c8763d;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .filter-btn:hover {
+    background: rgba(200, 118, 61, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .filter-btn.active {
+    background: #c8763d;
+    color: white;
+    box-shadow: 0 4px 12px rgba(200, 118, 61, 0.3);
+  }
+
+  /* County Search */
+  .county-search {
+    position: relative;
+    max-width: 400px;
+    margin: 0 0 1.5rem 0;
+  }
+
+  #countySearch {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid #e5e5e5;
+    border-radius: 25px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+
+  #countySearch:focus {
+    border-color: #c8763d;
+    box-shadow: 0 0 0 3px rgba(200, 118, 61, 0.1);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: #666666;
+  }
+
+  /* County Grid */
+  .county-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+    min-height: 400px;
+  }
+
+  .county-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+
+
+  .county-card.high {
+    border-left: 4px solid var(--primary-light);
+    background: linear-gradient(135deg, rgba(212, 149, 111, 0.05), var(--surface));
+  }
+
+  .county-card.medium {
+    border-left: 4px solid var(--primary-color);
+    background: linear-gradient(135deg, rgba(200, 118, 61, 0.05), var(--surface));
+  }
+
+  .county-card.low {
+    border-left: 4px solid var(--text-muted);
+    background: linear-gradient(135deg, rgba(102, 102, 102, 0.05), var(--surface));
+  }
+
+  .county-card.none {
+    border-left: 4px solid #ccc;
+    background: linear-gradient(135deg, rgba(204, 204, 204, 0.05), var(--surface));
+    opacity: 0.7;
+  }
+
+  .county-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .county-card h5 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--text-dark);
     margin: 0;
+    font-weight: 600;
+  }
+
+  .county-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: white;
+  }
+
+  .county-badge.high {
+    background: linear-gradient(135deg, var(--primary-light), #e4a67f);
+    box-shadow: 0 2px 8px rgba(212, 149, 111, 0.3);
+  }
+
+  .county-badge.medium {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    box-shadow: 0 2px 8px rgba(200, 118, 61, 0.3);
+  }
+
+  .county-badge.low {
+    background: linear-gradient(135deg, var(--text-muted), #888);
+    box-shadow: 0 2px 8px rgba(102, 102, 102, 0.3);
+  }
+
+  .county-badge.none {
+    background: linear-gradient(135deg, #ccc, #ddd);
+    color: #666;
+    box-shadow: 0 2px 8px rgba(204, 204, 204, 0.3);
+  }
+
+  .county-details {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 0.5rem;
+  }
+
+  /* County Summary */
+  .county-summary {
+    margin-top: 3rem;
+    padding: 0;
+    background: transparent;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .summary-item {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--surface);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  .summary-number {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+  }
+
+  .summary-label {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    font-weight: 500;
+  }
+
+  /* Hidden class for filtering */
+  .county-card.hidden {
+    display: none;
+  }
+
+  /* Pagination Styles */
+  .pagination-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1.5rem 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  #pageInfo {
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .page-btn {
+    background: #c8763d;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .page-btn:hover:not(:disabled) {
+    background: #a85d2a;
+    transform: translateY(-1px);
+  }
+
+  .page-btn:disabled {
+    background: #666666;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .page-numbers {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .page-number {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background: transparent;
+    border: 1px solid #e5e5e5;
+    color: #1a1a1a;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
+    min-width: 32px;
+    text-align: center;
+  }
+
+  .page-number:hover {
+    background: rgba(200, 118, 61, 0.1);
+    border-color: #c8763d;
+  }
+
+  .page-number.active {
+    background: #c8763d;
+    color: white;
+    border-color: #c8763d;
+  }
+
+  .page-ellipsis {
+    color: #666666;
+    padding: 0.25rem;
   }
 
   @media (max-width: 768px) {
@@ -139,8 +1068,174 @@ const { Content } = await cookbooks.render();
       font-size: 1rem;
     }
 
-    .chart-placeholder {
+    .chart-section {
       padding: 2rem 1rem;
+    }
+
+    .chart-section h3 {
+      font-size: 1.5rem;
+    }
+
+    .chart-container {
+      padding: 1rem;
+    }
+
+    .decade-chart {
+      height: 250px;
+      padding: 1.5rem 0.5rem 1rem;
+    }
+
+    .chart-bar {
+      margin: 0 0.2rem;
+      max-height: 180px;
+    }
+
+    .bar-label {
+      bottom: -30px;
+      font-size: 0.7rem;
+    }
+
+    .bar-count {
+      top: -25px;
+      font-size: 0.8rem;
+      padding: 1px 4px;
+    }
+
+    .pie-chart-container {
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .pie-chart {
+      width: 150px;
+      height: 150px;
+    }
+
+    .org-data-table {
+      overflow-x: auto;
+    }
+
+    .table-header {
+      grid-template-columns: 2fr 70px 90px 100px;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    .table-row {
+      grid-template-columns: 2fr 70px 90px 100px;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .org-type {
+      font-size: 0.9rem;
+    }
+
+    .org-subtitle {
+      font-size: 0.8rem;
+    }
+
+    .col-count {
+      font-size: 1rem;
+    }
+
+    .col-percent {
+      font-size: 0.9rem;
+    }
+
+    .summary-stats {
+      justify-content: stretch;
+    }
+
+    .stat-item {
+      padding: 0.5rem 1rem;
+      min-width: unset;
+      flex: 1;
+    }
+
+    .stat-label, .stat-value {
+      font-size: 0.8rem;
+    }
+
+    .county-name {
+      min-width: 120px;
+      font-size: 0.9rem;
+    }
+
+    .county-bar {
+      height: 20px;
+    }
+
+    /* Complete County Data Mobile Styles */
+    .complete-county-data {
+      margin-top: 2rem;
+      padding-top: 2rem;
+    }
+
+    .county-filters {
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .filter-btn {
+      width: 100%;
+      max-width: 280px;
+      text-align: center;
+    }
+
+    .county-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .county-card {
+      padding: 1rem;
+    }
+
+    .county-card h5 {
+      font-size: 1rem;
+    }
+
+    .county-badge {
+      width: 28px;
+      height: 28px;
+      font-size: 0.8rem;
+    }
+
+    .summary-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .summary-number {
+      font-size: 1.5rem;
+    }
+
+    .summary-label {
+      font-size: 0.8rem;
+    }
+
+    /* Pagination Mobile Styles */
+    .pagination-info {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+
+    .pagination-controls {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .page-numbers {
+      order: -1;
+    }
+
+    .page-btn {
+      width: 100%;
+      max-width: 150px;
     }
   }
 
@@ -155,3 +1250,278 @@ const { Content } = await cookbooks.render();
     }
   }
 </style> 
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // County data array
+    const counties = [
+      { name: 'Hinds County', count: 40 },
+      { name: 'Forrest County', count: 23 },
+      { name: 'Washington County', count: 17 },
+      { name: 'Jones County', count: 12 },
+      { name: 'Bolivar County', count: 12 },
+      { name: 'Jackson County', count: 9 },
+      { name: 'Leflore County', count: 9 },
+      { name: 'Lauderdale County', count: 8 },
+      { name: 'Lincoln County', count: 8 },
+      { name: 'Sunflower County', count: 8 },
+      { name: 'Yazoo County', count: 8 },
+      { name: 'Coahoma County', count: 7 },
+      { name: 'Copiah County', count: 7 },
+      { name: 'Oktibbeha County', count: 7 },
+      { name: 'Pike County', count: 7 },
+      { name: 'Adams County', count: 6 },
+      { name: 'Harrison County', count: 6 },
+      { name: 'Lafayette County', count: 6 },
+      { name: 'Lee County', count: 6 },
+      { name: 'Alcorn County', count: 5 },
+      { name: 'Calhoun County', count: 5 },
+      { name: 'Holmes County', count: 5 },
+      { name: 'Lowndes County', count: 5 },
+      { name: 'Marion County', count: 5 },
+      { name: 'Monroe County', count: 5 },
+      { name: 'Tallahatchie County', count: 5 },
+      { name: 'Warren County', count: 5 },
+      { name: 'Yalobusha County', count: 5 },
+      { name: 'Leake County', count: 4 },
+      { name: 'Rankin County', count: 4 },
+      { name: 'Tate County', count: 4 },
+      { name: 'Wayne County', count: 4 },
+      { name: 'Amite County', count: 3 },
+      { name: 'Attala County', count: 3 },
+      { name: 'Chickasaw County', count: 3 },
+      { name: 'Claiborne County', count: 3 },
+      { name: 'Lawrence County', count: 3 },
+      { name: 'Neshoba County', count: 3 },
+      { name: 'Newton County', count: 3 },
+      { name: 'Panola County', count: 3 },
+      { name: 'Pearl River County', count: 3 },
+      { name: 'Prentiss County', count: 3 },
+      { name: 'Tunica County', count: 3 },
+      { name: 'Winston County', count: 3 },
+      { name: 'Carroll County', count: 2 },
+      { name: 'Clarke County', count: 2 },
+      { name: 'Clay County', count: 2 },
+      { name: 'George County', count: 2 },
+      { name: 'Humphreys County', count: 2 },
+      { name: 'Jefferson County', count: 2 },
+      { name: 'Lamar County', count: 2 },
+      { name: 'Marshall County', count: 2 },
+      { name: 'Montgomery County', count: 2 },
+      { name: 'Noxubee County', count: 2 },
+      { name: 'Pontotoc County', count: 2 },
+      { name: 'Quitman County', count: 2 },
+      { name: 'Simpson County', count: 2 },
+      { name: 'Covington County', count: 1 },
+      { name: 'DeSoto County', count: 1 },
+      { name: 'Franklin County', count: 1 },
+      { name: 'Hancock County', count: 1 },
+      { name: 'Issaquena County', count: 1 },
+      { name: 'Jasper County', count: 1 },
+      { name: 'Kemper County', count: 1 },
+      { name: 'Madison County', count: 1 },
+      { name: 'Perry County', count: 1 },
+      { name: 'Scott County', count: 1 },
+      { name: 'Smith County', count: 1 },
+      { name: 'Stone County', count: 1 },
+      { name: 'Tippah County', count: 1 },
+      { name: 'Union County', count: 1 },
+      { name: 'Walthall County', count: 1 },
+      { name: 'Wilkinson County', count: 1 },
+      { name: 'Benton County', count: 0 },
+      { name: 'Choctaw County', count: 0 },
+      { name: 'Greene County', count: 0 },
+      { name: 'Grenada County', count: 0 },
+      { name: 'Itawamba County', count: 0 },
+      { name: 'Jefferson Davis County', count: 0 },
+      { name: 'Sharkey County', count: 0 },
+      { name: 'Tishomingo County', count: 0 },
+      { name: 'Webster County', count: 0 }
+    ];
+
+    // Pagination variables
+    let currentPage = 1;
+    const itemsPerPage = 12;
+    let filteredCounties = [...counties];
+    let currentFilter = 'all';
+
+    // DOM elements
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const searchInput = document.getElementById('countySearch');
+    const countyGrid = document.getElementById('countyGrid');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pageInfo = document.getElementById('pageInfo');
+    const pageNumbers = document.getElementById('pageNumbers');
+
+    // Helper functions
+    function getCountyClass(count) {
+      if (count >= 10) return 'high';
+      if (count >= 3) return 'medium';
+      if (count >= 1) return 'low';
+      return 'none';
+    }
+
+    function createCountyCard(county) {
+      const className = getCountyClass(county.count);
+      return `
+        <div class="county-card ${className}" data-count="${county.count}">
+          <div class="county-header">
+            <h5>${county.name}</h5>
+            <span class="county-badge ${className}">${county.count}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPage() {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageCounties = filteredCounties.slice(startIndex, endIndex);
+
+      countyGrid.innerHTML = pageCounties.map(createCountyCard).join('');
+      
+      // Cards created without hover effects
+      
+      // Update page info
+      const totalCounties = filteredCounties.length;
+      const displayStart = totalCounties === 0 ? 0 : startIndex + 1;
+      const displayEnd = Math.min(endIndex, totalCounties);
+      pageInfo.textContent = `Showing ${displayStart}-${displayEnd} of ${totalCounties} counties`;
+
+      // Update pagination controls
+      updatePaginationControls();
+    }
+
+    function updatePaginationControls() {
+      const totalPages = Math.ceil(filteredCounties.length / itemsPerPage);
+      
+      // Update prev/next buttons
+      prevBtn.disabled = currentPage === 1;
+      nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+
+      // Generate page numbers
+      generatePageNumbers(totalPages);
+    }
+
+    function generatePageNumbers(totalPages) {
+      pageNumbers.innerHTML = '';
+      
+      if (totalPages <= 1) return;
+
+      const maxVisible = 5;
+      let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+      let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+      if (endPage - startPage + 1 < maxVisible) {
+        startPage = Math.max(1, endPage - maxVisible + 1);
+      }
+
+      // Add first page and ellipsis if needed
+      if (startPage > 1) {
+        addPageButton(1);
+        if (startPage > 2) {
+          pageNumbers.appendChild(document.createElement('span')).className = 'page-ellipsis';
+          pageNumbers.lastChild.textContent = '...';
+        }
+      }
+
+      // Add visible page numbers
+      for (let i = startPage; i <= endPage; i++) {
+        addPageButton(i);
+      }
+
+      // Add ellipsis and last page if needed
+      if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+          pageNumbers.appendChild(document.createElement('span')).className = 'page-ellipsis';
+          pageNumbers.lastChild.textContent = '...';
+        }
+        addPageButton(totalPages);
+      }
+    }
+
+    function addPageButton(pageNum) {
+      const button = document.createElement('span');
+      button.className = `page-number ${pageNum === currentPage ? 'active' : ''}`;
+      button.textContent = pageNum;
+      button.addEventListener('click', () => goToPage(pageNum));
+      pageNumbers.appendChild(button);
+    }
+
+    function goToPage(page) {
+      currentPage = page;
+      renderPage();
+    }
+
+    function filterCounties(filter) {
+      currentFilter = filter;
+      currentPage = 1;
+
+      if (filter === 'all') {
+        filteredCounties = [...counties];
+      } else {
+        filteredCounties = counties.filter(county => {
+          switch (filter) {
+            case 'high': return county.count >= 10;
+            case 'medium': return county.count >= 3 && county.count <= 9;
+            case 'low': return county.count >= 1 && county.count <= 2;
+            case 'none': return county.count === 0;
+            default: return true;
+          }
+        });
+      }
+
+      renderPage();
+      searchInput.value = '';
+    }
+
+    function searchCounties(searchTerm) {
+      currentPage = 1;
+      
+      if (searchTerm) {
+        filteredCounties = counties.filter(county => 
+          county.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      } else {
+        filterCounties(currentFilter);
+        return;
+      }
+
+      renderPage();
+    }
+
+    // Event listeners
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        filterCounties(button.dataset.filter);
+      });
+    });
+
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.trim();
+      if (searchTerm) {
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+      }
+      searchCounties(searchTerm);
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 1) {
+        goToPage(currentPage - 1);
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const totalPages = Math.ceil(filteredCounties.length / itemsPerPage);
+      if (currentPage < totalPages) {
+        goToPage(currentPage + 1);
+      }
+    });
+
+    // Initialize
+    renderPage();
+  });
+</script> 
