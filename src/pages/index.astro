@@ -1,14 +1,18 @@
 <!-- src/pages/index.astro -->
 ---
 import Layout from '../layouts/Layout.astro';
+import { getEntry } from 'astro:content';
+
+const homepage = await getEntry('pages', 'homepage');
+const { Content } = await homepage.render();
 ---
 
 <Layout title="Mississippi's Culinary Legacy" pageClass="homepage">
   <!-- HOMEPAGE HERO SECTION -->
   <section class="hero">
-    <h1>The Mississippi Community Cookbook Project</h1>
+    <h1>{homepage.data.title}</h1>
     <p class="hero-subtitle">
-      The Mississippi Community Cookbook Project explores cookbooks published by charitable, civic, and church organizations in Mississippi from the 1890s through 1970 (and occasionally beyond). This inventory is one of the most complete state index of community cookbooks in the United States.
+      {homepage.data.description}
     </p>
   </section>
 
