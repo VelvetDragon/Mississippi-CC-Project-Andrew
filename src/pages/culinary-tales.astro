@@ -24,16 +24,66 @@ const hasMorePastBlogs = pastBlogs.length > 6;
     </div>
 
     <div class="blog-container">
-      <!-- Coming Soon Section -->
-      <section class="coming-soon">
-        <h2 class="section-title">Coming Soon</h2>
-        <div class="coming-soon-content">
-          <p>New culinary tales from the Mississippi Community Cookbook Project archives are coming next week! Professor Haley is preparing fascinating stories that reveal the hidden narratives within our community cookbook collection.</p>
-          <div class="coming-soon-note">
-            <p><em>Stories will be published as they become available. Check back regularly for new content!</em></p>
+      {recentBlogs.length > 0 ? (
+        <>
+          <!-- Recent Stories Section -->
+          <section class="recent-stories">
+            <h2 class="section-title">Recent Stories</h2>
+            <div class="blog-grid">
+              {recentBlogs.map((blog) => (
+                <article class="blog-post" class:featured={blog.featured}>
+                  <div class="post-meta">
+                    <span class="date">{new Date(blog.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    {blog.category && <span class="category">{blog.category}</span>}
+                  </div>
+                  <h3 class="post-title">
+                    <a href={`/culinary-tales/${blog.slug}`}>{blog.title}</a>
+                  </h3>
+                  <p class="post-excerpt">{blog.excerpt}</p>
+                  <a href={`/culinary-tales/${blog.slug}`} class="read-more">Read More →</a>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          {pastBlogs.length > 0 && (
+            <section class="past-blogs">
+              <h2 class="section-title">Past Blogs</h2>
+              <div class="blog-grid">
+                {pastBlogsToShow.map((blog) => (
+                  <article class="blog-post">
+                    <div class="post-meta">
+                      <span class="date">{new Date(blog.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                      {blog.category && <span class="category">{blog.category}</span>}
+                    </div>
+                    <h3 class="post-title">
+                      <a href={`/culinary-tales/${blog.slug}`}>{blog.title}</a>
+                    </h3>
+                    <p class="post-excerpt">{blog.excerpt}</p>
+                    <a href={`/culinary-tales/${blog.slug}`} class="read-more">Read More →</a>
+                  </article>
+                ))}
+              </div>
+              {hasMorePastBlogs && (
+                <div class="load-more-container">
+                  <button class="load-more-btn" onclick="loadMoreBlogs()">Load More Stories</button>
+                </div>
+              )}
+            </section>
+          )}
+        </>
+      ) : (
+        <!-- Coming Soon Section -->
+        <section class="coming-soon">
+          <h2 class="section-title">Coming Soon</h2>
+          <div class="coming-soon-content">
+            <p>New culinary tales from the Mississippi Community Cookbook Project archives are coming next week! Professor Haley is preparing fascinating stories that reveal the hidden narratives within our community cookbook collection.</p>
+            <div class="coming-soon-note">
+              <p><em>Stories will be published as they become available. Check back regularly for new content!</em></p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   </div>
 </Layout>
