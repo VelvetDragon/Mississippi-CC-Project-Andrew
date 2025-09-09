@@ -1,0 +1,16 @@
+title: "Mississippi Community Cookbook Project"
+description: "Exploring the history and cultural significance of Mississippi community cookbooks from 1890 to 1970"
+author: "Dr. Andrew Haley"
+email: "mscommunitycookbook@gmail.com"
+
+navigation:
+  - label: "Home"
+    url: "/"
+  - label: "Cookbooks"
+    url: "/cookbooks"
+  - label: "Culinary Landscapes"
+    url: "/culinary-landscapes"
+  - label: "Culinary Tales"
+    url: "/culinary-tales"
+  - label: "About"
+    url: "/about"

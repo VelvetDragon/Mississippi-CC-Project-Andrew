@@ -1,6 +1,6 @@
-cdbackend:
+backend:
   name: git-gateway
-  branch: main # Branch to update (optional; defaults to master)
+  branch: main # Branch to update (master or main)
 
 # Uncomment below to enable drafts
 # publish_mode: editorial_workflow
@@ -9,73 +9,79 @@ media_folder: "public/images" # Media files will be stored in the repo under pub
 public_folder: "/images" # The src attribute for uploaded media will begin with /images
 
 collections:
-  - name: "pages" # Used in routes, e.g., /admin/collections/pages
-    label: "Pages" # Used in the UI
+  # Blog Posts Collection
+  - name: "blog"
+    label: "Culinary Tales"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string", hint: "URL-friendly version (e.g., my-blog-post)"}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      - {label: "Category", name: "category", widget: "select", options: ["Research Findings", "Historical Insight", "Discovery", "Analysis", "Community", "Methodology"]}
+      - {label: "Author", name: "author", widget: "string", default: "Dr. Andrew Haley"}
+      - {label: "Featured Post", name: "featured", widget: "boolean", default: false}
+      - {label: "Published", name: "published", widget: "boolean", default: true}
+      - {label: "Background Image", name: "backgroundImage", widget: "image", hint: "Hero image for the blog post"}
+      - {label: "Excerpt", name: "excerpt", widget: "text", hint: "Short summary that appears on the main page"}
+      - {label: "Content", name: "body", widget: "markdown"}
+
+  # Pages Collection
+  - name: "pages"
+    label: "Website Pages"
     files:
-      - label: "Homepage"
+      - file: "src/content/pages/homepage.md"
+        label: "Homepage Content"
         name: "homepage"
-        file: "src/content/homepage.md"
         fields:
           - {label: "Title", name: "title", widget: "string"}
-          - {label: "Subtitle", name: "subtitle", widget: "text"}
-          - {label: "Description", name: "description", widget: "markdown"}
-      
-      - label: "Cookbooks Page"
+          - {label: "Subtitle", name: "subtitle", widget: "string"}
+          - {label: "Description", name: "description", widget: "text"}
+          - {label: "Content", name: "body", widget: "markdown"}
+
+      - file: "src/content/pages/cookbooks.md"
+        label: "Cookbooks Page"
         name: "cookbooks"
-        file: "src/content/cookbooks.md"
-        fields:
-          - {label: "Title", name: "title", widget: "string"}
-          - {label: "Content", name: "body", widget: "markdown"}
-      
-      - label: "Culinary Landscapes Page"
-        name: "landscapes"
-        file: "src/content/culinary-landscapes.md"
-        fields:
-          - {label: "Title", name: "title", widget: "string"}
-          - {label: "Content", name: "body", widget: "markdown"}
-      
-      - label: "Experimental Kitchen Page"
-        name: "kitchen"
-        file: "src/content/experimental-kitchen.md"
-        fields:
-          - {label: "Title", name: "title", widget: "string"}
-          - {label: "Content", name: "body", widget: "markdown"}
-      
-      - label: "Cookery Page"
-        name: "cookery"
-        file: "src/content/cookery.md"
-        fields:
-          - {label: "Title", name: "title", widget: "string"}
-          - {label: "Content", name: "body", widget: "markdown"}
-      
-      - label: "Proof in the Pudding Page"
-        name: "proof"
-        file: "src/content/proof-pudding.md"
-        fields:
-          - {label: "Title", name: "title", widget: "string"}
-          - {label: "Content", name: "body", widget: "markdown"}
-      
-      - label: "Culinary Tales Page"
-        name: "tales"
-        file: "src/content/culinary-tales.md"
-        fields:
-          - {label: "Title", name: "title", widget: "string"}
-          - {label: "Content", name: "body", widget: "markdown"}
-      
-      - label: "Tasted and Tested Page"
-        name: "tested"
-        file: "src/content/tasted-tested.md"
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Content", name: "body", widget: "markdown"}
 
-  - name: "blog" # Used in routes, e.g., /admin/collections/blog
-    label: "Blog Posts" # Used in the UI
-    folder: "src/content/blog" # The path to the folder where the documents are stored
-    create: true # Allow users to create new documents in this collection
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}" # Filename template, e.g., YYYY-MM-DD-title.md
-    fields: # The fields for each document, usually in front matter
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Publish Date", name: "date", widget: "datetime"}
-      - {label: "Description", name: "description", widget: "string"}
-      - {label: "Body", name: "body", widget: "markdown"}
+      - file: "src/content/pages/culinary-landscapes.md"
+        label: "Culinary Landscapes Page"
+        name: "culinary-landscapes"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Content", name: "body", widget: "markdown"}
+
+  # Site Settings
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - file: "src/data/site.yml"
+        label: "General Settings"
+        name: "general"
+        fields:
+          - {label: "Site Title", name: "title", widget: "string"}
+          - {label: "Site Description", name: "description", widget: "text"}
+          - {label: "Author Name", name: "author", widget: "string"}
+          - {label: "Contact Email", name: "email", widget: "string"}
+          - label: "Navigation"
+            name: "navigation"
+            widget: "list"
+            fields:
+              - {label: "Label", name: "label", widget: "string"}
+              - {label: "URL", name: "url", widget: "string"}
+
+  # Image Gallery (for managing site images)
+  - name: "images"
+    label: "Image Gallery"
+    folder: "public/images"
+    create: true
+    extension: "json"
+    slug: "{{slug}}"
+    fields:
+      - {label: "Image Name", name: "name", widget: "string"}
+      - {label: "Image File", name: "image", widget: "image"}
+      - {label: "Alt Text", name: "alt", widget: "string"}
+      - {label: "Description", name: "description", widget: "text", required: false}

@@ -3,8 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import { getRecentBlogs, getPastBlogs } from '../data/blogs.js';
 
 const currentDate = '2025-09-09'; // Current date
-const recentBlogs = getRecentBlogs(currentDate);
-const pastBlogs = getPastBlogs(currentDate);
+const recentBlogs = await getRecentBlogs(currentDate);
+const pastBlogs = await getPastBlogs(currentDate);
 const pastBlogsToShow = pastBlogs.slice(0, 6); // Show 6 past blogs initially
 const hasMorePastBlogs = pastBlogs.length > 6;
 ---
@@ -29,13 +29,6 @@ const hasMorePastBlogs = pastBlogs.length > 6;
         <h2 class="section-title">Coming Soon</h2>
         <div class="coming-soon-content">
           <p>New culinary tales from the Mississippi Community Cookbook Project archives are coming next week! Professor Haley is preparing fascinating stories that reveal the hidden narratives within our community cookbook collection.</p>
-          <p>These upcoming stories will explore:</p>
-          <ul>
-            <li>Discoveries from recent archival research</li>
-            <li>Stories of community and tradition</li>
-            <li>Insights into Mississippi's culinary heritage</li>
-            <li>Hidden narratives within historical cookbooks</li>
-          </ul>
           <div class="coming-soon-note">
             <p><em>Stories will be published as they become available. Check back regularly for new content!</em></p>
           </div>

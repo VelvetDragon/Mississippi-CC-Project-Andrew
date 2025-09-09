@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { getBlogBySlug, getAllPublishedBlogs } from '../../data/blogs.js';
 
 export async function getStaticPaths() {
-  const blogs = getAllPublishedBlogs();
+  const blogs = await getAllPublishedBlogs();
   
   return blogs.map((blog) => ({
     params: { slug: blog.slug },
