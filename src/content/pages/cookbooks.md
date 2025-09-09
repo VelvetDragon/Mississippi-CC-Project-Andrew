@@ -11,10 +11,3 @@ Community cookbooks were used, stained, and the least favorite did not always su
 Collectively, these cookbooks are the basis for a *Kissin' Don't Last, Cookery Do* (tentative title), a book I am preparing that looks at the history of community cookbooks as a means of understanding how women shaped local life (and how national trends in cooking, in turn, shaped women's understanding of food).
 
 This website will be updated nearer to the book's publication with some of the more compelling statistical finding, but for now it serves as a sort of demographics of an object, the community cookbook in Mississippi, providing insights into when, where, and who published cookbooks in Mississippi.
-
-## Database Overview
-
-The following analysis is drawn from a database of approximately 350 community cookbooks that were published between 1890 and 1969 in Mississippi. This master list includes cookbooks that I have collected (and now part of The University of Southern Mississippi's cookbook collection), cookbooks preserved by libraries, and, in a few cases, cookbooks that I know from newspaper coverage were published but I have not seen and may no longer exist. Where verifiable information on the descriptive category (such as the organization that published the cookbook) was not available, I've excluded it from my statistical profile so the number of cookbooks used for each profile differs.
-
-<em class="revision-note">The Mississippi Community Cookbook Project is an ongoing project. All the information provided is subject to revision.</em>
-
