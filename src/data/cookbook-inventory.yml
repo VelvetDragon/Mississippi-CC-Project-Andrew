@@ -1,0 +1,40 @@
+# Cookbook Inventory Data
+# This file contains the master list of community cookbooks
+# Can be edited through the CMS
+
+inventory_intro: |
+  What follows is a master list of community cookbooks published in Mississippi between 1890 and 1969. It is incomplete. I've excluded some items that I have been unable to date (currently no more than a dozen titles). I've also not included items that I have seen reference to but am not sure were ever published.
+
+  Some of the dates listed are estimated, although even in these cases most are close to the actual date of publication. Some of the cookbooks I have not personally viewed yet. Most I have.
+
+  If a cookbook is owned by Southern Miss, which holds the largest collection of Mississippi community cookbooks, I've listed it as USM (even if other locations have it). If Southern Miss has made it available online, it is listed as USM Online and linked to the source. Other large collections at Mississippi institutions are listed by abbreviations: UM is the University of Mississippi, MSU is Mississippi State University, and MDAH is the Mississippi Department of Archives and History. For all other institutions, I have provided a name. In some cases, it is possible I have listed a location that does not own the exact copy in the list, but generally I have tried to list the location that owns the listed edition or the oldest edition.
+
+  If the location is listed as "Unknown", I have credible information that the cookbook exists (usually newspaper references) but have not located a copy. If you know of a cookbook that should be listed, please contact Andrew Haley at mscommunitycookbook@gmail.com. If you have a copy of a cookbook that is not listed or is listed as "Unknown," please contact me. I would love to see it.
+
+# Sample cookbook entries (the full list would be much longer)
+sample_cookbooks:
+  - title: "Spinning-Wheel Cook-Book of Old Southern Recipes"
+    author: "Spinning Wheel Club"
+    date: "1899"
+    community: "Woodville"
+    organization: "Spinning Wheel Club"
+    source: "USM Online"
+    website: "https://example.com"
+    notes: "First community cookbook published in Mississippi"
+
+  - title: "Sample Cookbook 2"
+    author: "Various Contributors"
+    date: "1925"
+    community: "Jackson"
+    organization: "First Baptist Church"
+    source: "USM"
+    website: ""
+    notes: "Example entry"
+
+# Statistics that can be updated
+statistics:
+  total_cookbooks: 350
+  date_range: "1890-1969"
+  usm_online_count: 100
+  usm_physical_count: 200
+  other_institutions: 50

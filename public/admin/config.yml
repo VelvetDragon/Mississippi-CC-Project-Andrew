@@ -32,27 +32,69 @@ collections:
     label: "Website Pages"
     files:
       - file: "src/content/pages/homepage.md"
-        label: "Homepage Content"
+        label: "Home Page"
         name: "homepage"
         fields:
           - {label: "Title", name: "title", widget: "string"}
-          - {label: "Subtitle", name: "subtitle", widget: "string"}
           - {label: "Description", name: "description", widget: "text"}
           - {label: "Content", name: "body", widget: "markdown"}
 
       - file: "src/content/pages/cookbooks.md"
-        label: "Cookbooks Page"
+        label: "Cookbooks"
         name: "cookbooks"
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Content", name: "body", widget: "markdown"}
 
       - file: "src/content/pages/culinary-landscapes.md"
-        label: "Culinary Landscapes Page"
+        label: "Culinary Landscapes"
         name: "culinary-landscapes"
         fields:
           - {label: "Title", name: "title", widget: "string"}
           - {label: "Content", name: "body", widget: "markdown"}
+
+      - file: "src/content/pages/experimental-kitchen.md"
+        label: "Experimental Kitchen"
+        name: "experimental-kitchen"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Content", name: "body", widget: "markdown"}
+
+      - file: "src/content/pages/cookery.md"
+        label: "Cookery"
+        name: "cookery"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Content", name: "body", widget: "markdown"}
+
+      - file: "src/content/pages/proof-pudding.md"
+        label: "Proof is in the Pudding"
+        name: "proof-pudding"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Content", name: "body", widget: "markdown"}
+
+      - file: "src/content/pages/tasted-tested.md"
+        label: "Tasted and Tested"
+        name: "tasted-tested"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Content", name: "body", widget: "markdown"}
+
+  # Cookbook Inventory
+  - name: "cookbook_inventory"
+    label: "Cookbook Inventory"
+    files:
+      - file: "src/data/cookbook-inventory.yml"
+        label: "Inventory Data"
+        name: "inventory"
+        fields:
+          - {label: "Inventory Introduction", name: "inventory_intro", widget: "text"}
+          - {label: "Total Cookbooks", name: "statistics.total_cookbooks", widget: "number"}
+          - {label: "Date Range", name: "statistics.date_range", widget: "string"}
+          - {label: "USM Online Count", name: "statistics.usm_online_count", widget: "number"}
+          - {label: "USM Physical Count", name: "statistics.usm_physical_count", widget: "number"}
+          - {label: "Other Institutions Count", name: "statistics.other_institutions", widget: "number"}
 
   # Site Settings
   - name: "settings"
