@@ -32,8 +32,7 @@ export async function getRecentBlogs(currentDate = '2025-09-09') {
   const oneMonthAgoStr = oneMonthAgo.toISOString().split('T')[0];
   
   return allBlogs
-    .filter(blog => blog.published && blog.date >= oneMonthAgoStr)
-    .slice(0, 3);
+    .filter(blog => blog.published && blog.date >= oneMonthAgoStr);
 }
 
 export async function getPastBlogs(currentDate = '2025-09-09') {

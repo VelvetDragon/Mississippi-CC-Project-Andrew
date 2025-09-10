@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { getRecentBlogs, getPastBlogs } from '../data/blogs.js';
 
-const currentDate = '2025-09-09'; // Current date
+const currentDate = '2025-09-10'; // Current date
 const recentBlogs = await getRecentBlogs(currentDate);
 const pastBlogs = await getPastBlogs(currentDate);
 const pastBlogsToShow = pastBlogs.slice(0, 6); // Show 6 past blogs initially
@@ -29,9 +29,9 @@ const hasMorePastBlogs = pastBlogs.length > 6;
           <!-- Recent Stories Section -->
           <section class="recent-stories">
             <h2 class="section-title">Recent Stories</h2>
-            <div class="blog-grid">
+            <div class="blog-list">
               {recentBlogs.map((blog) => (
-                <article class="blog-post" class:featured={blog.featured}>
+                <article class="blog-post-large">
                   <div class="post-meta">
                     <span class="date">{new Date(blog.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                     {blog.category && <span class="category">{blog.category}</span>}
@@ -49,9 +49,9 @@ const hasMorePastBlogs = pastBlogs.length > 6;
           {pastBlogs.length > 0 && (
             <section class="past-blogs">
               <h2 class="section-title">Past Blogs</h2>
-              <div class="blog-grid">
+              <div class="blog-list">
                 {pastBlogsToShow.map((blog) => (
-                  <article class="blog-post">
+                  <article class="blog-post-large">
                     <div class="post-meta">
                       <span class="date">{new Date(blog.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                       {blog.category && <span class="category">{blog.category}</span>}
@@ -190,7 +190,42 @@ const hasMorePastBlogs = pastBlogs.length > 6;
     margin-bottom: 1rem;
   }
 
-  /* Blog Grid */
+  /* Blog List - Vertical Layout */
+  .blog-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Large Blog Post Cards */
+  .blog-post-large {
+    background: var(--surface);
+    padding: 2.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .blog-post-large:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    border-color: var(--primary-color);
+  }
+
+  .blog-post-large .post-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .blog-post-large .post-excerpt {
+    font-size: 1.1rem;
+    -webkit-line-clamp: 3;
+  }
+
+  /* Old Grid (keep for backward compatibility) */
   .blog-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
