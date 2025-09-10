@@ -252,6 +252,13 @@ const hasMorePastBlogs = pastBlogs.length > 6;
     color: var(--text-muted);
     line-height: 1.6;
     margin-bottom: 1.5rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .read-more {
