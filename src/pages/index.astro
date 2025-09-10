@@ -1,18 +1,14 @@
 <!-- src/pages/index.astro -->
 ---
 import Layout from '../layouts/Layout.astro';
-import { getEntry } from 'astro:content';
-
-const homepage = await getEntry('pages', 'homepage');
-const { Content } = await homepage.render();
 ---
 
 <Layout title="Mississippi's Culinary Legacy" pageClass="homepage">
   <!-- HOMEPAGE HERO SECTION -->
   <section class="hero">
-    <h1>{homepage.data.title}</h1>
+    <h1>The Mississippi Community Cookbook Project</h1>
     <p class="hero-subtitle">
-      {homepage.data.description}
+      A quest to understand the past through the cookbooks Americans created.
     </p>
   </section>
 
