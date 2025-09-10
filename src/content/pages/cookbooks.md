@@ -2,27 +2,12 @@
 title: "Cookbooks"
 ---
 
-# Community Cookbook Inventory
+Following the Civil War, community cookbooks—along with bake sales and craft sales—became an important means by which women raised funds to support charitable endeavors in their communities. The Mississippi Community Cookbook Project, the nucleus of a book project that I am working on, seeks to document Mississippi community cookbooks published between 1890 and 1900.
 
-This page presents a comprehensive inventory of Mississippi community cookbooks published between 1890 and 1969. The database contains over 350 cookbooks from churches, civic organizations, and community groups across the state.
+Most of these cookbooks are held in the archival collections of The University of Southern Mississippi. In partnership with Jennifer Brannock, Curator of Mississippiana and Rare Books at The University of Southern Mississippi, we've collected over two hundred cookbooks published between 1890 and 1970. Additional cookbooks are held at university and public libraries as well as Mississippi's Department of History and Archives.
 
-## About the Inventory
+Community cookbooks were used, stained, and the least favorite did not always survive. Currently, I've examined over three hundred cookbooks, but passing references in newspapers suggest that there may have been dozens, perhaps even hundreds, of cookbooks that have been lost.
 
-What follows is a master list of community cookbooks published in Mississippi between 1890 and 1969. It is incomplete. I've excluded some items that I have been unable to date (currently no more than a dozen titles). I've also not included items that I have seen reference to but am not sure were ever published.
+Collectively, these cookbooks are the basis for a Kissin' Don't Last, Cookery Do (tentative title), a book I am preparing that looks at the history of community cookbooks as a means of understanding how women shaped local life (and how national trends in cooking, in turn, shaped women's understanding of food).
 
-Some of the dates listed are estimated, although even in these cases most are close to the actual date of publication. Some of the cookbooks I have not personally viewed yet. Most I have.
-
-If a cookbook is owned by Southern Miss, which holds the largest collection of Mississippi community cookbooks, I've listed it as USM (even if other locations have it). If Southern Miss has made it available online, it is listed as USM Online and linked to the source. Other large collections at Mississippi institutions are listed by abbreviations: UM is the University of Mississippi, MSU is Mississippi State University, and MDAH is the Mississippi Department of Archives and History. For all other institutions, I have provided a name. In some cases, it is possible I have listed a location that does not own the exact copy in the list, but generally I have tried to list the location that owns the listed edition or the oldest edition.
-
-If the location is listed as "Unknown", I have credible information that the cookbook exists (usually newspaper references) but have not located a copy. If you know of a cookbook that should be listed, please contact Andrew Haley at mscommunitycookbook@gmail.com. If you have a copy of a cookbook that is not listed or is listed as "Unknown," please contact me. I would love to see it.
-
-## Using the Inventory
-
-The cookbook inventory below includes:
-- **Title and Author**: The full title and any credited authors
-- **Community**: The town or city where the cookbook was published
-- **Organization**: The church, club, or civic group that published it
-- **Source**: Where the cookbook can be found today
-- **Date**: Publication date (estimated where necessary)
-
-Cookbooks marked as "USM Online" include direct links to digital copies available through the University of Southern Mississippi's digital collections.
+This website will be updated nearer to the book's publication with some of the more compelling statistical finding, but for now it serves as a sort of demographics of an object, the community cookbook in Mississippi, providing insights into when, where, and who published cookbooks in Mississippi.
