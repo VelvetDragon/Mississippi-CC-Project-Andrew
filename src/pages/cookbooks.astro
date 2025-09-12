@@ -86,18 +86,6 @@ import Layout from '../layouts/Layout.astro';
         <button id="clearFilters" class="clear-btn" style="display: none;">Clear All Filters</button>
         </div>
 
-      <!-- Sort Controls -->
-      <div class="sort-controls">
-        <label for="sortSelect">Sort by:</label>
-        <select id="sortSelect">
-          <option value="title-asc">Title (A-Z)</option>
-          <option value="title-desc">Title (Z-A)</option>
-          <option value="date-desc">Date (Newest First)</option>
-          <option value="date-asc">Date (Oldest First)</option>
-          <option value="community-asc">Community (A-Z)</option>
-          <option value="author-asc">Author (A-Z)</option>
-        </select>
-        </div>
 
       <!-- Museum Gallery Display -->
       <div class="cookbook-gallery" id="cookbookGallery">
@@ -356,35 +344,6 @@ import Layout from '../layouts/Layout.astro';
     transform: translateY(-1px);
   }
 
-  /* Sort Controls */
-  .sort-controls {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    font-size: 0.9rem;
-  }
-
-  .sort-controls label {
-    font-weight: 500;
-    color: var(--text-dark);
-  }
-
-  .sort-controls select {
-    padding: 0.5rem 0.75rem;
-    border: 2px solid var(--border);
-    border-radius: 6px;
-    font-size: 0.9rem;
-    background: white;
-    color: var(--text-dark);
-    outline: none;
-    transition: all 0.3s ease;
-  }
-
-  .sort-controls select:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(200, 118, 61, 0.1);
-  }
 
   /* Table-Style Layout */
   .cookbook-gallery {
@@ -770,15 +729,6 @@ import Layout from '../layouts/Layout.astro';
       gap: 1rem;
     }
 
-    .sort-controls {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.75rem;
-    }
-
-    .sort-controls select {
-      width: 100%;
-    }
 
     .results-info {
       flex-direction: column;
@@ -887,7 +837,6 @@ import Layout from '../layouts/Layout.astro';
     const organizationFilter = document.getElementById('organizationFilter');
     const sourceFilter = document.getElementById('sourceFilter');
     const decadeFilter = document.getElementById('decadeFilter');
-    const sortSelect = document.getElementById('sortSelect');
     const clearFiltersBtn = document.getElementById('clearFilters');
     const resultCount = document.getElementById('resultCount');
     const cookbookGallery = document.getElementById('cookbookGallery');
@@ -922,7 +871,6 @@ import Layout from '../layouts/Layout.astro';
       organizationFilter.addEventListener('change', handleFilter);
       sourceFilter.addEventListener('change', handleFilter);
       decadeFilter.addEventListener('change', handleFilter);
-      sortSelect.addEventListener('change', handleSort);
       clearFiltersBtn.addEventListener('click', clearFilters);
 
       // Pagination
@@ -964,10 +912,10 @@ import Layout from '../layouts/Layout.astro';
       filteredCookbooks = cookbooks.filter(book => {
         // Search filter - use correct field names from JSON
         const matchesSearch = !searchQuery || 
-          book.Title.toLowerCase().includes(searchQuery) ||
-          book.Author.toLowerCase().includes(searchQuery) ||
-          book.Community.toLowerCase().includes(searchQuery) ||
-          book['Organization (Church, Civic/Club, Business/Professional)'].toLowerCase().includes(searchQuery);
+          (book.Title && book.Title.toLowerCase().includes(searchQuery)) ||
+          (book.Author && book.Author.toLowerCase().includes(searchQuery)) ||
+          (book.Community && book.Community.toLowerCase().includes(searchQuery)) ||
+          (book['Organization (Church, Civic/Club, Business/Professional)'] && book['Organization (Church, Civic/Club, Business/Professional)'].toLowerCase().includes(searchQuery));
 
         // Community filter
         const matchesCommunity = !communityValue || book.Community === communityValue;
@@ -1027,56 +975,6 @@ import Layout from '../layouts/Layout.astro';
       applyFilters();
     }
 
-    // Handle sorting
-    function handleSort() {
-      const sortValue = sortSelect.value;
-      const [field, direction] = sortValue.split('-');
-      
-      currentSort.field = field;
-      currentSort.direction = direction;
-
-      // Sort data - use correct field names from JSON
-      filteredCookbooks.sort((a, b) => {
-        let aValue, bValue;
-        
-        switch(field) {
-          case 'title':
-            aValue = a.Title || '';
-            bValue = b.Title || '';
-            break;
-          case 'author':
-            aValue = a.Author || '';
-            bValue = b.Author || '';
-            break;
-          case 'date':
-            aValue = parseInt(a.Date) || 0;
-            bValue = parseInt(b.Date) || 0;
-            break;
-          case 'community':
-            aValue = a.Community || '';
-            bValue = b.Community || '';
-            break;
-          default:
-            aValue = '';
-            bValue = '';
-        }
-
-        if (field === 'date') {
-          if (aValue < bValue) return direction === 'asc' ? -1 : 1;
-          if (aValue > bValue) return direction === 'asc' ? 1 : -1;
-          return 0;
-        } else {
-          aValue = aValue.toLowerCase();
-          bValue = bValue.toLowerCase();
-          if (aValue < bValue) return direction === 'asc' ? -1 : 1;
-          if (aValue > bValue) return direction === 'asc' ? 1 : -1;
-          return 0;
-        }
-      });
-
-      currentPage = 1;
-      renderGrid();
-    }
 
     // Render gallery
     function renderGrid() {
