@@ -13,28 +13,28 @@ import Layout from '../layouts/Layout.astro';
 
   <div class="content">
     <div class="main-text">
-      <p>Following the Civil War, community cookbooks—along with bake sales and craft sales—became an important means by which women raised funds to support charitable endeavors in their communities. The Mississippi Community Cookbook Project, the nucleus of a book project that I am working on, seeks to document Mississippi community cookbooks published between 1890 and 1900.</p>
+      <p>Following the Civil War, community cookbooks—along with bake sales and craft sales—became an important means by which women in the United States raised funds to support charitable endeavors. The Mississippi Community Cookbook Project, the nucleus of a book project that I am working on, seeks to document Mississippi community cookbooks published between 1890 and 1969.</p>
       
-      <p>Most of these cookbooks are held in the archival collections of The University of Southern Mississippi. In partnership with Jennifer Brannock, Curator of Mississippiana and Rare Books at The University of Southern Mississippi, we've collected over two hundred cookbooks published between 1890 and 1970. Additional cookbooks are held at university and public libraries as well as Mississippi's Department of History and Archives.</p>
+      <p>Most of these cookbooks are held in the archival collections of The University of Southern Mississippi. In partnership with Jennifer Brannock, Curator of Mississippiana and Rare Books at The University of Southern Mississippi, University Libraries and I have collected over two hundred cookbooks published between 1890 and 1969. Additional cookbooks are held at university and public libraries as well as Mississippi's Department of History and Archives. However, cookbooks were used, worn ragged, and the least favorite did not always survive. There may b dozens, perhaps even hundreds, of cookbooks that have been lost.
+      </p>
       
-      <p>Community cookbooks were used, stained, and the least favorite did not always survive. Currently, I've examined over three hundred cookbooks, but passing references in newspapers suggest that there may have been dozens, perhaps even hundreds, of cookbooks that have been lost.</p>
+     
+      <p>Collectively, these cookbooks are the basis for <em>Kissin' Don't Last, Cookery Do</em>, the tentative title of a book I am preparing that looks at the history of community cookbooks as a means of understanding how women shaped local life and how national trends in cooking, in turn, shaped women's understanding of food.</p>
       
-      <p>Collectively, these cookbooks are the basis for a <em>Kissin' Don't Last, Cookery Do</em> (tentative title), a book I am preparing that looks at the history of community cookbooks as a means of understanding how women shaped local life (and how national trends in cooking, in turn, shaped women's understanding of food).</p>
-      
-      <p>This website will be updated nearer to the book's publication with some of the more compelling statistical finding, but for now it serves as a sort of demographics of an object, the community cookbook in Mississippi, providing insights into when, where, and who published cookbooks in Mississippi.</p>
+      <p>This website will be updated nearer to the book's publication with some of the more compelling statistical finding, but for now it serves as a taxonomy, providing insights into when, where, and who published cookbooks in Mississippi.</p>
     </div>
 
     <!-- Cookbook Inventory Section -->
     <section class="cookbook-inventory">
       <h2>Cookbook Inventory List</h2>
       <div class="inventory-intro">
-        <p>What follows is a master list of community cookbooks published in Mississippi between 1890 and 1969. It is incomplete. I've excluded some items that I have been unable to date (currently no more than a dozen titles). I've also not included items that I have seen reference to but am not sure were ever published.</p>
+        <p>What follows is a master list of community cookbooks published in Mississippi between 1890 and 1969. It is incomplete. I've excluded some items that I have been unable to date (currently no more than a dozen titles). I've also not included items that I have seen reference to, but I am not sure were ever published.</p>
         
-        <p>Some of the dates listed are estimated, although even in these cases most are close to the actual date of publication. Some of the cookbooks I have not personally viewed yet. Most I have.</p>
+        <p>Some of the dates listed are estimated, although even in these cases most are close to the actual date of publication. Some of the cookbooks I have not personally viewed. Most I have.</p>
         
-        <p>If a cookbook is owned by Southern Miss, which holds the largest collection of Mississippi community cookbooks, I've listed it as USM (even if other locations have it). If Southern Miss has made it available online, it is listed as USM Online and linked to the source. Other large collections at Mississippi institutions are listed by abbreviations: UM is the University of Mississippi, MSU is Mississippi State University, and MDAH is the Mississippi Department of Archives and History. For all other institutions, I have provided a name. In some cases, it is possible I have listed a location that does not own the exact copy in the list, but generally I have tried to list the location that owns the listed edition or the oldest edition. If the location is listed as "Unknown", I have credible information that the cookbook exists (usually newspaper references) but have not located a copy.</p>
+        <p>If a cookbook is owned by Southern Miss, which holds the largest collection of Mississippi community cookbooks, I've listed it as USM (even if other locations have it). If Southern Miss has made it available online, it is listed as USM Online and linked to the source. Other large collections at Mississippi institutions are listed by abbreviations: UM is the University of Mississippi, MSU is Mississippi State University, and MDAH is the Mississippi Department of Archives and History. For all other institutions, I have provided a name. In some cases, it is possible I have listed a location that does not own the exact copy in the list, but generally I have tried to list the location that owns the listed edition. If the location is listed as "Unknown", I have credible information that the cookbook exists (usually newspaper references) but have not located a copy.</p>
         
-        <p>If you know of a cookbook that should be listed, please contact Andrew Haley at <a href="mailto:mscommunitycookbook@gmail.com">mscommunitycookbook@gmail.com</a>. If you have a copy of a cookbook that is not listed or is listed as "Unknown," please contact me. I would love to see it.</p>
+        <p>If you know of a cookbook that should be included, please contact me at <a href="mailto:mscommunitycookbook@gmail.com">mscommunitycookbook@gmail.com</a>. If you have a copy of a cookbook that is not listed or is listed as "Unknown," please contact me. I would love to see it.</p>
       </div>
 
       <!-- Search and Filter Controls -->
@@ -311,6 +311,13 @@ import Layout from '../layouts/Layout.astro';
   .filter-container select:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(200, 118, 61, 0.1);
+  }
+
+  .filter-container select.active {
+    background: rgba(200, 118, 61, 0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    font-weight: 500;
   }
 
   /* Results Info */
@@ -949,21 +956,27 @@ import Layout from '../layouts/Layout.astro';
       return Math.floor(year / 10) * 10 + 's';
     }
 
-    // Update filter state
-    function updateFilterState() {
-      const hasFilters = searchInput.value || 
-        communityFilter.value || 
-        organizationFilter.value || 
-        sourceFilter.value || 
-        decadeFilter.value;
+     // Update filter state
+     function updateFilterState() {
+       const hasFilters = searchInput.value || 
+         communityFilter.value || 
+         organizationFilter.value || 
+         sourceFilter.value || 
+         decadeFilter.value;
 
-      clearFiltersBtn.style.display = hasFilters ? 'block' : 'none';
-      
-      const count = filteredCookbooks.length;
-      resultCount.textContent = hasFilters ? 
-        `Showing ${count} filtered results` : 
-        `Showing all ${count} cookbooks`;
-    }
+       clearFiltersBtn.style.display = hasFilters ? 'block' : 'none';
+       
+       // Update visual state of filter dropdowns
+       communityFilter.classList.toggle('active', !!communityFilter.value);
+       organizationFilter.classList.toggle('active', !!organizationFilter.value);
+       sourceFilter.classList.toggle('active', !!sourceFilter.value);
+       decadeFilter.classList.toggle('active', !!decadeFilter.value);
+       
+       const count = filteredCookbooks.length;
+       resultCount.textContent = hasFilters ? 
+         `Showing ${count} filtered results` : 
+         `Showing all ${count} cookbooks`;
+     }
 
     // Clear all filters
     function clearFilters() {
