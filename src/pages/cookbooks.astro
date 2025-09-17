@@ -25,7 +25,7 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
     <!-- Cookbook Inventory Section -->
-    <section class="cookbook-inventory">
+    <section class="cookbook-inventory">  
       <h2>Cookbook Inventory List</h2>
       <div class="inventory-intro">
         <p>What follows is a master list of community cookbooks published in Mississippi between 1890 and 1969. It is incomplete. I've excluded some items that I have been unable to date (currently no more than a dozen titles). I've also not included items that I have seen reference to, but I am not sure were ever published.</p>
@@ -40,13 +40,17 @@ import Layout from '../layouts/Layout.astro';
       <!-- Search and Filter Controls -->
       <div class="cookbook-controls">
         <div class="search-container">
-          <input type="text" id="cookbookSearch" placeholder="Search cookbooks by title, author, community, or organization..." />
+          <input type="text" id="cookbookSearch" placeholder="Search cookbooks by title, author, community, county, or organization..." />
           <span class="search-icon">🔎</span>
           </div>
           
         <div class="filter-container">
           <select id="communityFilter">
             <option value="">All Communities</option>
+          </select>
+          
+          <select id="countyFilter">
+            <option value="">All Counties</option>
           </select>
           
           <select id="organizationFilter">
@@ -95,6 +99,7 @@ import Layout from '../layouts/Layout.astro';
           <option value="title-asc">Title (A-Z)</option>
           <option value="title-desc">Title (Z-A)</option>
           <option value="community-asc">Community (A-Z)</option>
+          <option value="county-asc">County (A-Z)</option>
           <option value="author-asc">Author (A-Z)</option>
         </select>
         </div>
@@ -463,6 +468,18 @@ import Layout from '../layouts/Layout.astro';
     font-weight: 500;
     white-space: nowrap;
     border: 1px solid rgba(200, 118, 61, 0.2);
+    text-align: center;
+  }
+
+  .cookbook-county-badge {
+    background: #f3e5f5;
+    color: #7b1fa2;
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    border: 1px solid #e1bee7;
     text-align: center;
   }
 
@@ -893,6 +910,7 @@ import Layout from '../layouts/Layout.astro';
     // DOM elements
     const searchInput = document.getElementById('cookbookSearch');
     const communityFilter = document.getElementById('communityFilter');
+    const countyFilter = document.getElementById('countyFilter');
     const organizationFilter = document.getElementById('organizationFilter');
     const sourceFilter = document.getElementById('sourceFilter');
     const decadeFilter = document.getElementById('decadeFilter');
@@ -923,12 +941,22 @@ import Layout from '../layouts/Layout.astro';
         option.textContent = community;
         communityFilter.appendChild(option);
       });
+
+      // Populate counties
+      const counties = [...new Set(cookbooks.map(book => book.County).filter(county => county))].sort();
+      counties.forEach(county => {
+        const option = document.createElement('option');
+        option.value = county;
+        option.textContent = county;
+        countyFilter.appendChild(option);
+      });
     }
 
     // Setup event listeners
     function setupEventListeners() {
       searchInput.addEventListener('input', handleSearch);
       communityFilter.addEventListener('change', handleFilter);
+      countyFilter.addEventListener('change', handleFilter);
       organizationFilter.addEventListener('change', handleFilter);
       sourceFilter.addEventListener('change', handleFilter);
       decadeFilter.addEventListener('change', handleFilter);
@@ -967,6 +995,7 @@ import Layout from '../layouts/Layout.astro';
     function applyFilters() {
       const searchQuery = searchInput.value.toLowerCase();
       const communityValue = communityFilter.value;
+      const countyValue = countyFilter.value;
       const organizationValue = organizationFilter.value;
       const sourceValue = sourceFilter.value;
       const decadeValue = decadeFilter.value;
@@ -977,10 +1006,14 @@ import Layout from '../layouts/Layout.astro';
           (book.Title && book.Title.toLowerCase().includes(searchQuery)) ||
           (book.Author && book.Author.toLowerCase().includes(searchQuery)) ||
           (book.Community && book.Community.toLowerCase().includes(searchQuery)) ||
+          (book.County && book.County.toLowerCase().includes(searchQuery)) ||
           (book['Organization (Church, Civic/Club, Business/Professional)'] && book['Organization (Church, Civic/Club, Business/Professional)'].toLowerCase().includes(searchQuery));
 
         // Community filter
         const matchesCommunity = !communityValue || book.Community === communityValue;
+
+        // County filter
+        const matchesCounty = !countyValue || book.County === countyValue;
 
         // Organization filter  
         const orgField = book['Organization (Church, Civic/Club, Business/Professional)'];
@@ -995,7 +1028,7 @@ import Layout from '../layouts/Layout.astro';
         // Decade filter
         const matchesDecade = !decadeValue || getDecade(book.Date) === decadeValue;
 
-        return matchesSearch && matchesCommunity && matchesOrganization && matchesSource && matchesDecade;
+        return matchesSearch && matchesCommunity && matchesCounty && matchesOrganization && matchesSource && matchesDecade;
       });
 
       currentPage = 1;
@@ -1021,11 +1054,12 @@ import Layout from '../layouts/Layout.astro';
 
        clearFiltersBtn.style.display = hasFilters ? 'block' : 'none';
        
-       // Update visual state of filter dropdowns
-       communityFilter.classList.toggle('active', !!communityFilter.value);
-       organizationFilter.classList.toggle('active', !!organizationFilter.value);
-       sourceFilter.classList.toggle('active', !!sourceFilter.value);
-       decadeFilter.classList.toggle('active', !!decadeFilter.value);
+      // Update visual state of filter dropdowns
+      communityFilter.classList.toggle('active', !!communityFilter.value);
+      countyFilter.classList.toggle('active', !!countyFilter.value);
+      organizationFilter.classList.toggle('active', !!organizationFilter.value);
+      sourceFilter.classList.toggle('active', !!sourceFilter.value);
+      decadeFilter.classList.toggle('active', !!decadeFilter.value);
        
        const count = filteredCookbooks.length;
        resultCount.textContent = hasFilters ? 
@@ -1037,6 +1071,7 @@ import Layout from '../layouts/Layout.astro';
     function clearFilters() {
       searchInput.value = '';
       communityFilter.value = '';
+      countyFilter.value = '';
       organizationFilter.value = '';
       sourceFilter.value = '';
       decadeFilter.value = '';
@@ -1071,6 +1106,10 @@ import Layout from '../layouts/Layout.astro';
           case 'community':
             aValue = a.Community || '';
             bValue = b.Community || '';
+            break;
+          case 'county':
+            aValue = a.County || '';
+            bValue = b.County || '';
             break;
           default:
             aValue = '';
@@ -1131,6 +1170,7 @@ import Layout from '../layouts/Layout.astro';
           
           <div class="cookbook-meta-info">
             <div class="cookbook-community-badge">${book.Community}</div>
+            ${book.County ? `<div class="cookbook-county-badge">${book.County} County</div>` : ''}
             <span class="cookbook-type-badge ${typeClass}">${orgField}</span>
             ${sourceDisplay}
           </div>
@@ -1226,6 +1266,7 @@ import Layout from '../layouts/Layout.astro';
             <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
               <div class="cookbook-year-badge">${book.Date || 'Unknown'}</div>
               <div class="cookbook-community-badge">${book.Community}</div>
+              ${book.County ? `<div class="cookbook-county-badge">${book.County} County</div>` : ''}
               <span class="cookbook-type-badge ${typeClass}">${orgField}</span>
             </div>
           </div>
