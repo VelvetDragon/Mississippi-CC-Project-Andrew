@@ -2,7 +2,8 @@ backend:
   name: github
   repo: VelvetDragon/Mississippi-CC-Project-Andrew
   branch: main # Branch to update (master or main)
-  auth_endpoint: https://decap-cms-oauth.vercel.app/auth
+  base_url: https://mccp-usm.vercel.app
+  auth_endpoint: api/auth
 
 # Uncomment below to enable drafts
 # publish_mode: editorial_workflow
