@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: VelvetDragon/Mississippi-CC-Project-Andrew
   branch: main # Branch to update (master or main)
 
 # Uncomment below to enable drafts
