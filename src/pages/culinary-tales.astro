@@ -75,11 +75,29 @@ const hasMorePastBlogs = pastBlogs.length > 6;
       ) : (
         <!-- Coming Soon Section -->
         <section class="coming-soon">
-          <h2 class="section-title">Coming Soon</h2>
-          <div class="coming-soon-content">
-            <p>New culinary tales from the Mississippi Community Cookbook Project archives are coming next week! Professor Haley is preparing fascinating stories that reveal the hidden narratives within our community cookbook collection.</p>
-            <div class="coming-soon-note">
-              <p><em>Stories will be published as they become available. Check back regularly for new content!</em></p>
+          <div class="coming-soon-hero">
+            <h2 class="section-title">Stories Coming Soon</h2>
+            <div class="coming-soon-content">
+              <p>Dr. Andrew Haley is currently preparing fascinating culinary tales from the Mississippi Community Cookbook Project archives. These stories will reveal the hidden narratives, cultural traditions, and community connections found within our extensive cookbook collection.</p>
+              
+              <div class="coming-soon-features">
+                <div class="feature-item">
+                  <h3>📚 Historical Insights</h3>
+                  <p>Discover the stories behind community cookbooks and their role in Mississippi's culinary heritage.</p>
+                </div>
+                <div class="feature-item">
+                  <h3>👥 Community Stories</h3>
+                  <p>Learn about the organizations, churches, and civic groups that created these treasured collections.</p>
+                </div>
+                <div class="feature-item">
+                  <h3>🍳 Recipe Origins</h3>
+                  <p>Explore the cultural and historical context of traditional Mississippi recipes and cooking methods.</p>
+                </div>
+              </div>
+              
+              <div class="coming-soon-note">
+                <p><strong>Stay tuned!</strong> The first stories will be published soon. Check back regularly for new content, or <a href="/">explore our cookbook collection</a> while you wait.</p>
+              </div>
             </div>
           </div>
         </section>
@@ -388,6 +406,41 @@ const hasMorePastBlogs = pastBlogs.length > 6;
     font-size: 1rem;
     color: var(--primary-color);
     font-style: italic;
+  }
+
+  /* Coming Soon Features */
+  .coming-soon-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+  }
+
+  .feature-item {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .feature-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .feature-item h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  .feature-item p {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
   }
 
   /* Sections Spacing */

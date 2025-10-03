@@ -12,11 +12,23 @@ import Layout from '../layouts/Layout.astro';
   </section>
 
   <div class="content">
+    <!-- ========================================== -->
+    <!-- EDITABLE CONTENT SECTION - YOU CAN EDIT -->
+    <!-- ========================================== -->
     <div class="main-text">
+      <!-- EDIT: Section title -->
+      <h2>About This Section</h2>
+      <!-- EDIT: Description of USM collection -->
       <p>The University of Southern Mississippi hosts one of the largest statewide collections of community cookbooks in the United States (at least in proportion to the number of cookbooks published). Over a hundred of those cookbooks have been digitized and are available from Southern Miss' University Libraries.</p>
 
-      <p>Suwan Aryal, a talented undergraduate computer scientist at Southern Miss, and I have used artificial intelligence to parse and explore these digitized texts. As we do, we will share some of our findings on this page</p>
+      <!-- EDIT: Subsection title -->
+      <h3>AI Research Collaboration</h3>
+      <!-- EDIT: Information about AI research -->
+      <p>Suwan Aryal, a talented undergraduate computer scientist at Southern Miss, and I have used artificial intelligence to parse and explore these digitized texts. As we do, we will share some of our findings on this page.</p>
     </div>
+    <!-- ========================================== -->
+    <!-- END EDITABLE CONTENT SECTION -->
+    <!-- ========================================== -->
   </div>
 </Layout>
 
@@ -70,6 +82,26 @@ import Layout from '../layouts/Layout.astro';
 
   .main-text {
     margin-bottom: 4rem;
+  }
+
+  .main-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .main-text h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    font-weight: 600;
+    text-align: left;
   }
 
   .main-text p {
