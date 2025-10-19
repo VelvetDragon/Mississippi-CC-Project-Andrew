@@ -16,15 +16,37 @@ import Layout from '../layouts/Layout.astro';
     <!-- EDITABLE CONTENT SECTION - YOU CAN EDIT -->
     <!-- ========================================== -->
     <div class="main-text">
-      <!-- EDIT: Section title -->
-      <h2>About This Section</h2>
-      <!-- EDIT: Description of USM collection -->
       <p>The University of Southern Mississippi hosts one of the largest statewide collections of community cookbooks in the United States (at least in proportion to the number of cookbooks published). Over a hundred of those cookbooks have been digitized and are available from Southern Miss' University Libraries.</p>
 
-      <!-- EDIT: Subsection title -->
-      <h3>AI Research Collaboration</h3>
-      <!-- EDIT: Information about AI research -->
-      <p>Suwan Aryal, a talented undergraduate computer scientist at Southern Miss, and I have used artificial intelligence to parse and explore these digitized texts. As we do, we will share some of our findings on this page.</p>
+      <p>Suwan Aryal, a talented undergraduate computer scientist at Southern Miss, and I have used artificial intelligence to parse and explore these digitized texts. Here is Suwan's vision for how we collected and processed this data to create a comprehensive recipe database.</p>
+
+      <h2>Data Collection & Processing Pipeline</h2>
+      <blockquote class="professor-voice">
+        <p>"I created a sophisticated pipeline that generates JSON files for all recipes extracted from PDF cookbooks. The process begins with PDF extraction, where each cookbook is converted into individual page images containing recipes. These images are then processed through optical character recognition (OCR) to convert the visual content into machine-readable text."</p>
+        
+        <p>"Each page of text is then processed using Google Gemini AI, which applies advanced filtering, cleaning, and correction techniques to standardize measurements, ingredient names, and cooking instructions. The AI handles variations in historical terminology, converts old measurement systems to modern equivalents, and ensures consistency across different cookbooks and time periods."</p>
+        
+        <p>"After individual processing, all extracted JSON data is combined into a single comprehensive file, creating a unified recipe database. This consolidated dataset enables powerful search capabilities and cross-cookbook analysis that would be impossible with traditional manual methods."</p>
+      </blockquote>
+
+      <h2>Research Findings & Analysis</h2>
+      <p>The combined JSON database has proven invaluable for analyzing different culinary trends and patterns across Mississippi's community cookbook history. Here are some of the key findings that Suwan and I have analyzed and discovered:</p>
+
+      <h3>Chicken vs. Spaghetti Analysis</h3>
+      <!-- <p>Our data reveals fascinating insights into the popularity and evolution of these two staple dishes across different decades and communities. The analysis shows how regional preferences, economic factors, and cultural influences shaped the prominence of these dishes in Mississippi households.</p> -->
+      <div class="chart-placeholder">
+        <p>📊 Comparative Analysis Chart</p>
+        <p><em>Visual representation showing the popularity trends of chicken and spaghetti recipes across different decades and communities will be displayed here.</em></p>
+      </div>
+
+      <h3>Top 10 Most Popular Recipes</h3>
+      <!-- <p>Through systematic analysis of our database, we've identified the most frequently appearing recipes across the entire collection, revealing the core culinary preferences of Mississippi communities. These recipes represent the foundation of Mississippi's culinary heritage.</p> -->
+      <div class="chart-placeholder">
+        <p>📈 Top Recipes Visualization</p>
+        <p><em>Interactive chart displaying the most popular recipes with frequency data and historical context will be presented here.</em></p>
+      </div>
+
+      <!-- <p>This experimental approach to culinary history demonstrates how modern technology can unlock new insights from historical documents, allowing us to understand patterns and trends that would remain hidden in traditional research methods. The collaboration between historical research and artificial intelligence opens new possibilities for understanding our culinary past.</p> -->
     </div>
     <!-- ========================================== -->
     <!-- END EDITABLE CONTENT SECTION -->
@@ -89,7 +111,7 @@ import Layout from '../layouts/Layout.astro';
     font-size: 1.8rem;
     color: var(--text-dark);
     margin-bottom: 1rem;
-    margin-top: 2rem;
+    margin-top: 0.5rem;
     font-weight: 600;
     text-align: left;
   }
@@ -99,7 +121,7 @@ import Layout from '../layouts/Layout.astro';
     font-size: 1.5rem;
     color: var(--text-dark);
     margin-bottom: 1rem;
-    margin-top: 1.5rem;
+    margin-top: 0.5rem;
     font-weight: 600;
     text-align: left;
   }
@@ -110,6 +132,50 @@ import Layout from '../layouts/Layout.astro';
     color: var(--text-dark);
     margin-bottom: 1.5rem;
     text-align: justify;
+  }
+
+  /* Professor Voice Styling */
+  .professor-voice {
+    background: var(--surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    border-left: 4px solid var(--primary-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    font-style: italic;
+  }
+
+  .professor-voice p {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--text-dark);
+  }
+
+  .chart-placeholder {
+    background: var(--surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    text-align: center;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .chart-placeholder p {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .chart-placeholder p:first-child {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+
+  .chart-placeholder em {
+    color: #666;
+    font-style: italic;
   }
 
   @media (max-width: 768px) {
@@ -123,6 +189,15 @@ import Layout from '../layouts/Layout.astro';
 
     .main-text p {
       font-size: 1rem;
+    }
+
+    .professor-voice {
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+
+    .chart-placeholder {
+      padding: 1rem;
     }
   }
 

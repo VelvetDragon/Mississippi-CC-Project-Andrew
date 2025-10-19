@@ -76,6 +76,76 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </section>
 
+    <!-- Institutional Supporters Section -->
+    <section class="content-section">
+      <h2 class="section-title">Institutional Supporters</h2>
+      <div class="contributors-grid">
+        <div class="contributor-card">
+          <div class="contributor-image-placeholder">
+            <p>Institution Logo</p>
+          </div>
+          <!-- EDIT: To use a real image, replace the placeholder above with the line below and set the src -->
+          <img class="contributor-image" src="/images/Cook Library.jpg" alt="Institution logo" />
+          <div class="contributor-info">
+            <h4>University Libraries at Southern Miss</h4>
+            <p class="role"></p>
+            <!-- <p class="institution">Location, State</p> -->
+            <p class="contribution">The Community Cookbook Project is possible because of support from 
+              Special Collections and Digital Collections at the University Libraries at The
+              University of Southern Mississippi.  Through both donations and sustained 
+              collection development, Jennifer Brannock, Curator of the Mississippiana 
+              Collection, has helped build a Mississippi community cookbook collection 
+              that includes more than 300 cookbooks published before 1970 (featured on 
+              this website) and more than a thousand published after 1970. These are 
+              part of a larger culinary collection that now includes over 5,000 titles and 
+              features manuscript and family cookbooks, published cookbooks from 
+              Mississippi and adjacent states, a collection of British community 
+              cookbooks, and classic culinary works from around the world. We continue 
+              to solicit donations for the collection.
+              <br><br>
+              <strong>Related Links:</strong><br>
+              <a href="https://lib.usm.edu/spcol/" target="_blank" rel="noopener noreferrer" class="institution-link">Special Collections</a><br>
+              <a href="https://www.digitalcollections.usm.edu" target="_blank" rel="noopener noreferrer" class="institution-link">Digital Collections</a>
+              
+          </div>
+        </div>
+
+        <div class="contributor-card">
+          <div class="contributor-image-placeholder">
+            <p>Institution Logo</p>
+          </div>
+          <!-- EDIT: To use a real image, replace the placeholder above with the line below and set the src -->
+          <img class="contributor-image" src="/images/MDHH Logo.png" alt="Institution logo" />
+          <div class="contributor-info">
+            <h4>The Center for Digital Humanities and the Mississippi Digital Humanities 
+              Hub at Southern Miss</h4>
+            <!-- <p class="role">Supporting Organization</p>
+            <p class="institution">Location, State</p> -->
+            <p class="contribution">The first, tentative iteration of the Mississippi Community Cookbook Project
+              was launched with a small grant from the College of Arts & Letters at The 
+              University in Southern Mississippi, but at the time Southern Miss provided 
+              limited institutional support for digital humanities projects and with the 
+              focus was on acquiring new works, the project was absorbed by University 
+              Libraries. In 2021, the launch of the Center for Digital Humanities (along 
+              with continued research) made it possible to reimagine and create a new 
+              Mississippi Community Cookbook Project website. Andrew Haley served as 
+              interim director of the center in 2023-24 and now directs the ancillary 
+              Mississippi Digital Humanities Hub, a congressionally funded grant 
+              managed by the National Historical Publications and Records Commission, 
+              that promotes digitization and digital storytelling throughout Mississippi. 
+              This website is hosted by the CDH and is possible because of the skills 
+              Andrew learned and support he received from the Hub.
+              <br><br>
+              <strong>Related Links:</strong><br>
+              <a href="https://www.usm.edu/arts-sciences/index.php" target="_blank" rel="noopener noreferrer" class="institution-link">College of Arts & Letters</a><br>
+              <a href="https://usmcdh.org" target="_blank" rel="noopener noreferrer" class="institution-link">Center for Digital Humanities</a><br>
+              <a href="https://www.ms-digital-hub.com" target="_blank" rel="noopener noreferrer" class="institution-link">Mississippi Digital Humanities Hub</a><br>
+              <a href="https://www.archives.gov/nhprc" target="_blank" rel="noopener noreferrer" class="institution-link">National Historical Publications and Records Commission</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Tasting & Methodology Section 
     <section class="content-section">
       <h2 class="section-title">Research Methodology & Tasting</h2>
@@ -373,6 +443,18 @@ import Layout from '../layouts/Layout.astro';
   .contribution {
     line-height: 1.7;
     color: var(--text-dark);
+  }
+
+  .institution-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .institution-link:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
   }
 
   /* Methodology Section */

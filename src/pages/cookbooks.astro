@@ -23,10 +23,15 @@ import Layout from '../layouts/Layout.astro';
       <p>The largest collection of Mississippi cookbooks resides in the archives of The University of Southern Mississippi. In partnership with Jennifer Brannock, Curator of Mississippiana and Rare Books at Southern Miss, I have worked with University Libraries to amass over two hundred cookbooks published between 1890 and 1969. Additional Mississippi cookbooks are held at university and public libraries throughout the United States as well as at Mississippi's Department of History and Archives. Cookbooks were used and not all cookbooks have survived. There may be dozens, perhaps even hundreds, of cookbooks that have been lost.</p>
       
       <!-- EDIT: Information about the book project -->
-      <p>Collectively, these cookbooks are the basis for <em>Kissin' Don't Last, Cookery Do</em>, the tentative title of a book I am preparing that looks at the history of community cookbooks as a means of understanding the role of community cookbooks in American life. Using Mississippi as a case study, it explores how women shaped local life through their cookbooks and  the charitable works the cookbooks funded, yet it also examines how national trends in cooking influenced women's understanding of food.</p>
+      <p>Collectively, these cookbooks are the basis for <em>Kissin' Don't Last, Cookery Do</em>, the tentative title of a book I am preparing that looks at the history of community cookbooks as a means of understanding the role of community cookbooks in American life. <figure class="cookbook-figure-left"><img src="/images/cookbook-rials-kitchen.jpg" alt="Rials' Kitchen Secrets cookbook cover" class="cookbook-cover-left" /><figcaption>Rials Creek Methodist Church (Magee, Miss.) 1951</figcaption></figure></p>
+      
+      <p>Using Mississippi as a case study, it explores how women shaped local life through their cookbooks and  the charitable works the cookbooks funded, yet it also examines how national trends in cooking influenced women's understanding of food.</p>
       
       <!-- EDIT: Information about website purpose -->
-      <p>This website will be updated nearer to the book's publication with some of the more compelling statistical findings, but for now it serves as a taxonomy, providing insights into when, where, and who published cookbooks in Mississippi.</p>
+      <p>This website will be updated nearer to the book's publication with some of the more compelling statistical findings, but for now it serves as a taxonomy, providing insights into when, where, and who published cookbooks in Mississippi. <figure class="cookbook-figure-right"><img src="/images/cookbook-whats-cooking-y.jpeg" alt="What's Cooking at the Y cookbook cover" class="cookbook-cover-right" /><figcaption>Young Women's Christian Association (Laurel, Miss.) 1968</figcaption></figure></p>
+      
+      <!-- EDIT: Information about USM collection -->
+      <p>The largest collection of Mississippi cookbooks resides in the archives of The University of Southern Mississippi. In partnership with Jennifer Brannock, Curator of Mississippiana and Rare Books at Southern Miss, I have worked with University Libraries to amass over two hundred cookbooks published between 1890 and 1969. Additional Mississippi cookbooks are held at university and public libraries throughout the United States as well as at Mississippi's Department of History and Archives. Cookbooks were used and not all cookbooks have survived. There may be dozens, perhaps even hundreds, of cookbooks that have been lost.</p>
     </div>
     <!-- ========================================== -->
     <!-- END EDITABLE CONTENT SECTION -->
@@ -182,7 +187,7 @@ import Layout from '../layouts/Layout.astro';
     font-size: 1.1rem;
     line-height: 1.7;
     color: var(--text-dark);
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     text-align: left;
     font-weight: 400;
   }
@@ -192,7 +197,7 @@ import Layout from '../layouts/Layout.astro';
     font-size: 1.8rem;
     color: var(--text-dark);
     margin-bottom: 1rem;
-    margin-top: 2rem;
+    margin-top: 0.5rem;
     font-weight: 600;
     text-align: left;
   }
@@ -200,6 +205,43 @@ import Layout from '../layouts/Layout.astro';
   .main-text em {
     font-style: italic;
     color: var(--primary-color);
+  }
+
+  /* Cookbook Images with Text Wrapping */
+  .cookbook-figure-left {
+    float: left;
+    margin: 0 1.5rem 1rem 0;
+    max-width: 180px;
+    shape-outside: margin-box;
+  }
+
+  .cookbook-figure-right {
+    float: right;
+    margin: 0 0 1rem 1.5rem;
+    max-width: 180px;
+    shape-outside: margin-box;
+  }
+
+  .cookbook-cover-left,
+  .cookbook-cover-right {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: block;
+  }
+
+  .cookbook-figure-left figcaption,
+  .cookbook-figure-right figcaption {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 1rem;
+    color: var(--text-color);
+    text-align: center;
+    margin-top: 0.5rem;
+    line-height: 1.5;
+    font-style: normal;
+    font-weight: 400;
   }
 
   @media (max-width: 768px) {
@@ -213,6 +255,19 @@ import Layout from '../layouts/Layout.astro';
 
     .main-text p {
       font-size: 1rem;
+    }
+
+    .cookbook-figure-left,
+    .cookbook-figure-right {
+      float: none;
+      max-width: 250px;
+      margin: 0 auto 1.5rem auto;
+      display: block;
+    }
+
+    .cookbook-cover-left,
+    .cookbook-cover-right {
+      height: 200px;
     }
   }
 
