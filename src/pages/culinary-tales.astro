@@ -31,7 +31,7 @@ const hasMorePastBlogs = pastBlogs.length > 6;
             <h2 class="section-title">Recent Stories</h2>
             <div class="blog-list">
               {recentBlogs.map((blog) => (
-                <article class="blog-post-large">
+                <article class="blog-post-large" data-bg-image={blog.backgroundImage}>
                   <div class="post-meta">
                     <span class="date">{new Date(blog.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                     {blog.category && <span class="category">{blog.category}</span>}
@@ -51,7 +51,7 @@ const hasMorePastBlogs = pastBlogs.length > 6;
               <h2 class="section-title">Past Blogs</h2>
               <div class="blog-list">
                 {pastBlogsToShow.map((blog) => (
-                  <article class="blog-post-large">
+                  <article class="blog-post-large" data-bg-image={blog.backgroundImage}>
                     <div class="post-meta">
                       <span class="date">{new Date(blog.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                       {blog.category && <span class="category">{blog.category}</span>}
@@ -301,6 +301,37 @@ const hasMorePastBlogs = pastBlogs.length > 6;
     text-decoration: none;
   }
 
+  /* Blog Post Hover Background Effect */
+  .blog-post-large {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .blog-post-large::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--hover-bg-image);
+    background-size: cover;
+    background-position: center 35%;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+
+  .blog-post-large:hover::before {
+    opacity: 0.1;
+  }
+
+  .blog-post-large:hover .post-title a {
+    color: var(--primary-color);
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  }
+
   .post-excerpt {
     color: var(--text-muted);
     line-height: 1.6;
@@ -520,4 +551,16 @@ const hasMorePastBlogs = pastBlogs.length > 6;
 
   // Make function globally available
   window.loadMoreBlogs = loadMoreBlogs;
+
+  // Set background images for hover effects
+  document.addEventListener('DOMContentLoaded', function() {
+    const blogPosts = document.querySelectorAll('.blog-post-large[data-bg-image]');
+    
+    blogPosts.forEach(post => {
+      const bgImage = post.getAttribute('data-bg-image');
+      if (bgImage) {
+        post.style.setProperty('--hover-bg-image', `url('${bgImage}')`);
+      }
+    });
+  });
 </script> 
