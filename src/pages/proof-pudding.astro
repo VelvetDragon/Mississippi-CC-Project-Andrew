@@ -21,13 +21,19 @@ import Layout from '../layouts/Layout.astro';
       <!-- EDIT: Introduction to research challenges -->
       <p>When I tell people I am studying community cookbooks, they invariably are excited. I understand that enthusiasm, but it masks many of the challenges of examining books that few imagined would become part of the historical record. Community cookbooks rarely have introductory material, often are not dated, and are organized in idiosyncratic ways. This section of the website is dedicated to examining sources. In a series of (relatively) short essays, I explore some of the challenges of working with community cookbooks. Occasionally, I also may add a book review, promote an interesting online article, or provide some bibliographic materials.</p>
 
+      <!-- Image section
+      <div class="image-section">
+        <img src="/images/proof-bg.jpeg" alt="Historic community cookbook collection" class="content-image">
+        <p class="image-caption">A glimpse into the rich collection of Mississippi community cookbooks preserved at Southern Miss.</p>
+      </div> -->
+
       <!-- EDIT: Subsection title -->
       <!-- <h3>One Hundred Cookbooks</h3> -->
       <!-- EDIT: Story about the collection growth -->
       <p>Ten years ago, I approached Professor Jennifer Brannock at the McCain Library and Archives at Southern Miss about collecting community cookbooks. I explained that I was most interested in historic Mississippi cookbooks published before 1970 and that I thought there were around a hundred. Today, the archive houses over three hundred historic Mississippi community cookbooks and many hundreds published more recently. Southern Miss has also created a remarkable collection of significant cookbooks and community cookbooks from neighboring states, from some distant states, and from overseas. The culinary collection now consists of over seven thousand items.</p>
 
       <!-- EDIT: Information about donations and preservation efforts -->
-      <p>Substantial donations, most notably from <a href="https://www.hdoliver.com/obituaries/Lee-Anderson-Orr?obId=26504219">Anderson Orr</a>, a Mississippi-born educator and culinary enthusiast, have made this possible as well as the sustained efforts of Professor Brannock to fill in the gaps. Yet there are many, many cookbooks that have not made it into the collection. Many of these may be lost to time. Too often, community cookbooks are discarded when their owners dies. Over the years, I've visited antique shops, thrift shops, estate sales, and yard sales (as have friends eager to lend a helping hand) looking for long forgotten cookbooks. I have also visited dozens of universities and public libraries across the Mississippi looking for cookbooks, and am deeply grateful to the librarians and archivists who had the foresight to preserve works that were once easily dismissed. I'm especially grateful to the Amory Municipal Library, Carnegie Public Library in Clarksdale, Calhoun City Public Library, Delta State University Library, Mississippi Department of Archives and History, Mississippi State, and the University of Mississippi for the efforts they have made to preserve and document these cookbooks.</p>
+      <p>Substantial donations, most notably from <a href="https://www.hdoliver.com/obituaries/Lee-Anderson-Orr?obId=26504219">Anderson Orr</a>, a Mississippi-born educator and culinary enthusiast, have made this possible as well as the sustained efforts of Professor Brannock to fill in the gaps. Yet there are many, many cookbooks that have not made it into the collection. Many of these may be lost to time. Too often, community cookbooks are discarded when their owners dies. <figure class="cookbook-figure-right"><img src="/images/cookbook-whats-cookin-gulfport.jpg" alt="What's Cookin' in Gulfport cookbook cover" class="cookbook-cover-right" /><figcaption>What's Cookin' in Gulfport (Gulfport, Miss.)</figcaption></figure><p>Over the years, I've visited antique shops, thrift shops, estate sales, and yard sales (as have friends eager to lend a helping hand) looking for long forgotten cookbooks. I have also visited dozens of universities and public libraries across the Mississippi looking for cookbooks, and am deeply grateful to the librarians and archivists who had the foresight to preserve works that were once easily dismissed. I'm especially grateful to the Amory Municipal Library, Carnegie Public Library in Clarksdale, Calhoun City Public Library, Delta State University Library, Mississippi Department of Archives and History, Mississippi State, and the University of Mississippi for the efforts they have made to preserve and document these cookbooks.</p></p>
 
       <!-- EDIT: Sources and acknowledgments -->
       <p><em>[Sources, USM, Brannock, Information and Analysis]</em></p>
@@ -144,6 +150,74 @@ import Layout from '../layouts/Layout.astro';
     text-align: left;
   }
 
+  /* Image section styles */
+  .image-section {
+    margin: 3rem 0;
+    text-align: center;
+  }
+
+  .content-image {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .content-image:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .image-caption {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 1rem;
+    line-height: 1.5;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Cookbook Images with Text Wrapping */
+  .cookbook-figure-left {
+    float: left;
+    margin: 0 1.5rem 1rem 0;
+    max-width: 180px;
+    shape-outside: margin-box;
+  }
+
+  .cookbook-figure-right {
+    float: right;
+    margin: 0 0 1rem 1.5rem;
+    max-width: 180px;
+    shape-outside: margin-box;
+  }
+
+  .cookbook-cover-left,
+  .cookbook-cover-right {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: block;
+  }
+
+  .cookbook-figure-left figcaption,
+  .cookbook-figure-right figcaption {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 1rem;
+    color: var(--text-color);
+    text-align: center;
+    margin-top: 0.5rem;
+    line-height: 1.5;
+    font-style: normal;
+    font-weight: 400;
+  }
+
   @media (max-width: 768px) {
     .hero-content h1 {
       font-size: 3rem;
@@ -163,6 +237,32 @@ import Layout from '../layouts/Layout.astro';
 
     .main-text h3 {
       font-size: 1.5rem;
+    }
+
+    .image-section {
+      margin: 2rem 0;
+    }
+
+    .content-image {
+      max-width: 100%;
+    }
+
+    .image-caption {
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
+    }
+
+    .cookbook-figure-left,
+    .cookbook-figure-right {
+      float: none;
+      max-width: 250px;
+      margin: 0 auto 1.5rem auto;
+      display: block;
+    }
+
+    .cookbook-cover-left,
+    .cookbook-cover-right {
+      height: 200px;
     }
   }
 

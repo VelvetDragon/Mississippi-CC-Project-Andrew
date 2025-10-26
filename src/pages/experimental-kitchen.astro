@@ -33,17 +33,23 @@ import Layout from '../layouts/Layout.astro';
       <p>The combined JSON database has proven invaluable for analyzing different culinary trends and patterns across Mississippi's community cookbook history. Here are some of the key findings that Suwan and I have analyzed and discovered:</p>
 
       <h3>Chicken vs. Spaghetti Analysis</h3>
-      <!-- <p>Our data reveals fascinating insights into the popularity and evolution of these two staple dishes across different decades and communities. The analysis shows how regional preferences, economic factors, and cultural influences shaped the prominence of these dishes in Mississippi households.</p> -->
-      <div class="chart-placeholder">
-        <p>📊 Comparative Analysis Chart</p>
-        <p><em>Visual representation showing the popularity trends of chicken and spaghetti recipes across different decades and communities will be displayed here.</em></p>
+      <p>Our data reveals fascinating insights into the popularity and evolution of these two staple dishes across different decades and communities. The analysis shows how regional preferences, economic factors, and cultural influences shaped the prominence of these dishes in Mississippi households.</p>
+      
+      <div class="chart-container">
+        <img src="/experimental-kitchen-visualizations/chicken-spaghetti-vs-fried-chicken.png" 
+             alt="Chicken Spaghetti vs Fried Chicken Recipes by Decade" 
+             class="analysis-chart">
+        <p class="chart-caption">Comparative analysis showing the popularity trends of chicken and spaghetti recipes across different decades in Mississippi community cookbooks.</p>
       </div>
 
       <h3>Top 10 Most Popular Recipes</h3>
-      <!-- <p>Through systematic analysis of our database, we've identified the most frequently appearing recipes across the entire collection, revealing the core culinary preferences of Mississippi communities. These recipes represent the foundation of Mississippi's culinary heritage.</p> -->
-      <div class="chart-placeholder">
-        <p>📈 Top Recipes Visualization</p>
-        <p><em>Interactive chart displaying the most popular recipes with frequency data and historical context will be presented here.</em></p>
+      <p>Through systematic analysis of our database, we've identified the most frequently appearing recipes across the entire collection, revealing the core culinary preferences of Mississippi communities. These recipes represent the foundation of Mississippi's culinary heritage.</p>
+      
+      <div class="chart-container">
+        <img src="/experimental-kitchen-visualizations/top_10_recipes.png" 
+             alt="Top 10 Most Popular Recipes in Mississippi Community Cookbooks" 
+             class="analysis-chart">
+        <p class="chart-caption">The most frequently appearing recipes across all Mississippi community cookbooks, revealing the core culinary preferences of communities throughout the state.</p>
       </div>
 
       <!-- <p>This experimental approach to culinary history demonstrates how modern technology can unlock new insights from historical documents, allowing us to understand patterns and trends that would remain hidden in traditional research methods. The collaboration between historical research and artificial intelligence opens new possibilities for understanding our culinary past.</p> -->
@@ -178,6 +184,37 @@ import Layout from '../layouts/Layout.astro';
     font-style: italic;
   }
 
+  /* Chart Container Styles */
+  .chart-container {
+    margin: 2rem 0;
+    text-align: center;
+  }
+
+  .analysis-chart {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .analysis-chart:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .chart-caption {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 1rem;
+    line-height: 1.5;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   @media (max-width: 768px) {
     .hero-content h1 {
       font-size: 3rem;
@@ -198,6 +235,19 @@ import Layout from '../layouts/Layout.astro';
 
     .chart-placeholder {
       padding: 1rem;
+    }
+
+    .chart-container {
+      margin: 1.5rem 0;
+    }
+
+    .analysis-chart {
+      max-width: 100%;
+    }
+
+    .chart-caption {
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
     }
   }
 
