@@ -2,16 +2,17 @@
 import Layout from '../../layouts/Layout.astro';
 import { getBlogBySlug, getAllPublishedBlogs } from '../../data/blogs.js';
 
-export async function getStaticPaths() {
-  const blogs = await getAllPublishedBlogs();
-  
-  return blogs.map((blog) => ({
-    params: { slug: blog.slug },
-    props: { blog },
-  }));
-}
+// For server mode, we need to handle the slug dynamically
+export const prerender = false; // Make this route server-rendered
 
-const { blog } = Astro.props;
+const slug = Astro.params.slug;
+let blog = null;
+
+if (slug) {
+  // Get all blogs and find the one matching the slug
+  const allBlogs = await getAllPublishedBlogs();
+  blog = allBlogs.find(b => b.slug === slug);
+}
 
 if (!blog) {
   return Astro.redirect('/404');

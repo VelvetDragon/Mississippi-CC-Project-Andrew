@@ -17,6 +17,16 @@ pnpm-debug.log*
 .env
 .env.production
 
+# test files
+test-hash.js
+generate-password-hash.js
+
+# documentation files (exclude all .md files except blog posts)
+*.md
+# but include blog posts
+!src/content/blog/*.md
+!README.md
+
 # macOS-specific files
 .DS_Store
 

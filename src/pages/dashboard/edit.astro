@@ -1,0 +1,1074 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getSessionFromRequest } from '../../lib/auth';
+
+export const prerender = false;
+
+// Check authentication
+const session = await getSessionFromRequest(Astro.request);
+
+if (!session) {
+  return Astro.redirect('/login');
+}
+
+// Get post data if editing
+const slug = Astro.url.searchParams.get('slug');
+let postData: any = null;
+
+if (slug) {
+  try {
+    // Read blog posts directly from filesystem
+    const fs = await import('fs');
+    const path = await import('path');
+    const { fileURLToPath } = await import('url');
+    
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const blogDir = path.join(__dirname, '../../content/blog');
+    
+    // Read all markdown files
+    const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.md'));
+    
+    for (const file of files) {
+      const filePath = path.join(blogDir, file);
+      const content = fs.readFileSync(filePath, 'utf-8');
+      
+      // Parse frontmatter
+      const frontmatterMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
+      if (frontmatterMatch) {
+        const frontmatter = frontmatterMatch[1];
+        const body = frontmatterMatch[2];
+        
+        // Parse frontmatter fields
+        const titleMatch = frontmatter.match(/^title:\s*(.+)$/m);
+        const slugMatch = frontmatter.match(/^slug:\s*(.+)$/m);
+        const dateMatch = frontmatter.match(/^date:\s*(.+)$/m);
+        const authorMatch = frontmatter.match(/^author:\s*(.+)$/m);
+        const backgroundImageMatch = frontmatter.match(/^backgroundImage:\s*(.+)$/m);
+        const excerptMatch = frontmatter.match(/^excerpt:\s*(.+)$/m);
+        const publishedMatch = frontmatter.match(/^published:\s*(.+)$/m);
+        
+        const postSlug = slugMatch ? slugMatch[1].trim().replace(/^["']|["']$/g, '') : '';
+        
+        if (postSlug === slug) {
+          postData = {
+            filename: file,
+            title: titleMatch ? titleMatch[1].trim().replace(/^["']|["']$/g, '') : '',
+            slug: postSlug,
+            date: dateMatch ? dateMatch[1].trim().replace(/^["']|["']$/g, '') : '',
+            author: authorMatch ? authorMatch[1].trim().replace(/^["']|["']$/g, '') : 'Dr. Andrew Haley',
+            backgroundImage: backgroundImageMatch ? backgroundImageMatch[1].trim().replace(/^["']|["']$/g, '') : '',
+            excerpt: excerptMatch ? excerptMatch[1].trim().replace(/^["']|["']$/g, '') : '',
+            body: body,
+            published: publishedMatch ? publishedMatch[1].trim().toLowerCase() !== 'false' : true
+          };
+          break;
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error loading post:', error);
+  }
+}
+
+const isEditing = !!postData;
+---
+
+<Layout title={`${isEditing ? 'Edit' : 'New'} Culinary Tale - Dashboard`}>
+  <!-- EasyMDE Markdown Editor -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+  
+  <div class="edit-page-container">
+    <header class="edit-header">
+      <div class="edit-header-content">
+        <h1>{isEditing ? 'Edit Culinary Tale' : 'New Culinary Tale'}</h1>
+        <a href="/dashboard" class="back-link">← Back to Dashboard</a>
+      </div>
+    </header>
+
+    <div class="edit-content">
+      <form id="post-form" class="post-form">
+        <input type="hidden" id="post-filename" name="filename" value={postData?.filename || ''} />
+        
+        <div class="form-section">
+          <h2 class="form-section-title">Basic Information</h2>
+          
+          <div class="form-group">
+            <label for="title">Title *</label>
+            <input type="text" id="title" name="title" required value={postData?.title || ''} />
+          </div>
+
+          <div class="form-group">
+            <label for="slug">Slug (URL-friendly) *</label>
+            <input type="text" id="slug" name="slug" required value={postData?.slug || ''} />
+            <small>e.g., "my-culinary-tale"</small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="date">Publish Date *</label>
+              <input type="datetime-local" id="date" name="date" required value={postData?.date ? new Date(postData.date).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16)} />
+            </div>
+
+            <div class="form-group">
+              <label for="author">Author</label>
+              <input type="text" id="author" name="author" value={postData?.author || 'Dr. Andrew Haley'} />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="backgroundImage">Background Image</label>
+            <div class="image-upload-row">
+              <input type="text" id="backgroundImage" name="backgroundImage" placeholder="/images/your-image.jpg" value={postData?.backgroundImage || ''} />
+              <input type="file" id="background-image-upload" accept="image/*" style="display: none;" />
+              <button type="button" id="upload-background-btn" class="upload-button">Choose File</button>
+            </div>
+            <small>Enter URL or upload from your computer</small>
+          </div>
+
+          <div class="form-group">
+            <label for="excerpt">Excerpt</label>
+            <textarea id="excerpt" name="excerpt" rows="3">{postData?.excerpt || ''}</textarea>
+            <small>Brief summary of the post</small>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2 class="form-section-title">Content</h2>
+          
+          <div class="form-group">
+            <label for="body">Content (Markdown) *</label>
+            <div id="editor-container">
+              <textarea id="body" name="body" required>{postData?.body || ''}</textarea>
+            </div>
+            <small>Use the toolbar above to format text, add images, and more</small>
+          </div>
+
+          <div class="form-group">
+            <label for="image-upload">Upload Image</label>
+            <div class="image-upload-row">
+              <input type="file" id="image-upload" accept="image/*" />
+              <button type="button" id="upload-image-btn" class="upload-button">Upload Image</button>
+            </div>
+            <div id="image-upload-status" style="display: none; margin-top: 0.5rem;"></div>
+            <small>Upload an image to insert into your content</small>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" id="published" name="published" checked={postData?.published !== false} />
+              Published
+            </label>
+          </div>
+        </div>
+
+        <div id="form-error" class="error-message" style="display: none;"></div>
+
+        <div class="form-actions">
+          <a href="/dashboard" class="cancel-button">Cancel</a>
+          <button type="button" id="review-btn" class="review-button">Review & Publish</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Review Modal -->
+  <div id="review-modal" class="review-modal" style="display: none;">
+    <div class="review-modal-content">
+      <div class="review-modal-header">
+        <h2>Review Before Publishing</h2>
+        <button class="review-modal-close" id="review-close">&times;</button>
+      </div>
+      
+      <div class="review-content">
+        <div class="review-section">
+          <h3>Title</h3>
+          <p id="review-title"></p>
+        </div>
+        
+        <div class="review-section">
+          <h3>Slug</h3>
+          <p id="review-slug"></p>
+        </div>
+        
+        <div class="review-row">
+          <div class="review-section">
+            <h3>Publish Date</h3>
+            <p id="review-date"></p>
+          </div>
+          
+          <div class="review-section">
+            <h3>Author</h3>
+            <p id="review-author"></p>
+          </div>
+        </div>
+        
+        <div class="review-section">
+          <h3>Excerpt</h3>
+          <p id="review-excerpt"></p>
+        </div>
+        
+        <div class="review-section">
+          <h3>Content Preview</h3>
+          <div class="review-content-preview" id="review-content"></div>
+        </div>
+        
+        <div class="review-section">
+          <h3>Published Status</h3>
+          <p id="review-published"></p>
+        </div>
+      </div>
+      
+      <div class="review-modal-actions">
+        <button type="button" id="review-cancel" class="cancel-button">Cancel</button>
+        <button type="button" id="confirm-publish-btn" class="publish-button">Publish Post</button>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  let editor: any = null; // EasyMDE editor instance
+
+  // Initialize Markdown Editor
+  function initEditor() {
+    const textarea = document.getElementById('body') as HTMLTextAreaElement;
+    if (!textarea || editor) return;
+
+    // @ts-ignore - EasyMDE from CDN
+    if (typeof EasyMDE !== 'undefined') {
+      // Custom underline button
+      const underlineButton = {
+        name: 'underline',
+        action: function(editor: any) {
+          const cm = editor.codemirror;
+          const selectedText = cm.getSelection();
+          if (selectedText) {
+            cm.replaceSelection(`<u>${selectedText}</u>`);
+          } else {
+            cm.replaceSelection('<u></u>');
+            cm.setCursor(cm.getCursor().line, cm.getCursor().ch - 4);
+          }
+        },
+        className: 'fa fa-underline',
+        title: 'Underline',
+        noDisable: true
+      };
+
+      editor = new EasyMDE({
+        element: textarea,
+        spellChecker: false,
+        toolbar: [
+          'bold', 'italic', 'strikethrough', underlineButton, '|',
+          'heading-1', 'heading-2', 'heading-3', '|',
+          'code', 'quote', 'unordered-list', 'ordered-list', '|',
+          'link', 'image', 'table', '|',
+          'preview', 'side-by-side', 'fullscreen', '|',
+          'guide'
+        ],
+        placeholder: 'Start writing your culinary tale...',
+        status: ['lines', 'words', 'cursor'],
+        autosave: {
+          enabled: false
+        },
+        renderingConfig: {
+          singleLineBreaks: false,
+          codeSyntaxHighlighting: true
+        }
+      });
+    }
+  }
+
+  // Auto-generate slug from title
+  document.getElementById('title')?.addEventListener('input', (e) => {
+    const title = (e.target as HTMLInputElement).value;
+    const slugInput = document.getElementById('slug') as HTMLInputElement;
+    const filenameInput = document.getElementById('post-filename') as HTMLInputElement;
+    if (slugInput && (!filenameInput || !filenameInput.value)) {
+      slugInput.value = title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+  });
+
+  // Background image upload handler
+  document.getElementById('upload-background-btn')?.addEventListener('click', () => {
+    const fileInput = document.getElementById('background-image-upload') as HTMLInputElement;
+    fileInput?.click();
+  });
+
+  document.getElementById('background-image-upload')?.addEventListener('change', async (e) => {
+    const fileInput = e.target as HTMLInputElement;
+    if (!fileInput.files || fileInput.files.length === 0) return;
+
+    const file = fileInput.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const uploadBtn = document.getElementById('upload-background-btn') as HTMLButtonElement;
+    if (uploadBtn) {
+      uploadBtn.disabled = true;
+      uploadBtn.textContent = 'Uploading...';
+    }
+
+    try {
+      const response = await fetch('/api/upload/image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.url) {
+        const bgImageInput = document.getElementById('backgroundImage') as HTMLInputElement;
+        if (bgImageInput) {
+          bgImageInput.value = result.url;
+        }
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+    } finally {
+      if (uploadBtn) {
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = 'Choose File';
+      }
+    }
+  });
+
+  // Content image upload handler
+  document.getElementById('upload-image-btn')?.addEventListener('click', async () => {
+    const fileInput = document.getElementById('image-upload') as HTMLInputElement;
+    if (!fileInput.files || fileInput.files.length === 0) {
+      fileInput.click();
+      return;
+    }
+
+    const file = fileInput.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const uploadBtn = document.getElementById('upload-image-btn') as HTMLButtonElement;
+    const statusEl = document.getElementById('image-upload-status');
+    
+    if (uploadBtn) {
+      uploadBtn.disabled = true;
+      uploadBtn.textContent = 'Uploading...';
+    }
+
+    if (statusEl) {
+      statusEl.style.display = 'block';
+      statusEl.textContent = 'Uploading...';
+      statusEl.style.color = '#666';
+    }
+
+    try {
+      const response = await fetch('/api/upload/image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.url) {
+        const imageUrl = result.url;
+        const textarea = document.getElementById('body') as HTMLTextAreaElement;
+        
+        if (editor && textarea) {
+          const cursorPos = editor.codemirror.getCursor();
+          const selectedText = editor.codemirror.getSelection();
+          const imageMarkdown = `![${file.name}](${imageUrl})`;
+          
+          if (selectedText) {
+            editor.codemirror.replaceSelection(imageMarkdown);
+          } else {
+            editor.codemirror.replaceRange(imageMarkdown, cursorPos);
+          }
+        } else if (textarea) {
+          const cursorPos = textarea.selectionStart;
+          const textBefore = textarea.value.substring(0, cursorPos);
+          const textAfter = textarea.value.substring(cursorPos);
+          textarea.value = textBefore + `![${file.name}](${imageUrl})` + textAfter;
+        }
+
+        if (statusEl) {
+          statusEl.textContent = 'Image uploaded successfully!';
+          statusEl.style.color = '#28a745';
+        }
+
+        // Clear file input
+        fileInput.value = '';
+      } else {
+        if (statusEl) {
+          statusEl.textContent = result.error || 'Upload failed';
+          statusEl.style.color = '#c33';
+        }
+      }
+    } catch (error) {
+      if (statusEl) {
+        statusEl.textContent = 'Network error. Please try again.';
+        statusEl.style.color = '#c33';
+      }
+    } finally {
+      if (uploadBtn) {
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = 'Upload Image';
+      }
+    }
+  });
+
+  // Review and publish flow
+  function showReviewModal() {
+    const form = document.getElementById('post-form') as HTMLFormElement;
+    if (!form) return;
+
+    const formData = new FormData(form);
+    const data: any = Object.fromEntries(formData.entries());
+    
+    // Get content from editor
+    if (editor) {
+      data.body = editor.value();
+    } else {
+      const textarea = document.getElementById('body') as HTMLTextAreaElement;
+      if (textarea) data.body = textarea.value;
+    }
+
+    // Validate required fields
+    if (!data.title || !data.slug || !data.date || !data.body) {
+      const errorEl = document.getElementById('form-error');
+      if (errorEl) {
+        errorEl.textContent = 'Please fill in all required fields: Title, Slug, Date, and Content';
+        errorEl.style.display = 'block';
+        errorEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      return;
+    }
+
+    // Populate review modal
+    document.getElementById('review-title')!.textContent = data.title || 'Untitled';
+    document.getElementById('review-slug')!.textContent = data.slug || '';
+    document.getElementById('review-date')!.textContent = new Date(data.date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    document.getElementById('review-author')!.textContent = data.author || 'Dr. Andrew Haley';
+    document.getElementById('review-excerpt')!.textContent = data.excerpt || 'No excerpt provided';
+    document.getElementById('review-published')!.textContent = data.published === 'on' ? 'Yes' : 'No';
+    
+    // Preview content (first 500 chars)
+    const contentPreview = data.body.substring(0, 500) + (data.body.length > 500 ? '...' : '');
+    document.getElementById('review-content')!.textContent = contentPreview;
+    
+    // Store data for publishing
+    (window as any).pendingPostData = data;
+    
+    // Show modal
+    document.getElementById('review-modal')!.style.display = 'flex';
+  }
+
+  function hideReviewModal() {
+    document.getElementById('review-modal')!.style.display = 'none';
+  }
+
+  async function publishPost() {
+    const data = (window as any).pendingPostData;
+    if (!data) return;
+
+    const errorEl = document.getElementById('form-error');
+    const publishBtn = document.getElementById('confirm-publish-btn') as HTMLButtonElement;
+    const reviewModal = document.getElementById('review-modal');
+
+    if (errorEl) errorEl.style.display = 'none';
+    if (publishBtn) {
+      publishBtn.disabled = true;
+      publishBtn.textContent = 'Publishing...';
+    }
+
+    try {
+      // Check if editing existing post
+      const filename = data.filename as string;
+      const isEditing = filename && filename.trim() !== '';
+      
+      console.log('Publishing post...', { isEditing, filename });
+
+      let response;
+      if (isEditing) {
+        // Update existing post
+        response = await fetch('/api/blog/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...data, filename }),
+        });
+
+        // If direct write fails, try GitHub API
+        if (!response.ok) {
+          let error;
+          try {
+            error = await response.json();
+          } catch {
+            error = { error: await response.text() };
+          }
+          if (error.error?.includes('write') || error.error?.includes('ENOENT') || error.error?.includes('permission')) {
+            response = await fetch('/api/blog/update-github', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ...data, filename }),
+            });
+          }
+        }
+      } else {
+        // Create new post
+        response = await fetch('/api/blog/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        // If direct write fails, try GitHub API
+        if (!response.ok) {
+          let error;
+          try {
+            error = await response.json();
+          } catch {
+            error = { error: await response.text() };
+          }
+          if (error.error?.includes('write') || error.error?.includes('ENOENT') || error.error?.includes('permission')) {
+            response = await fetch('/api/blog/create-github', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data),
+            });
+          }
+        }
+      }
+
+      // Check if response is ok before trying to parse JSON
+      let result;
+      try {
+        const responseText = await response.text();
+        result = responseText ? JSON.parse(responseText) : {};
+      } catch (parseError) {
+        console.error('Failed to parse response:', parseError);
+        result = { error: 'Invalid response from server' };
+      }
+
+      if (response.ok) {
+        // Hide modal and redirect
+        if (reviewModal) reviewModal.style.display = 'none';
+        if (publishBtn) {
+          publishBtn.textContent = 'Published! Redirecting...';
+        }
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 500);
+      } else {
+        console.error('Publish failed:', result);
+        if (errorEl) {
+          errorEl.textContent = result.error || result.message || 'Error publishing post. Please check the console for details.';
+          errorEl.style.display = 'block';
+          errorEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        if (publishBtn) {
+          publishBtn.disabled = false;
+          publishBtn.textContent = 'Publish Post';
+        }
+        hideReviewModal();
+      }
+    } catch (error: any) {
+      console.error('Publish error:', error);
+      if (errorEl) {
+        errorEl.textContent = `Network error: ${error.message || 'Please check your connection and try again.'}`;
+        errorEl.style.display = 'block';
+        errorEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      if (publishBtn) {
+        publishBtn.disabled = false;
+        publishBtn.textContent = 'Publish Post';
+      }
+      hideReviewModal();
+    }
+  }
+
+  // Review button click
+  document.getElementById('review-btn')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showReviewModal();
+  });
+
+  // Close review modal buttons
+  document.getElementById('review-cancel')?.addEventListener('click', hideReviewModal);
+  document.getElementById('review-close')?.addEventListener('click', hideReviewModal);
+  document.getElementById('confirm-publish-btn')?.addEventListener('click', publishPost);
+
+  // Close modal on outside click
+  document.getElementById('review-modal')?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).id === 'review-modal') {
+      hideReviewModal();
+    }
+  });
+
+  // Initialize editor on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      initEditor();
+      // If editing, set the content in the editor after it's initialized
+      const textarea = document.getElementById('body') as HTMLTextAreaElement;
+      if (textarea && textarea.value && editor) {
+        // Wait a bit more for editor to be fully ready
+        setTimeout(() => {
+          if (editor) {
+            editor.value(textarea.value);
+          }
+        }, 200);
+      }
+    }, 100);
+  });
+</script>
+
+<style>
+  .edit-page-container {
+    min-height: 100vh;
+    background: var(--background, #fafafa);
+  }
+
+  .edit-header {
+    background: var(--surface, #ffffff);
+    border-bottom: 1px solid var(--border, #e5e5e5);
+    padding: 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .edit-header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .edit-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-dark, #1a1a1a);
+    margin: 0;
+  }
+
+  .back-link {
+    color: var(--primary-color, #c8763d);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .back-link:hover {
+    color: var(--primary-dark, #a85d2a);
+    text-decoration: underline;
+  }
+
+  .edit-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .post-form {
+    background: var(--surface, #ffffff);
+    border-radius: 12px;
+    padding: 3rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border, #e5e5e5);
+  }
+
+  .form-section {
+    margin-bottom: 3rem;
+  }
+
+  .form-section:last-of-type {
+    margin-bottom: 2rem;
+  }
+
+  .form-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-dark, #1a1a1a);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border, #e5e5e5);
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-dark, #1a1a1a);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="datetime-local"],
+  .form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border, #e5e5e5);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .form-group input[type="text"]:focus,
+  .form-group input[type="datetime-local"]:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color, #c8763d);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .form-group small {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--text-muted, #666666);
+    font-size: 0.85rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .image-upload-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .image-upload-row input[type="text"] {
+    flex: 1;
+  }
+
+  .upload-button {
+    padding: 0.75rem 1.5rem;
+    background: var(--primary-color, #c8763d);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .upload-button:hover {
+    background: var(--primary-dark, #a85d2a);
+  }
+
+  .upload-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+  }
+
+  .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+
+  .checkbox-group input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  #editor-container {
+    margin-top: 0.5rem;
+  }
+
+  #editor-container .EasyMDEContainer {
+    border: 2px solid var(--border, #e5e5e5);
+    border-radius: 6px;
+  }
+
+  #editor-container .EasyMDEContainer:focus-within {
+    border-color: var(--primary-color, #c8763d);
+  }
+
+  .error-message {
+    background: #fee;
+    color: #c33;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #fcc;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border, #e5e5e5);
+  }
+
+  .cancel-button {
+    padding: 0.75rem 2rem;
+    background: var(--surface, #ffffff);
+    color: var(--text-dark, #1a1a1a);
+    border: 2px solid var(--border, #e5e5e5);
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .cancel-button:hover {
+    background: #f5f5f5;
+    border-color: var(--primary-color, #c8763d);
+  }
+
+  .save-button {
+    padding: 0.75rem 2rem;
+    background: var(--primary-color, #c8763d);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    font-size: 1rem;
+  }
+
+  .review-button {
+    padding: 0.75rem 2rem;
+    background: var(--primary-color, #c8763d);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    font-size: 1rem;
+  }
+
+  .review-button:hover {
+    background: var(--primary-dark, #a85d2a);
+  }
+
+  .publish-button {
+    padding: 0.75rem 2rem;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    font-size: 1rem;
+  }
+
+  .publish-button:hover {
+    background: #218838;
+  }
+
+  .publish-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+
+  /* Review Modal */
+  .review-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+
+  .review-modal-content {
+    background: var(--surface, #ffffff);
+    border-radius: 12px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  .review-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    border-bottom: 2px solid var(--border, #e5e5e5);
+  }
+
+  .review-modal-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-dark, #1a1a1a);
+    margin: 0;
+  }
+
+  .review-modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--text-muted, #666666);
+    line-height: 1;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .review-modal-close:hover {
+    background: #f5f5f5;
+    color: var(--text-dark, #1a1a1a);
+  }
+
+  .review-content {
+    padding: 2rem;
+  }
+
+  .review-section {
+    margin-bottom: 2rem;
+  }
+
+  .review-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark, #1a1a1a);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border, #e5e5e5);
+  }
+
+  .review-section p {
+    color: var(--text-dark, #1a1a1a);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .review-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .review-content-preview {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border, #e5e5e5);
+    max-height: 200px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-dark, #1a1a1a);
+  }
+
+  .review-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 2rem;
+    border-top: 2px solid var(--border, #e5e5e5);
+  }
+
+  @media (max-width: 768px) {
+    .review-modal {
+      padding: 1rem;
+    }
+
+    .review-modal-content {
+      max-height: 95vh;
+    }
+
+    .review-modal-header,
+    .review-content,
+    .review-modal-actions {
+      padding: 1.5rem;
+    }
+
+    .review-row {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .edit-content {
+      padding: 2rem 1rem;
+    }
+
+    .post-form {
+      padding: 2rem 1.5rem;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    .edit-header-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .image-upload-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .image-upload-row .upload-button {
+      width: 100%;
+    }
+  }
+</style>
+

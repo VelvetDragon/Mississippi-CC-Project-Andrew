@@ -1,0 +1,1068 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getSessionFromRequest } from '../lib/auth';
+
+export const prerender = false; // This page requires server-side rendering
+
+// Check authentication
+const session = await getSessionFromRequest(Astro.request);
+
+if (!session) {
+  return Astro.redirect('/login');
+}
+---
+
+<Layout title="Dashboard - Mississippi Community Cookbook Project">
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <div>
+        <h1>Culinary Tales Dashboard</h1>
+        <p>Welcome, {session.username}!</p>
+      </div>
+      <button id="logout-btn" class="logout-button">Logout</button>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="dashboard-actions">
+        <button id="new-post-btn" class="primary-button">+ New Culinary Tale</button>
+        <button id="refresh-btn" class="secondary-button">Refresh List</button>
+      </div>
+
+      <section class="posts-section">
+        <h2 class="section-title">All Culinary Tales</h2>
+        <div id="posts-list" class="posts-list">
+          <div class="loading">Loading posts...</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="delete-modal" class="delete-modal" style="display: none;">
+    <div class="delete-modal-content">
+      <div class="delete-modal-header">
+        <h3>Confirm Deletion</h3>
+        <button class="delete-modal-close" id="delete-modal-close">&times;</button>
+      </div>
+      <div class="delete-modal-body">
+        <p>Are you sure you want to delete <strong id="delete-modal-title"></strong>?</p>
+        <p class="delete-warning">This action cannot be undone.</p>
+        <div id="delete-error" class="delete-error" style="display: none;"></div>
+      </div>
+      <div class="delete-modal-actions">
+        <button class="delete-modal-btn cancel-btn" id="delete-cancel-btn">No, Cancel</button>
+        <button class="delete-modal-btn confirm-btn" id="delete-confirm-btn">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+
+</Layout>
+
+<script>
+  let posts: any[] = [];
+
+  // Load posts
+  async function loadPosts() {
+    const listEl = document.getElementById('posts-list');
+    if (!listEl) return;
+
+    listEl.innerHTML = '<div class="loading">Loading posts...</div>';
+
+    try {
+      const response = await fetch('/api/blog/list');
+      const result = await response.json();
+
+      if (response.ok && result.posts) {
+        posts = result.posts;
+        displayPosts(posts);
+      } else {
+        listEl.innerHTML = '<div class="error">Error loading posts. Please try again.</div>';
+      }
+    } catch (error) {
+      console.error('Error loading posts:', error);
+      listEl.innerHTML = '<div class="error">Error loading posts. Please try again.</div>';
+    }
+  }
+
+  // Display posts in the list
+  function displayPosts(postsList: any[]) {
+    const listEl = document.getElementById('posts-list');
+    if (!listEl) return;
+
+    if (postsList.length === 0) {
+      listEl.innerHTML = '<div class="empty-state">No blog posts yet. Click "New Culinary Tale" to create your first post!</div>';
+      return;
+    }
+
+    // Sort posts by date (newest first)
+    const sortedPosts = [...postsList].sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+
+    const postsHTML = sortedPosts.map((post) => {
+      const date = new Date(post.date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+
+      return `
+        <tr class="post-row">
+          <td class="post-date">${date}</td>
+          <td class="post-title-cell">
+            <a href="/culinary-tales/${post.slug}" class="post-title-link">${post.title || 'Untitled'}</a>
+            ${post.excerpt ? `<div class="post-excerpt-small">${post.excerpt.substring(0, 100)}${post.excerpt.length > 100 ? '...' : ''}</div>` : ''}
+          </td>
+          <td class="post-actions">
+            <a href="/culinary-tales/${post.slug}" class="action-link view-link" target="_blank">View</a>
+            <button class="action-btn edit-btn" data-filename="${post.filename}">Edit</button>
+            <button class="action-btn delete-btn" data-filename="${post.filename}" data-title="${post.title || 'Untitled'}">Delete</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    listEl.innerHTML = `
+      <div class="posts-table-container">
+        <table class="posts-table dashboard-posts-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Title</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${postsHTML}
+          </tbody>
+        </table>
+      </div>
+    `;
+
+    // Force apply button styles via inline styles as fallback
+    // First, ensure the actions cell is flex
+    document.querySelectorAll('.post-actions').forEach(cell => {
+      (cell as HTMLElement).style.cssText = `
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        white-space: nowrap !important;
+        flex-wrap: nowrap !important;
+      `;
+    });
+
+    document.querySelectorAll('.action-link.view-link').forEach(link => {
+      (link as HTMLElement).style.cssText = `
+        background: #1976d2 !important;
+        color: white !important;
+        border-bottom: none !important;
+        text-decoration: none !important;
+        padding: 0.65rem 1.3rem !important;
+        border-radius: 6px !important;
+        display: inline-block !important;
+        font-weight: 600 !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        margin: 0 !important;
+        font-size: 0.85rem !important;
+        transition: all 0.2s ease !important;
+        line-height: 1.2 !important;
+        white-space: nowrap !important;
+      `;
+      
+      // Add hover effect
+      link.addEventListener('mouseenter', () => {
+        (link as HTMLElement).style.background = '#1565c0';
+        (link as HTMLElement).style.transform = 'translateY(-1px)';
+        (link as HTMLElement).style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.15)';
+      });
+      link.addEventListener('mouseleave', () => {
+        (link as HTMLElement).style.background = '#1976d2';
+        (link as HTMLElement).style.transform = 'translateY(0)';
+        (link as HTMLElement).style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+      });
+    });
+
+    document.querySelectorAll('.action-btn.edit-btn').forEach(btn => {
+      (btn as HTMLElement).style.cssText = `
+        background: #c8763d !important;
+        color: white !important;
+        border: none !important;
+        padding: 0.65rem 1.3rem !important;
+        border-radius: 6px !important;
+        display: inline-block !important;
+        font-weight: 600 !important;
+        cursor: pointer !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        font-size: 0.85rem !important;
+        margin: 0 !important;
+        transition: all 0.2s ease !important;
+        line-height: 1.2 !important;
+        white-space: nowrap !important;
+      `;
+      
+      // Add hover effect
+      btn.addEventListener('mouseenter', () => {
+        (btn as HTMLElement).style.background = '#a85d2a';
+        (btn as HTMLElement).style.transform = 'translateY(-1px)';
+        (btn as HTMLElement).style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.15)';
+      });
+      btn.addEventListener('mouseleave', () => {
+        (btn as HTMLElement).style.background = '#c8763d';
+        (btn as HTMLElement).style.transform = 'translateY(0)';
+        (btn as HTMLElement).style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+      });
+    });
+
+    document.querySelectorAll('.action-btn.delete-btn').forEach(btn => {
+      (btn as HTMLElement).style.cssText = `
+        background: #dc3545 !important;
+        color: white !important;
+        border: none !important;
+        padding: 0.65rem 1.3rem !important;
+        border-radius: 6px !important;
+        display: inline-block !important;
+        font-weight: 600 !important;
+        cursor: pointer !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        font-size: 0.85rem !important;
+        margin: 0 !important;
+        transition: all 0.2s ease !important;
+        line-height: 1.2 !important;
+        white-space: nowrap !important;
+      `;
+      
+      // Add hover effect
+      btn.addEventListener('mouseenter', () => {
+        (btn as HTMLElement).style.background = '#c82333';
+        (btn as HTMLElement).style.transform = 'translateY(-1px)';
+        (btn as HTMLElement).style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.15)';
+      });
+      btn.addEventListener('mouseleave', () => {
+        (btn as HTMLElement).style.background = '#dc3545';
+        (btn as HTMLElement).style.transform = 'translateY(0)';
+        (btn as HTMLElement).style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+      });
+    });
+
+    // Add event listeners to edit buttons
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const filename = (e.target as HTMLElement).getAttribute('data-filename');
+        const post = sortedPosts.find(p => p.filename === filename);
+        if (post) {
+          window.location.href = `/dashboard/edit?slug=${post.slug}`;
+        }
+      });
+    });
+
+    // Add event listeners to delete buttons
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const filename = (e.target as HTMLElement).getAttribute('data-filename');
+        const title = (e.target as HTMLElement).getAttribute('data-title');
+        
+        if (!filename) return;
+        
+        // Show custom delete confirmation modal
+        showDeleteModal(title || 'Untitled', filename);
+      });
+    });
+  }
+
+  // Delete confirmation modal
+  function showDeleteModal(title: string, filename: string) {
+    const modal = document.getElementById('delete-modal');
+    const modalTitle = document.getElementById('delete-modal-title');
+    const confirmBtn = document.getElementById('delete-confirm-btn');
+    const cancelBtn = document.getElementById('delete-cancel-btn');
+    
+    if (!modal || !modalTitle || !confirmBtn || !cancelBtn) return;
+    
+    modalTitle.textContent = title;
+    modal.style.display = 'flex';
+    
+    // Store filename for confirmation
+    (confirmBtn as any).dataset.filename = filename;
+    
+    // Close modal handlers
+    const closeBtn = document.getElementById('delete-modal-close');
+    if (closeBtn) {
+      closeBtn.onclick = () => {
+        modal.style.display = 'none';
+        const errorEl = document.getElementById('delete-error');
+        if (errorEl) errorEl.style.display = 'none';
+      };
+    }
+    
+    cancelBtn.onclick = () => {
+      modal.style.display = 'none';
+      const errorEl = document.getElementById('delete-error');
+      if (errorEl) errorEl.style.display = 'none';
+    };
+    
+    // Handle outside click
+    modal.onclick = (e) => {
+      if ((e.target as HTMLElement).id === 'delete-modal') {
+        modal.style.display = 'none';
+        const errorEl = document.getElementById('delete-error');
+        if (errorEl) errorEl.style.display = 'none';
+      }
+    };
+    
+    // Confirm deletion
+    confirmBtn.onclick = async () => {
+      const filename = (confirmBtn as any).dataset.filename;
+      if (!filename) return;
+      
+      (confirmBtn as HTMLButtonElement).disabled = true;
+      confirmBtn.textContent = 'Deleting...';
+      
+      try {
+        const response = await fetch('/api/blog/delete', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename }),
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          modal.style.display = 'none';
+          // Reload posts list
+          await loadPosts();
+        } else {
+          const errorEl = document.getElementById('delete-error');
+          if (errorEl) {
+            errorEl.textContent = result.error || 'Failed to delete blog post';
+            errorEl.style.display = 'block';
+          }
+          (confirmBtn as HTMLButtonElement).disabled = false;
+          confirmBtn.textContent = 'Yes, Delete';
+        }
+      } catch (error) {
+        const errorEl = document.getElementById('delete-error');
+        if (errorEl) {
+          errorEl.textContent = 'Network error. Please try again.';
+          errorEl.style.display = 'block';
+        }
+        (confirmBtn as HTMLButtonElement).disabled = false;
+        confirmBtn.textContent = 'Yes, Delete';
+      }
+    };
+
+    // Add event listeners to view buttons
+    document.querySelectorAll('.view-post-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const slug = (e.target as HTMLElement).getAttribute('data-slug');
+        if (slug) {
+          window.open(`/culinary-tales/${slug}`, '_blank');
+        }
+      });
+    });
+  }
+
+
+  // Event listeners
+  document.getElementById('new-post-btn')?.addEventListener('click', () => {
+    window.location.href = '/dashboard/edit';
+  });
+  document.getElementById('refresh-btn')?.addEventListener('click', loadPosts);
+  document.getElementById('logout-btn')?.addEventListener('click', async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    window.location.href = '/login';
+  });
+
+
+  // Load posts on page load
+  loadPosts();
+</script>
+
+<style>
+  /* Reset link styles to prevent global overrides from Layout.astro */
+  /* These must override .main a styles from Layout.astro which adds border-bottom */
+  /* Using higher specificity to override Layout.astro's .main a styles */
+  .dashboard-container .main .posts-section a,
+  .dashboard-container .main .posts-section a:link,
+  .dashboard-container .main .posts-section a:visited,
+  .dashboard-container .main .posts-section a:hover,
+  .dashboard-container .main .posts-section a:focus,
+  .dashboard-container .main .blog-post-large a,
+  .dashboard-container .main .blog-post-large a:link,
+  .dashboard-container .main .blog-post-large a:visited,
+  .dashboard-container .main .blog-post-large a:hover,
+  .dashboard-container .main .blog-post-large a:focus,
+  .main .posts-section a,
+  .main .posts-section a:link,
+  .main .posts-section a:visited,
+  .main .posts-section a:hover,
+  .main .posts-section a:focus,
+  .main .blog-post-large a,
+  .main .blog-post-large a:link,
+  .main .blog-post-large a:visited,
+  .main .blog-post-large a:hover,
+  .main .blog-post-large a:focus,
+  .posts-section a,
+  .posts-section a:link,
+  .posts-section a:visited,
+  .posts-section a:hover,
+  .posts-section a:focus,
+  .blog-post-large a,
+  .blog-post-large a:link,
+  .blog-post-large a:visited,
+  .blog-post-large a:hover,
+  .blog-post-large a:focus {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    border: none !important;
+    outline: none !important;
+  }
+
+  .dashboard-container .main .blog-post-large .post-title a,
+  .dashboard-container .main .blog-post-large .post-title a:link,
+  .dashboard-container .main .blog-post-large .post-title a:visited,
+  .main .blog-post-large .post-title a,
+  .main .blog-post-large .post-title a:link,
+  .main .blog-post-large .post-title a:visited,
+  .blog-post-large .post-title a,
+  .blog-post-large .post-title a:link,
+  .blog-post-large .post-title a:visited {
+    color: var(--text-dark) !important;
+    border-bottom: none !important;
+    border: none !important;
+  }
+
+  .dashboard-container .main .blog-post-large .post-title a:hover,
+  .dashboard-container .main .blog-post-large .post-title a:focus,
+  .main .blog-post-large .post-title a:hover,
+  .main .blog-post-large .post-title a:focus,
+  .blog-post-large .post-title a:hover,
+  .blog-post-large .post-title a:focus {
+    color: var(--primary-color) !important;
+    border-bottom: none !important;
+    border: none !important;
+  }
+
+  .dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    min-height: 100vh;
+    background: var(--background, #fafafa);
+  }
+
+  .dashboard-header {
+    background: var(--surface, #ffffff);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border, #e5e5e5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .dashboard-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-dark);
+    font-weight: 600;
+  }
+
+  .dashboard-header p {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  .logout-button {
+    padding: 0.75rem 1.5rem;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+  }
+
+  .logout-button:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+  }
+
+  .dashboard-content {
+    background: var(--surface, #ffffff);
+    border-radius: 16px;
+    padding: 3rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border, #e5e5e5);
+  }
+
+  .dashboard-actions {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--border, #e5e5e5);
+  }
+
+  .primary-button {
+    padding: 0.75rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .primary-button:hover {
+    background: var(--primary-color-dark, #8b4513);
+  }
+
+  .secondary-button {
+    padding: 0.75rem 1.5rem;
+    background: var(--surface);
+    color: var(--text-dark);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .posts-section {
+    margin-top: 2rem;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Exact copy from culinary-tales.astro */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 2px;
+  }
+
+  .posts-list {
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .loading, .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+    background: var(--surface);
+    border-radius: 12px;
+    font-size: 1.1rem;
+  }
+
+  .error {
+    text-align: center;
+    padding: 2rem;
+    color: #c33;
+    background: #fee;
+    border-radius: 6px;
+  }
+
+  /* Posts Table - Clean, organized layout */
+  .posts-table-container {
+    background: var(--surface);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border, #e5e5e5);
+  }
+
+  .posts-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .posts-table thead {
+    background: #f8f9fa;
+    border-bottom: 2px solid var(--border, #e5e5e5);
+  }
+
+  .posts-table th {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .posts-table tbody tr {
+    border-bottom: 1px solid var(--border, #e5e5e5);
+    transition: background 0.2s ease;
+  }
+
+  .posts-table tbody tr:hover {
+    background: #f8f9fa;
+  }
+
+  .posts-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .posts-table td {
+    padding: 1.5rem 1.5rem;
+    vertical-align: middle;
+  }
+
+  .posts-table td.post-actions {
+    padding: 1.5rem 1.5rem !important;
+    vertical-align: middle !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    white-space: nowrap !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .post-date {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    width: 140px;
+  }
+
+  .post-title-cell {
+    min-width: 300px;
+  }
+
+  .post-title-link {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.25rem;
+    transition: color 0.2s ease;
+  }
+
+  .post-title-link:hover {
+    color: var(--primary-color);
+  }
+
+  .post-excerpt-small {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin-top: 0.25rem;
+  }
+
+  .post-status {
+    width: 100px;
+  }
+
+  .status-badge {
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+  }
+
+  .status-badge.published {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  .status-badge.draft {
+    background: #fff3cd;
+    color: #856404;
+  }
+
+  .post-actions {
+    white-space: nowrap !important;
+    width: auto;
+    min-width: 320px;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .post-actions .action-link,
+  .post-actions .action-btn {
+    vertical-align: middle !important;
+    margin-bottom: 0 !important;
+    margin-right: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Action buttons - multiple selectors for maximum specificity */
+  .dashboard-container .posts-table .action-link,
+  .dashboard-container .posts-table .action-btn,
+  .posts-table-container .posts-table .action-link,
+  .posts-table-container .posts-table .action-btn,
+  .dashboard-posts-table .action-link,
+  .dashboard-posts-table .action-btn,
+  .post-actions .action-link,
+  .post-actions .action-btn {
+    display: inline-block !important;
+    padding: 0.5rem 1rem !important;
+    margin-right: 0.5rem !important;
+    margin-bottom: 0.25rem !important;
+    border-radius: 6px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    font-family: 'Inter', sans-serif !important;
+  }
+
+  .dashboard-container .posts-table .action-link.view-link,
+  .posts-table-container .posts-table .action-link.view-link,
+  .dashboard-posts-table .action-link.view-link,
+  .post-actions .action-link.view-link {
+    background: #1976d2 !important;
+    color: white !important;
+  }
+
+  .dashboard-container .posts-table .action-link.view-link:hover,
+  .posts-table-container .posts-table .action-link.view-link:hover,
+  .dashboard-posts-table .action-link.view-link:hover,
+  .post-actions .action-link.view-link:hover {
+    background: #1565c0 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15) !important;
+    text-decoration: none !important;
+    border-bottom: none !important;
+  }
+
+  .dashboard-container .posts-table .action-btn.edit-btn,
+  .posts-table-container .posts-table .action-btn.edit-btn,
+  .dashboard-posts-table .action-btn.edit-btn,
+  .post-actions .action-btn.edit-btn {
+    background: #c8763d !important;
+    color: white !important;
+  }
+
+  .dashboard-container .posts-table .action-btn.edit-btn:hover,
+  .posts-table-container .posts-table .action-btn.edit-btn:hover,
+  .dashboard-posts-table .action-btn.edit-btn:hover,
+  .post-actions .action-btn.edit-btn:hover {
+    background: #a85d2a !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .dashboard-container .posts-table .action-btn.delete-btn,
+  .posts-table-container .posts-table .action-btn.delete-btn,
+  .dashboard-posts-table .action-btn.delete-btn,
+  .post-actions .action-btn.delete-btn {
+    background: #dc3545 !important;
+    color: white !important;
+  }
+
+  .dashboard-container .posts-table .action-btn.delete-btn:hover,
+  .posts-table-container .posts-table .action-btn.delete-btn:hover,
+  .dashboard-posts-table .action-btn.delete-btn:hover,
+  .post-actions .action-btn.delete-btn:hover {
+    background: #c82333 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .dashboard-container .posts-table .action-btn:disabled,
+  .posts-table-container .posts-table .action-btn:disabled,
+  .dashboard-posts-table .action-btn:disabled,
+  .post-actions .action-btn:disabled {
+    background: #ccc !important;
+    color: #666 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  @media (max-width: 768px) {
+    .posts-table-container {
+      overflow-x: auto;
+    }
+
+    .posts-table {
+      min-width: 600px;
+    }
+
+    .post-date {
+      width: 100px;
+    }
+
+    .post-title-cell {
+      min-width: 200px;
+    }
+
+    .post-actions {
+      width: 150px;
+    }
+
+    .action-link,
+    .action-btn {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.75rem;
+      margin-right: 0.25rem;
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  /* Delete Confirmation Modal */
+  .delete-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .delete-modal-content {
+    background: var(--surface, #ffffff);
+    border-radius: 12px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+  }
+
+  .delete-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid var(--border, #e5e5e5);
+    background: #fff5f5;
+  }
+
+  .delete-modal-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #c33;
+    margin: 0;
+  }
+
+  .delete-modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--text-muted, #666666);
+    line-height: 1;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .delete-modal-close:hover {
+    background: #fee;
+    color: #c33;
+  }
+
+  .delete-modal-body {
+    padding: 2rem;
+  }
+
+  .delete-modal-body p {
+    color: var(--text-dark, #1a1a1a);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+
+  .delete-modal-body strong {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+
+  .delete-warning {
+    color: #c33;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+
+  .delete-error {
+    background: #fee;
+    color: #c33;
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    border: 1px solid #fcc;
+  }
+
+  .delete-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 2px solid var(--border, #e5e5e5);
+    background: #f8f9fa;
+  }
+
+  .delete-modal-btn {
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    border: none;
+  }
+
+  .delete-modal-btn.cancel-btn {
+    background: var(--surface, #ffffff);
+    color: var(--text-dark, #1a1a1a);
+    border: 2px solid var(--border, #e5e5e5);
+  }
+
+  .delete-modal-btn.cancel-btn:hover {
+    background: #f5f5f5;
+    border-color: var(--text-muted, #999);
+  }
+
+  .delete-modal-btn.confirm-btn {
+    background: #dc3545;
+    color: white;
+  }
+
+  .delete-modal-btn.confirm-btn:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+  }
+
+  .delete-modal-btn:disabled {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  @media (max-width: 768px) {
+    .delete-modal {
+      padding: 1rem;
+    }
+
+    .delete-modal-content {
+      max-width: 100%;
+    }
+
+    .delete-modal-header,
+    .delete-modal-body,
+    .delete-modal-actions {
+      padding: 1.25rem;
+    }
+
+    .delete-modal-actions {
+      flex-direction: column-reverse;
+    }
+
+    .delete-modal-btn {
+      width: 100%;
+    }
+  }
+
+
+  @media (max-width: 768px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    .dashboard-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  }
+
+  /* Force button styles - highest priority using most specific selectors */
+  td.post-actions a.action-link.view-link {
+    background: #1976d2 !important;
+    color: white !important;
+    border-bottom: none !important;
+    text-decoration: none !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 6px !important;
+    display: inline-block !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    margin-right: 0.5rem !important;
+  }
+
+  td.post-actions button.action-btn.edit-btn {
+    background: #c8763d !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 6px !important;
+    display: inline-block !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    font-size: 0.85rem !important;
+    margin-right: 0.5rem !important;
+  }
+
+  td.post-actions button.action-btn.delete-btn {
+    background: #dc3545 !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 6px !important;
+    display: inline-block !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    font-size: 0.85rem !important;
+    margin-right: 0.5rem !important;
+  }
+</style>
+

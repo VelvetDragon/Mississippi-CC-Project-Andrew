@@ -1,0 +1,26 @@
+WHAT HAPPENS WHEN YOU PUSH TO GITHUB:
+
+1. NEW PAGES WILL APPEAR:
+   - /login page (custom login form)
+   - /dashboard page (protected - needs login)
+   - API endpoints for authentication
+
+2. EXISTING STUFF STILL WORKS:
+   - Homepage unchanged
+   - All existing pages work
+   - /admin (Decap CMS) still works
+
+3. WHAT WON'T WORK YET:
+   - Login won't work (no credentials set)
+   - Can't create blog posts (no GitHub token)
+
+4. WHAT YOU'LL SEE:
+   - Visit /login → See login form
+   - Try to login → Will fail (no credentials)
+   - Visit /dashboard → Redirects to /login
+
+AFTER YOU SET ENVIRONMENT VARIABLES IN NETLIFY:
+   - Login will work
+   - Can create blog posts
+   - Everything functional
+

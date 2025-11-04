@@ -18,38 +18,108 @@ import Layout from '../layouts/Layout.astro';
     <div class="main-text">
       <p>The University of Southern Mississippi hosts one of the largest statewide collections of community cookbooks in the United States (at least in proportion to the number of cookbooks published). Over a hundred of those cookbooks have been digitized and are available from Southern Miss' University Libraries.</p>
 
-      <p>Suwan Aryal, a talented undergraduate computer scientist at Southern Miss, and I have used artificial intelligence to parse and explore these digitized texts. Here is Suwan's vision for how we collected and processed this data to create a comprehensive recipe database.</p>
+      <p>Suwan Aryal, a talented undergraduate computer scientist at Southern Miss, and I have used artificial intelligence to parse and explore these digitized texts. </p>
 
       <h2>Data Collection & Processing Pipeline</h2>
-      <blockquote class="professor-voice">
-        <p>"I created a sophisticated pipeline that generates JSON files for all recipes extracted from PDF cookbooks. The process begins with PDF extraction, where each cookbook is converted into individual page images containing recipes. These images are then processed through optical character recognition (OCR) to convert the visual content into machine-readable text."</p>
-        
-        <p>"Each page of text is then processed using Google Gemini AI, which applies advanced filtering, cleaning, and correction techniques to standardize measurements, ingredient names, and cooking instructions. The AI handles variations in historical terminology, converts old measurement systems to modern equivalents, and ensures consistency across different cookbooks and time periods."</p>
-        
-        <p>"After individual processing, all extracted JSON data is combined into a single comprehensive file, creating a unified recipe database. This consolidated dataset enables powerful search capabilities and cross-cookbook analysis that would be impossible with traditional manual methods."</p>
-      </blockquote>
+      <p>Suwan Aryal developed a sophisticated pipeline to extract and process recipes from digitized cookbooks. Here's a detailed explanation of the process:</p>
+      
+      <!-- Collapsible Essay Section -->
+      <div class="essay-collapsible">
+        <button class="essay-toggle" aria-expanded="false" aria-controls="data-pipeline-essay">
+          <span class="essay-toggle-text">Read Full Data Collection & Processing Pipeline Essay</span>
+          <span class="essay-toggle-icon">▼</span>
+        </button>
+        <div class="essay-content" id="data-pipeline-essay" hidden>
+          <div class="essay-inner">
+            <h4>Technical Stack and Implementation</h4>
+            <p>The data collection and processing pipeline was built using Python as the primary programming language. The system leverages several key libraries and technologies to extract, process, and structure recipe data from historical PDF cookbooks.</p>
+
+            <h4>PDF Extraction and OCR Processing</h4>
+            <p>The pipeline begins with PDF extraction, where each cookbook is converted into individual page images containing recipes. These images are processed through optical character recognition (OCR) using pytesseract, a Python wrapper for Google's Tesseract OCR engine. The OCR process transforms visual pages into machine-readable text, enabling automated extraction of recipe content.</p>
+
+            <p>The PDF extraction phase presents unique challenges with historical documents. Many of these cookbooks were scanned from physical copies, resulting in varying image quality, page orientations, and occasional artifacts like creases, stains, or handwritten annotations. Each PDF must be carefully parsed to identify recipe boundaries, separating actual recipe content from headers, footers, page numbers, and other non-recipe text. The OCR output is often imperfect—character recognition errors are common, especially with older fonts, faded text, or decorative typography common in community cookbooks from the 1960s through 1990s.</p>
+
+            <h4>AI Processing with Google Gemini</h4>
+            <p>Each page of text is then processed using Google Gemini AI, which applies advanced filtering, cleaning, and correction techniques to standardize measurements, ingredient names, and cooking instructions. The AI handles variations in historical terminology, converts old measurement systems to modern equivalents, and ensures consistency across different cookbooks and time periods.</p>
+
+            <p>The AI processing stage is where the raw OCR text becomes structured, usable data. Gemini AI performs several critical transformations: it identifies recipe components (title, ingredients, instructions, servings), extracts structured information from free-form text, and normalizes data across different formats. For example, it recognizes that "1 cup flour," "1 c. flour," and "one cup of flour" all represent the same measurement. It standardizes historical measurements—converting "1 pint" to "2 cups" or recognizing that older recipes might use "1 teacup" which needs modern conversion. The AI also handles regional variations in ingredient names (like "bell pepper" vs. "sweet pepper") and cooking terminology that has evolved over decades. Perhaps most importantly, it corrects OCR errors by understanding context—if OCR misreads "2 cups sugar" as "2 cups sug@r," the AI can infer the correct word from the recipe context.</p>
+
+            <h4>Database Creation and Consolidation</h4>
+            <p>After individual processing, all extracted JSON data is combined into a single comprehensive file, creating a unified recipe database. This consolidated dataset enables powerful search capabilities and cross-cookbook analysis that would be impossible with traditional manual methods.</p>
+
+            <p>The final consolidation phase merges thousands of individual recipe JSON files into one master database. Each recipe in the unified database includes metadata like source cookbook, publication decade, contributor information (when available), and standardized recipe components. This structure enables sophisticated queries that would be impractical manually—we can search for all recipes containing specific ingredients across all cookbooks, analyze how cooking techniques evolved over time, identify regional variations in recipe names, or track the popularity of certain dishes across different decades and communities. The database currently contains recipes spanning several decades, representing the culinary heritage of communities throughout Mississippi, and it continues to grow as more cookbooks are digitized and processed.</p>
+          </div>
+        </div>
+      </div>
 
       <h2>Research Findings & Analysis</h2>
       <p>The combined JSON database has proven invaluable for analyzing different culinary trends and patterns across Mississippi's community cookbook history. Here are some of the key findings that Suwan and I have analyzed and discovered:</p>
 
-      <h3>Chicken vs. Spaghetti Analysis</h3>
-      <p>Our data reveals fascinating insights into the popularity and evolution of these two staple dishes across different decades and communities. The analysis shows how regional preferences, economic factors, and cultural influences shaped the prominence of these dishes in Mississippi households.</p>
+      <!-- Collapsible Essay Section -->
+      <div class="essay-collapsible">
+        <button class="essay-toggle" aria-expanded="false" aria-controls="chicken-spaghetti-essay">
+          <span class="essay-toggle-text">Chicken Spaghetti: A Mississippi Original?</span>
+          <span class="essay-toggle-icon">▼</span>
+        </button>
+        <div class="essay-content" id="chicken-spaghetti-essay" hidden>
+          <div class="essay-inner">
+            <p>Craig Claiborne, the <em>New York Times</em> restaurant critic, lived in Indianola, Mississippi, in 1920s and 30s where his mother ran a boarding house and had a reputation as an excellent cook. In 1975, during an interview with WOR in New York, he was asked about his favorite childhood food. It was chicken spaghetti. The interview sparked interest in the curious "Mississippi" dish and a few weeks later Claiborne published his <a href="https://cooking.nytimes.com/recipes/1019165-my-mothers-chicken-spaghetti" target="_blank">family's recipe in the Times</a>. He claimed it was his mother's invention, and this variation probably was.</p>
+
+            <p>Claiborne saw chicken spaghetti as a distinctly southern dish and Mississippians often view it as their own, but there is every reason to believe it first became popular in the Midwest and made its way down the Mississippi River to the Magnolia State sometime in the early 20th century. Although endless variations exist, it is rooted in both Italian cacciatore and Italian American tetrazzini. (I am planning a more extensive discussion of the historical roots of Chicken Spaghetti for a latter blog post, so we will leave it at that for now.)</p>
+
+            <p>Recipes for chicken spaghetti evolved during the twentieth century, so dating the first appearance in a Mississippi community cookbook is tricky, but a pair of recipes from the mid-1920s are prime contenders. (See note.) In 1926 the Ladies Aid Society of the M. E. Church South of Augusta, Mississippi produced a cookbook to raise funds for "parsonage and church work." Two recipes for chicken spaghetti appear in the "Meats" section, and these relatively simple recipes are true to the churchwomen's promise that the cookbook would feature recipes that would "meet the wants of the average family." (4)</p>
+
+            <p>The first recipe, a one-pot "Chicken with Spaghetti," was submitted by Mrs. J. D. Lugg. Cooks are asked to combine a package of spaghetti, flour, butter, pepper, a "small chicken boiled tender," and an egg, and boil the mix for an hour. (10) The second recipe was submitted by the committee that created the cookbook. Although the committee claimed that all the recipes in the cookbook were "tested and found satisfactory," one suspects that the committee had some doubts about Mrs. Lugg's one-pot recipe (as do I) and felt the need to include an alternative. The committee's recipe, "Chicken and Spaghetti," invites the homemaker to "prepare a chicken as for stew. Cook until tender. Add butter, salt, pepper and a package of spaghetti. Just before taking up[,] add a cup of cream and cover the top with a rich paste and boil a few minutes more. This is a good way to use the boney parts of a chicken." (13) (Okay, so this recipe is nearly as confounding as the first, but at least it includes some liquid to cook the spaghetti. The paste is never explained. Later recipes would reduce chicken broth and canned tomatoes to a paste, so perhaps this is reference to tomato paste.)</p>
+
+            <p>Neither of the 1926 recipes would become iconic, and it is clear from the New Augusta cookbook's dueling recipes that Mississippians' ideas about chicken spaghetti were still developing. In fact, the cookbook committee included not only a chicken and spaghetti recipe, but a ham and spaghetti recipe as well, suggesting that even the chicken was still up for grabs. (The ham variation was a casserole, although that term was not used, that featured two layers of spaghetti covered with ground ham and cheese and topped with butter and a cup of sweet milk. (14))</p>
+
+            <p>The earliest recipes featured variants of a white sauce, but some later versions featured both a white and a red sauce. The chicken spaghetti prepared by Craig Clairborne's mother blended a red tomato meat sauce with a white Béchamel sauce, but as the dish evolved, the white sauce often disappeared and was replaced by cheese (although, truth be told, endless variations continue to be made). The first of these tomato and cheese recipes to appear in a Mississippi community cookbook can be found in the "One Dish Meal" chapter of Tchula, Mississippi's <em>Our Favorite Recipes</em> created by the Parent Teachers Association in 1946. In this recipe (credited to Mrs. V. H. Gordin of Canton, Mississippi, a town fifty miles south of Tchula), a hen is covered in water and boiled "until ready to fall off the bone." The chicken is then removed from the stock and 3 cans of tomatoes, 2 onions, 2 bell peppers, 1 stack of celery, "1 button garlic," and three bay leaves are added. This mix is cooked "slowly, about five hours, until a 'well done' paste." The chicken is then cut up and added, the spaghetti cooked separately (ignoring the one-dish promise of the chapter) and then spaghetti and paste are placed in a casserole and covered with cheese (adding a third dish to this one-dish meal). Cooks are instructed to "bake until cheese is melted and spaghetti is hot." (89-90)</p>
+
+            <p>As the dish became more popular, "Chicken Spaghetti" emerged as favored name for the dish and it was these simply titled dishes, regardless of the exact recipe, that we used to examine chicken spaghetti's rising popularity. Using a customized database of recipes extracted from over one hundred Mississippi community cookbooks digitized by University Libraries at Southern Miss, Suwan Aryal and I were able to trace the history of chicken spaghetti in Mississippi and compare its popularity to a venerable Southern favorite, fried chicken.<sup><a href="#footnote-1" id="ref-1" class="footnote-ref">1</a></sup> Although variations on chicken spaghetti were prepared prior to World War II, the dish gained its name and became a household favorite in the 1940s.</p>
       
       <div class="chart-container">
         <img src="/experimental-kitchen-visualizations/chicken-spaghetti-vs-fried-chicken.png" 
              alt="Chicken Spaghetti vs Fried Chicken Recipes by Decade" 
              class="analysis-chart">
-        <p class="chart-caption">Comparative analysis showing the popularity trends of chicken and spaghetti recipes across different decades in Mississippi community cookbooks.</p>
       </div>
 
-      <h3>Top 10 Most Popular Recipes</h3>
-      <p>Through systematic analysis of our database, we've identified the most frequently appearing recipes across the entire collection, revealing the core culinary preferences of Mississippi communities. These recipes represent the foundation of Mississippi's culinary heritage.</p>
+            <p>Given that the first appearance of the dish with the title "Chicken Spaghetti" did not appear in our dataset of Mississippi community cookbook until 1946, chicken spaghetti's rapid rise is remarkable. It immediately surpassed the number of fried chicken recipes in the database. It was so popular that many postwar Mississippi community cookbooks included two or three recipes for the dish and at least one, <em>A Book of Favorite Recipes</em> published by the Warren County Home Demonstration Clubs in 1961, included four. In fact, its postwar popularity was so great that despite getting a late start, chicken spaghetti is the only entrée to appear in our list of the ten recipes most often included in Mississippi community cookbooks published from 1900 to 1970. All the other recipes were for desserts.</p>
       
       <div class="chart-container">
         <img src="/experimental-kitchen-visualizations/top_10_recipes.png" 
              alt="Top 10 Most Popular Recipes in Mississippi Community Cookbooks" 
              class="analysis-chart">
-        <p class="chart-caption">The most frequently appearing recipes across all Mississippi community cookbooks, revealing the core culinary preferences of communities throughout the state.</p>
+
+            </div>
+
+            <p>Numerous factors contributed to chicken spaghetti's meteoric rise. Initially, at least, it parallelled Americans' embrace of pasta. Once viewed as a detested, even unsanitary immigrant food, macaroni benefited from the concerted efforts of American manufacturers and the U.S. government in the first third of the twentieth century to market it as a healthy, American product made from domestic Durum wheat. (<a href="https://scholarworks.wm.edu/items/0d9a2b0f-b327-435e-93ad-1d58b629ff00" target="_blank">Melissa Faith Gray</a>, 85-94) Grocery stores carried pasta packaged in sanitary boxes featuring recipes and pastoral scenes prior to World War I, and spaghetti and other macaroni dishes became increasingly popular in the decades that followed. (<a href="https://scholarworks.wm.edu/items/0d9a2b0f-b327-435e-93ad-1d58b629ff00" target="_blank">Gray</a>, 85-94; <a href="https://www.amazon.com/We-Are-What-Eat-Americans/dp/0674001907" target="_blank">Donna Gabaccia</a>, 68, 159) In Mississippi, spaghetti dishes moved from the vegetable section of community cookbooks in the 1920s to the entrée section (with meat sauce or meatballs) in the 1950s.</p>
+
+            <p>Shortages and inflation during the Great Depression and World II probably fueled chicken spaghetti's popularity, although the relative dearth of community cookbooks published in Mississippi during the national crises makes this a little difficult to trace. However, domestic mass production of macaroni made it an inexpensive and filling staple in many homes, and, although meat was often scarce and expensive, chicken—still raised in the backyard in many rural areas and small towns—was, at least compared to other meats, available. (As Clairborne noted in his <a href="https://us.amazon.com/Craig-Claibornes-Feast-Made-Laughter/dp/0030640075" target="_blank">autobiography</a>, chickens were "depression food." (29))</p>
+
+            <p>Chicken spaghetti was not only inexpensive and relatively easy to prepare, it also was appealing to young people, including the young Craig Claiborne. In the postwar baby boom, as women found themselves caring for more children (and, in many places in Mississippi, also working), simple and kid friendly foods like chicken spaghetti were popular. And unlike fried chicken, a tried-and-true favorite that every young woman would have learned to cook from her mother or Black servant, chicken spaghetti was new enough that people were eager to share their recipes.</p>
+
+            <p>Chicken spaghetti's relative popularity compared to fried chicken also reflected the marginalization of southern cooking in Mississippi in the postwar years. Southern dishes remained popular, but in middle-class community cookbooks, the percentage of recipes that were Southern declined compared to non-Southern dishes. (This topic is explored more extensively in the larger book project.) Foreign, ethnic, and ethnically influenced dishes became increasingly popular in Mississippi as home cooks embraced national trends.</p>
+
+            <p>Chicken spaghetti's rise, however, involved more than its low price, simple recipes, and kid fandom. The dish was not just beloved, but transformed into a native Mississippi dish, even though nothing about the dish is rooted in the state's culinary traditions. (Mississippi, for example, was not home to a significant number of Italian immigrants.) Many years ago, at a talk I gave at a public library on "ethnic American" food in Mississippi, one of the audience members approached me afterwards and told me she was a bit puzzled by my claims that Mississippians embraced ethnic cuisine because she never really thought of spaghetti as an Italian dish. Chicken spaghetti, it seems, had shed its ethnic origins. In a fascinating dissertation, <a href="https://scholarworks.wm.edu/items/0d9a2b0f-b327-435e-93ad-1d58b629ff00" target="_blank">Melissa Faith Gray</a> argues that the "confluent messages of government agencies, home economists, and business" in the 1920s, 30s, and 40s succeeded in marginalizing pasta's ethnic origins and promoting it as simply a healthy, adaptable staple, but advertisers reversed course in the post-World War II era and reintroduce it as an Italian food. (101) Chicken spaghetti, already emerging as a regional favorite, seems to have retained its local, non-ethnic identity.</p>
+
+            <p>That transformation might help explain its popularity. As the dish was localized, it was also whitewashed. My forthcoming book explores the growing popularity of ethnic dishes in Mississippi and, in general, the Mississippi women who created community cookbooks were eager to embrace new, exotic ethnic recipes. This cosmopolitan attitude contributed to the success of other Italian dishes, from Italian spaghetti recipes to ravioli, but there was probably a ceiling that limited the success of these dishes. When "chicken spaghetti" became "Mississippi chicken spaghetti," its popularity soared. Meanwhile, fried chicken was suffering from the opposite problem. Following the war, Southern women claimed "southern cooking" as their own, ignoring and minimizing the role of Black cooks (an argument I explore more fully in the book, but that others, such as <a href="https://www.amazon.com/Cooking-Other-Womens-Kitchens-1865-1960/dp/1469606860" target="_blank">Rebecca Sharpless</a>, have written eloquently about). That whitewashing of Black food included fried chicken, but its long association with Black cooks and Black stereotypes may have made the associations with African American culinary traditions difficult to shake. Craig Claiborne's mother made chicken spaghetti her signature dish, but her Black cook, Blanche, prepare the fried chicken. (<a href="https://us.amazon.com/Craig-Claibornes-Feast-Made-Laughter/dp/0030640075" target="_blank">Craig Clairborne</a>, 29)</p>
+
+            <p>In Mississippi, as the origins of chicken spaghetti blurred, it became a local dish popular at backyard barbeques and church picnics—and the most popular entrée in Mississippi community cookbooks published before 1970. For many, including <em> <a href="https://www.southernliving.com/recipes/chicken-spaghetti-casserole-recipe" target="_blank">Southern Living</a></em>, "Chicken spaghetti is a Mississippi original."</p>
+
+            <div class="essay-footnotes">
+              <h4 class="footnotes-title">Footnotes</h4>
+              <ol class="footnotes-list">
+                <li id="footnote-1" class="footnote-item">
+                  <p>Fried chicken recipe titles are pretty stable, but there are variations. As with the chicken spaghetti recipes, this study focuses on comparing apple to oranges, which in this case is "fried chicken" to "chicken spaghetti." <a href="#ref-1" class="footnote-back">↩</a></p>
+                </li>
+              </ol>
+            </div>
+
+            <p style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.95rem; color: var(--text-muted); font-style: italic;">
+              <strong>Note:</strong> The Ladies Aid Society Cook Book I reviewed was a reprint from 1977. It is a faithful reprint of the original. There is also a recipe for Chicken Spaghetti in the P.T.A. Cook Book published by the Shubuta Public Schools. This cookbook was first published in 1925, but revised and updated in 1949 and it appears the "chicken spaghetti" recipe was added in the 1940s.
+            </p>
+          </div>
+        </div>
       </div>
 
       <!-- <p>This experimental approach to culinary history demonstrates how modern technology can unlock new insights from historical documents, allowing us to understand patterns and trends that would remain hidden in traditional research methods. The collaboration between historical research and artificial intelligence opens new possibilities for understanding our culinary past.</p> -->
@@ -59,6 +129,76 @@ import Layout from '../layouts/Layout.astro';
     <!-- ========================================== -->
   </div>
 </Layout>
+
+<script>
+  // Handle collapsible essay sections with smooth animations
+  document.addEventListener('DOMContentLoaded', () => {
+    // Function to toggle collapsible content
+    const toggleCollapsible = (controlsId: string | null) => {
+      if (!controlsId) return;
+      const content = document.getElementById(controlsId);
+      if (!content) return;
+      
+      const topToggle = document.querySelector(`.essay-toggle[aria-controls="${controlsId}"]`);
+      if (!topToggle) return;
+      
+      const isExpanded = topToggle.getAttribute('aria-expanded') === 'true';
+      const newExpandedState = !isExpanded;
+      
+      // Update aria attributes
+      topToggle.setAttribute('aria-expanded', String(newExpandedState));
+      content.setAttribute('aria-hidden', String(!newExpandedState));
+      
+      if (newExpandedState) {
+        // Expand: measure content height and animate to it
+        content.hidden = false;
+        const height = content.scrollHeight;
+        content.style.height = '0px';
+        
+        // Force reflow to ensure height: 0 is applied
+        void content.offsetHeight;
+        
+        requestAnimationFrame(() => {
+          content.style.height = `${height}px`;
+          
+          // After animation completes, set to auto for responsive behavior
+          setTimeout(() => {
+            if (content.getAttribute('aria-hidden') === 'false') {
+              content.style.height = 'auto';
+            }
+          }, 300);
+        });
+      } else {
+        // Collapse: animate to 0, then hide
+        const height = content.scrollHeight;
+        content.style.height = `${height}px`;
+        
+        // Force reflow
+        void content.offsetHeight;
+        
+        requestAnimationFrame(() => {
+          content.style.height = '0px';
+          
+          setTimeout(() => {
+            content.hidden = true;
+            content.style.height = '';
+          }, 300);
+        });
+      }
+    };
+    
+    // Handle top toggle buttons
+    const essayToggles = document.querySelectorAll('.essay-toggle');
+    essayToggles.forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const controlsId = toggle.getAttribute('aria-controls');
+        if (controlsId) {
+          toggleCollapsible(controlsId);
+        }
+      });
+    });
+  });
+</script>
 
 <style>
   /* Hero Section */
@@ -186,8 +326,13 @@ import Layout from '../layouts/Layout.astro';
 
   /* Chart Container Styles */
   .chart-container {
-    margin: 2rem 0;
+    margin: 3rem 0;
     text-align: center;
+    padding: 1.5rem 0;
+  }
+
+  .essay-inner .chart-container {
+    margin: 2.5rem 0;
   }
 
   .analysis-chart {
@@ -213,6 +358,241 @@ import Layout from '../layouts/Layout.astro';
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  /* Collapsible Essay Sections */
+  .essay-collapsible {
+    margin: 2rem 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .essay-collapsible:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .essay-toggle {
+    width: 100%;
+    background: var(--surface);
+    border: none;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    transition: background-color 0.2s ease;
+  }
+
+  .essay-toggle:hover {
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  .essay-toggle:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: -2px;
+  }
+
+  .essay-toggle-icon {
+    font-size: 0.8rem;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--primary-color);
+    margin-left: 1rem;
+    will-change: transform;
+    transform-origin: center;
+  }
+
+  .essay-toggle[aria-expanded="true"] .essay-toggle-icon {
+    transform: rotate(180deg);
+  }
+
+  .essay-content {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--surface);
+    will-change: height;
+  }
+
+  .essay-content:not([hidden]) {
+    overflow: hidden;
+  }
+
+  .essay-inner {
+    padding: 2.5rem 2rem;
+    border-top: 1px solid var(--border);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .essay-inner p {
+    font-size: 1.125rem;
+    line-height: 1.9;
+    color: var(--text-dark);
+    margin-bottom: 1.75rem;
+    text-align: justify;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    letter-spacing: 0.01em;
+    text-indent: 0;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+  }
+
+  .essay-inner p:first-child {
+    font-size: 1.15rem;
+    line-height: 1.95;
+  }
+
+  .essay-inner p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Superscript footnote references */
+  .essay-inner sup {
+    vertical-align: super;
+    font-size: 0.75em;
+    line-height: 0;
+    position: relative;
+    top: -0.4em;
+  }
+
+  .essay-inner .footnote-ref {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 600;
+    transition: color 0.2s ease;
+    padding: 0 0.15em;
+  }
+
+  .essay-inner .footnote-ref:hover {
+    color: #c8763d;
+    text-decoration: underline;
+  }
+
+  /* Footnotes section */
+  .essay-footnotes {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .footnotes-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .footnotes-list {
+    list-style: none;
+    counter-reset: footnote-counter;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footnote-item {
+    counter-increment: footnote-counter;
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+    position: relative;
+  }
+
+  .footnote-item::before {
+    content: counter(footnote-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 0.95em;
+  }
+
+  .footnote-item p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin: 0;
+    text-align: left;
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+
+  .footnote-back {
+    text-decoration: none;
+    color: var(--primary-color);
+    margin-left: 0.5rem;
+    font-weight: 600;
+    transition: color 0.2s ease;
+    display: inline-block;
+  }
+
+  .footnote-back:hover {
+    color: #c8763d;
+  }
+
+  .essay-inner h4,
+  .essay-inner h5 {
+    font-family: 'Playfair Display', serif;
+    color: var(--text-dark);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .essay-inner h4 {
+    font-size: 1.3rem;
+  }
+
+  .essay-inner h5 {
+    font-size: 1.1rem;
+  }
+
+  /* Bottom Collapse Button */
+  .essay-collapse-bottom {
+    width: 100%;
+    background: var(--surface);
+    border: none;
+    border-top: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    transition: background-color 0.2s ease;
+    margin-top: 1rem;
+  }
+
+  .essay-collapse-bottom:hover {
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  .essay-collapse-bottom:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: -2px;
+  }
+
+  .essay-collapse-text {
+    color: var(--text-dark);
+  }
+
+  .essay-collapse-bottom .essay-toggle-icon {
+    margin-left: 0;
+    color: var(--primary-color);
   }
 
   @media (max-width: 768px) {
@@ -248,6 +628,29 @@ import Layout from '../layouts/Layout.astro';
     .chart-caption {
       font-size: 0.85rem;
       margin-top: 0.75rem;
+    }
+
+    .essay-toggle {
+      padding: 1rem 1.25rem;
+      font-size: 1.1rem;
+    }
+
+    .essay-inner {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .essay-inner p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    .essay-inner p:first-child {
+      font-size: 1.1rem;
+    }
+
+    .essay-collapse-bottom {
+      padding: 0.875rem 1.25rem;
+      font-size: 0.95rem;
     }
   }
 
