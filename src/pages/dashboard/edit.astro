@@ -11,13 +11,13 @@ if (!session) {
   return Astro.redirect('/login');
 }
 
-// Get post data if editing
+// Get post data if editing - will be loaded via JavaScript on client side for Netlify compatibility
 const slug = Astro.url.searchParams.get('slug');
 let postData: any = null;
 
+// Try to load from filesystem (works locally/Reclaim)
 if (slug) {
   try {
-    // Read blog posts directly from filesystem
     const fs = await import('fs');
     const path = await import('path');
     const { fileURLToPath } = await import('url');
@@ -26,45 +26,50 @@ if (slug) {
     const __dirname = path.dirname(__filename);
     const blogDir = path.join(__dirname, '../../content/blog');
     
-    // Read all markdown files
-    const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.md'));
-    
-    for (const file of files) {
-      const filePath = path.join(blogDir, file);
-      const content = fs.readFileSync(filePath, 'utf-8');
+    // Check if directory exists (will fail on Netlify)
+    try {
+      const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.md'));
       
-      // Parse frontmatter
-      const frontmatterMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
-      if (frontmatterMatch) {
-        const frontmatter = frontmatterMatch[1];
-        const body = frontmatterMatch[2];
+      for (const file of files) {
+        const filePath = path.join(blogDir, file);
+        const content = fs.readFileSync(filePath, 'utf-8');
         
-        // Parse frontmatter fields
-        const titleMatch = frontmatter.match(/^title:\s*(.+)$/m);
-        const slugMatch = frontmatter.match(/^slug:\s*(.+)$/m);
-        const dateMatch = frontmatter.match(/^date:\s*(.+)$/m);
-        const authorMatch = frontmatter.match(/^author:\s*(.+)$/m);
-        const backgroundImageMatch = frontmatter.match(/^backgroundImage:\s*(.+)$/m);
-        const excerptMatch = frontmatter.match(/^excerpt:\s*(.+)$/m);
-        const publishedMatch = frontmatter.match(/^published:\s*(.+)$/m);
-        
-        const postSlug = slugMatch ? slugMatch[1].trim().replace(/^["']|["']$/g, '') : '';
-        
-        if (postSlug === slug) {
-          postData = {
-            filename: file,
-            title: titleMatch ? titleMatch[1].trim().replace(/^["']|["']$/g, '') : '',
-            slug: postSlug,
-            date: dateMatch ? dateMatch[1].trim().replace(/^["']|["']$/g, '') : '',
-            author: authorMatch ? authorMatch[1].trim().replace(/^["']|["']$/g, '') : 'Dr. Andrew Haley',
-            backgroundImage: backgroundImageMatch ? backgroundImageMatch[1].trim().replace(/^["']|["']$/g, '') : '',
-            excerpt: excerptMatch ? excerptMatch[1].trim().replace(/^["']|["']$/g, '') : '',
-            body: body,
-            published: publishedMatch ? publishedMatch[1].trim().toLowerCase() !== 'false' : true
-          };
-          break;
+        // Parse frontmatter
+        const frontmatterMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
+        if (frontmatterMatch) {
+          const frontmatter = frontmatterMatch[1];
+          const body = frontmatterMatch[2];
+          
+          // Parse frontmatter fields
+          const titleMatch = frontmatter.match(/^title:\s*(.+)$/m);
+          const slugMatch = frontmatter.match(/^slug:\s*(.+)$/m);
+          const dateMatch = frontmatter.match(/^date:\s*(.+)$/m);
+          const authorMatch = frontmatter.match(/^author:\s*(.+)$/m);
+          const backgroundImageMatch = frontmatter.match(/^backgroundImage:\s*(.+)$/m);
+          const excerptMatch = frontmatter.match(/^excerpt:\s*(.+)$/m);
+          const publishedMatch = frontmatter.match(/^published:\s*(.+)$/m);
+          
+          const postSlug = slugMatch ? slugMatch[1].trim().replace(/^["']|["']$/g, '') : '';
+          
+          if (postSlug === slug) {
+            postData = {
+              filename: file,
+              title: titleMatch ? titleMatch[1].trim().replace(/^["']|["']$/g, '') : '',
+              slug: postSlug,
+              date: dateMatch ? dateMatch[1].trim().replace(/^["']|["']$/g, '') : '',
+              author: authorMatch ? authorMatch[1].trim().replace(/^["']|["']$/g, '') : 'Dr. Andrew Haley',
+              backgroundImage: backgroundImageMatch ? backgroundImageMatch[1].trim().replace(/^["']|["']$/g, '') : '',
+              excerpt: excerptMatch ? excerptMatch[1].trim().replace(/^["']|["']$/g, '') : '',
+              body: body,
+              published: publishedMatch ? publishedMatch[1].trim().toLowerCase() !== 'false' : true
+            };
+            break;
+          }
         }
       }
+    } catch (fsError) {
+      // Filesystem read failed (Netlify) - will load via API on client side
+      console.log('Filesystem read failed, will load via API:', fsError);
     }
   } catch (error) {
     console.error('Error loading post:', error);
@@ -240,6 +245,86 @@ const isEditing = !!postData;
 
 <script>
   let editor: any = null; // EasyMDE editor instance
+
+  // Load post data if editing (fallback for Netlify when filesystem read fails)
+  const urlParams = new URLSearchParams(window.location.search);
+  const slug = urlParams.get('slug');
+  
+  if (slug && !(window as any).postDataLoaded) {
+    // Check if post data is already loaded from server-side
+    const titleInput = document.getElementById('title') as HTMLInputElement;
+    const bodyTextarea = document.getElementById('body') as HTMLTextAreaElement;
+    
+    // If form is empty, load from API
+    if (titleInput && !titleInput.value && bodyTextarea && !bodyTextarea.value) {
+      loadPostFromAPI(slug);
+    }
+  }
+
+  async function loadPostFromAPI(slug: string) {
+    try {
+      const response = await fetch('/api/blog/list');
+      const posts = await response.json();
+      
+      const post = posts.find((p: any) => p.slug === slug);
+      if (!post) {
+        console.error('Post not found');
+        return;
+      }
+
+      // Populate form fields
+      const titleInput = document.getElementById('title') as HTMLInputElement;
+      const slugInput = document.getElementById('slug') as HTMLInputElement;
+      const dateInput = document.getElementById('date') as HTMLInputElement;
+      const authorInput = document.getElementById('author') as HTMLInputElement;
+      const backgroundImageInput = document.getElementById('backgroundImage') as HTMLInputElement;
+      const excerptTextarea = document.getElementById('excerpt') as HTMLTextAreaElement;
+      const bodyTextarea = document.getElementById('body') as HTMLTextAreaElement;
+      const publishedCheckbox = document.getElementById('published') as HTMLInputElement;
+      const filenameInput = document.getElementById('post-filename') as HTMLInputElement;
+
+      if (titleInput) titleInput.value = post.title || '';
+      if (slugInput) slugInput.value = post.slug || '';
+      if (dateInput) dateInput.value = post.date ? new Date(post.date).toISOString().split('T')[0] : '';
+      if (authorInput) authorInput.value = post.author || 'Dr. Andrew Haley';
+      if (backgroundImageInput) backgroundImageInput.value = post.backgroundImage || '';
+      if (excerptTextarea) excerptTextarea.value = post.excerpt || '';
+      if (publishedCheckbox) publishedCheckbox.checked = post.published !== false;
+      if (filenameInput) filenameInput.value = post.filename || '';
+
+      // Set body content in editor
+      if (bodyTextarea) {
+        bodyTextarea.value = post.body || '';
+        
+        // Initialize editor if not already done, then set content
+        if (!editor) {
+          initEditor();
+          // Wait for editor to initialize
+          setTimeout(() => {
+            if (editor && post.body) {
+              editor.value(post.body);
+            }
+          }, 200);
+        } else {
+          editor.value(post.body);
+        }
+      }
+
+      // Show background image preview if exists
+      if (post.backgroundImage) {
+        const bgPreview = document.getElementById('background-image-preview') as HTMLElement;
+        const bgPreviewImg = document.getElementById('background-preview-img') as HTMLImageElement;
+        if (bgPreview && bgPreviewImg) {
+          bgPreviewImg.src = post.backgroundImage;
+          bgPreview.style.display = 'block';
+        }
+      }
+
+      (window as any).postDataLoaded = true;
+    } catch (error) {
+      console.error('Error loading post from API:', error);
+    }
+  }
 
   // Initialize Markdown Editor
   function initEditor() {

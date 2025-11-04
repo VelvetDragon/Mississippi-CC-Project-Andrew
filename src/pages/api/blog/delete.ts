@@ -45,12 +45,22 @@ export const DELETE: APIRoute = async ({ request }) => {
       );
     } catch (error: any) {
       // If direct deletion fails (e.g., on Netlify), try GitHub API
-      if (error.code === 'ENOENT' || error.code === 'EACCES') {
-        // File doesn't exist or no permission - this might be Netlify environment
-        // Try GitHub API deletion
-        return await deleteViaGitHub(filename);
+      console.log('Direct file delete failed, trying GitHub API...', error.message);
+      
+      // Check if GitHub token is available
+      const githubToken = import.meta.env.GITHUB_TOKEN;
+      if (!githubToken) {
+        return new Response(
+          JSON.stringify({ 
+            error: 'Failed to delete blog post',
+            details: 'Direct file delete failed and GitHub token not configured. Set GITHUB_TOKEN environment variable for Netlify deployments.'
+          }),
+          { status: 500, headers: { 'Content-Type': 'application/json' } }
+        );
       }
-      throw error;
+      
+      // Try GitHub API deletion
+      return await deleteViaGitHub(filename);
     }
   } catch (error: any) {
     console.error('Delete blog error:', error);
