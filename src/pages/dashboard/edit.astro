@@ -247,30 +247,57 @@ const isEditing = !!postData;
   let editor: any = null; // EasyMDE editor instance
 
   // Load post data if editing (fallback for Netlify when filesystem read fails)
-  const urlParams = new URLSearchParams(window.location.search);
-  const slug = urlParams.get('slug');
-  
-  if (slug && !(window as any).postDataLoaded) {
-    // Check if post data is already loaded from server-side
-    const titleInput = document.getElementById('title') as HTMLInputElement;
-    const bodyTextarea = document.getElementById('body') as HTMLTextAreaElement;
+  // Always try to load from API when there's a slug, since server-side load may fail on Netlify
+  document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const slug = urlParams.get('slug');
     
-    // If form is empty, load from API
-    if (titleInput && !titleInput.value && bodyTextarea && !bodyTextarea.value) {
-      loadPostFromAPI(slug);
+    if (slug && !(window as any).postDataLoaded) {
+      // Check if post data is already loaded from server-side
+      const titleInput = document.getElementById('title') as HTMLInputElement;
+      const bodyTextarea = document.getElementById('body') as HTMLTextAreaElement;
+      
+      // If form is empty (server-side load failed), load from API
+      // Also check after a short delay to ensure DOM is ready
+      setTimeout(() => {
+        if (titleInput && !titleInput.value.trim() && bodyTextarea && !bodyTextarea.value.trim()) {
+          console.log('Form is empty, loading post from API...');
+          loadPostFromAPI(slug);
+        } else if (titleInput && titleInput.value.trim()) {
+          // Server-side load succeeded, mark as loaded
+          (window as any).postDataLoaded = true;
+        }
+      }, 100);
     }
-  }
+  });
 
   async function loadPostFromAPI(slug: string) {
     try {
+      console.log('Fetching posts from API...');
       const response = await fetch('/api/blog/list');
-      const posts = await response.json();
       
-      const post = posts.find((p: any) => p.slug === slug);
-      if (!post) {
-        console.error('Post not found');
+      if (!response.ok) {
+        console.error('Failed to fetch posts:', response.status, response.statusText);
         return;
       }
+      
+      const result = await response.json();
+      const posts = result.posts || result; // Handle both formats
+      
+      if (!Array.isArray(posts) || posts.length === 0) {
+        console.error('No posts found in API response');
+        return;
+      }
+      
+      console.log('Found posts:', posts.length);
+      const post = posts.find((p: any) => p.slug === slug);
+      if (!post) {
+        console.error('Post not found with slug:', slug);
+        console.log('Available slugs:', posts.map((p: any) => p.slug));
+        return;
+      }
+      
+      console.log('Found post to edit:', post.title);
 
       // Populate form fields
       const titleInput = document.getElementById('title') as HTMLInputElement;
