@@ -125,7 +125,11 @@ const isEditing = !!postData;
               <input type="file" id="background-image-upload" accept="image/*" style="display: none;" />
               <button type="button" id="upload-background-btn" class="upload-button">Choose File</button>
             </div>
-            <small>Enter URL or upload from your computer</small>
+            <div id="background-image-preview" class="image-preview" style="display: none; margin-top: 1rem;">
+              <img id="background-preview-img" src="" alt="Preview" style="max-width: 300px; max-height: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+            </div>
+            <div id="background-upload-status" style="display: none; margin-top: 0.5rem; font-size: 0.9rem;"></div>
+            <small>Enter URL or upload from your computer. Preview appears instantly after selection.</small>
           </div>
 
           <div class="form-group">
@@ -149,11 +153,14 @@ const isEditing = !!postData;
           <div class="form-group">
             <label for="image-upload">Upload Image</label>
             <div class="image-upload-row">
-              <input type="file" id="image-upload" accept="image/*" />
-              <button type="button" id="upload-image-btn" class="upload-button">Upload Image</button>
+              <input type="file" id="image-upload" accept="image/*" style="display: none;" />
+              <button type="button" id="upload-image-btn" class="upload-button">Choose & Upload Image</button>
             </div>
-            <div id="image-upload-status" style="display: none; margin-top: 0.5rem;"></div>
-            <small>Upload an image to insert into your content</small>
+            <div id="image-upload-preview" class="image-preview" style="display: none; margin-top: 1rem;">
+              <img id="content-preview-img" src="" alt="Preview" style="max-width: 300px; max-height: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+            </div>
+            <div id="image-upload-status" style="display: none; margin-top: 0.5rem; font-size: 0.9rem;"></div>
+            <small>Click button to choose and upload image. Preview appears instantly.</small>
           </div>
         </div>
 
@@ -297,16 +304,33 @@ const isEditing = !!postData;
   });
 
   // Background image upload handler
+  // Show preview immediately when file is selected (before upload)
+  const bgFileInput = document.getElementById('background-image-upload') as HTMLInputElement;
+  const bgPreview = document.getElementById('background-image-preview') as HTMLElement;
+  const bgPreviewImg = document.getElementById('background-preview-img') as HTMLImageElement;
+  const bgStatusEl = document.getElementById('background-upload-status') as HTMLElement;
+
   document.getElementById('upload-background-btn')?.addEventListener('click', () => {
-    const fileInput = document.getElementById('background-image-upload') as HTMLInputElement;
-    fileInput?.click();
+    bgFileInput?.click();
   });
 
-  document.getElementById('background-image-upload')?.addEventListener('change', async (e) => {
+  bgFileInput?.addEventListener('change', async (e) => {
     const fileInput = e.target as HTMLInputElement;
     if (!fileInput.files || fileInput.files.length === 0) return;
 
     const file = fileInput.files[0];
+    
+    // Show instant preview using FileReader (before upload)
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (bgPreviewImg && e.target?.result) {
+        bgPreviewImg.src = e.target.result as string;
+        bgPreview.style.display = 'block';
+      }
+    };
+    reader.readAsDataURL(file);
+
+    // Now upload the file
     const formData = new FormData();
     formData.append('image', file);
 
@@ -314,6 +338,12 @@ const isEditing = !!postData;
     if (uploadBtn) {
       uploadBtn.disabled = true;
       uploadBtn.textContent = 'Uploading...';
+    }
+
+    if (bgStatusEl) {
+      bgStatusEl.style.display = 'block';
+      bgStatusEl.textContent = 'Uploading image...';
+      bgStatusEl.style.color = '#666';
     }
 
     try {
@@ -329,9 +359,30 @@ const isEditing = !!postData;
         if (bgImageInput) {
           bgImageInput.value = result.url;
         }
+        
+        // Update preview to use uploaded URL
+        if (bgPreviewImg) {
+          bgPreviewImg.src = result.url;
+        }
+
+        if (bgStatusEl) {
+          bgStatusEl.textContent = '✓ Image uploaded successfully!';
+          bgStatusEl.style.color = '#28a745';
+        }
+      } else {
+        if (bgStatusEl) {
+          bgStatusEl.textContent = result.error || 'Upload failed. Try again.';
+          bgStatusEl.style.color = '#dc3545';
+        }
+        bgPreview.style.display = 'none';
       }
     } catch (error) {
       console.error('Upload error:', error);
+      if (bgStatusEl) {
+        bgStatusEl.textContent = 'Network error. Please try again.';
+        bgStatusEl.style.color = '#dc3545';
+      }
+      bgPreview.style.display = 'none';
     } finally {
       if (uploadBtn) {
         uploadBtn.disabled = false;
@@ -340,15 +391,50 @@ const isEditing = !!postData;
     }
   });
 
-  // Content image upload handler
-  document.getElementById('upload-image-btn')?.addEventListener('click', async () => {
-    const fileInput = document.getElementById('image-upload') as HTMLInputElement;
-    if (!fileInput.files || fileInput.files.length === 0) {
-      fileInput.click();
-      return;
+  // Update preview when backgroundImage input changes (manual URL entry)
+  document.getElementById('backgroundImage')?.addEventListener('input', (e) => {
+    const input = e.target as HTMLInputElement;
+    const url = input.value.trim();
+    if (url && bgPreviewImg && bgPreview) {
+      bgPreviewImg.src = url;
+      bgPreview.style.display = 'block';
+    } else if (!url && bgPreview) {
+      bgPreview.style.display = 'none';
     }
+  });
+
+  // Show existing background image on page load
+  const existingBgImage = document.getElementById('backgroundImage') as HTMLInputElement;
+  if (existingBgImage && existingBgImage.value) {
+    if (bgPreviewImg && bgPreview) {
+      bgPreviewImg.src = existingBgImage.value;
+      bgPreview.style.display = 'block';
+    }
+  }
+
+  // Content image upload - single button that opens file picker and uploads
+  const contentFileInput = document.getElementById('image-upload') as HTMLInputElement;
+  const contentPreview = document.getElementById('image-upload-preview') as HTMLElement;
+  const contentPreviewImg = document.getElementById('content-preview-img') as HTMLImageElement;
+
+  // When file is selected, show preview and upload immediately
+  contentFileInput?.addEventListener('change', async (e) => {
+    const fileInput = e.target as HTMLInputElement;
+    if (!fileInput.files || fileInput.files.length === 0) return;
 
     const file = fileInput.files[0];
+    
+    // Show instant preview using FileReader
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (contentPreviewImg && e.target?.result && contentPreview) {
+        contentPreviewImg.src = e.target.result as string;
+        contentPreview.style.display = 'block';
+      }
+    };
+    reader.readAsDataURL(file);
+
+    // Upload immediately after selection
     const formData = new FormData();
     formData.append('image', file);
 
@@ -362,7 +448,7 @@ const isEditing = !!postData;
 
     if (statusEl) {
       statusEl.style.display = 'block';
-      statusEl.textContent = 'Uploading...';
+      statusEl.textContent = 'Uploading image...';
       statusEl.style.color = '#666';
     }
 
@@ -395,30 +481,55 @@ const isEditing = !!postData;
           textarea.value = textBefore + `![${file.name}](${imageUrl})` + textAfter;
         }
 
+        // Update preview to use uploaded URL
+        if (contentPreviewImg) {
+          contentPreviewImg.src = imageUrl;
+        }
+
         if (statusEl) {
-          statusEl.textContent = 'Image uploaded successfully!';
+          statusEl.textContent = '✓ Image uploaded and inserted!';
           statusEl.style.color = '#28a745';
         }
 
-        // Clear file input
-        fileInput.value = '';
+        // Clear file input after a delay
+        setTimeout(() => {
+          fileInput.value = '';
+          if (contentPreview) {
+            contentPreview.style.display = 'none';
+          }
+          if (statusEl) {
+            statusEl.style.display = 'none';
+          }
+        }, 3000);
       } else {
         if (statusEl) {
-          statusEl.textContent = result.error || 'Upload failed';
-          statusEl.style.color = '#c33';
+          statusEl.textContent = result.error || 'Upload failed. Try again.';
+          statusEl.style.color = '#dc3545';
+        }
+        if (contentPreview) {
+          contentPreview.style.display = 'none';
         }
       }
     } catch (error) {
+      console.error('Upload error:', error);
       if (statusEl) {
         statusEl.textContent = 'Network error. Please try again.';
-        statusEl.style.color = '#c33';
+        statusEl.style.color = '#dc3545';
+      }
+      if (contentPreview) {
+        contentPreview.style.display = 'none';
       }
     } finally {
       if (uploadBtn) {
         uploadBtn.disabled = false;
-        uploadBtn.textContent = 'Upload Image';
+        uploadBtn.textContent = 'Choose & Upload Image';
       }
     }
+  });
+
+  // Button click opens file picker
+  document.getElementById('upload-image-btn')?.addEventListener('click', () => {
+    contentFileInput?.click();
   });
 
   // Review and publish flow
