@@ -32,3 +32,6 @@ generate-password-hash.js
 
 # jetbrains setting folder
 .idea/
+
+# Local Netlify folder
+.netlify
