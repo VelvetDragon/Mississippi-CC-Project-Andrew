@@ -1,6 +1,7 @@
 <!-- src/pages/index.astro -->
 ---
 import Layout from '../layouts/Layout.astro';
+import SubscribeForm from '../components/SubscribeForm.astro';
 ---
 
 <Layout title="Mississippi's Culinary Legacy" pageClass="homepage">
@@ -75,6 +76,23 @@ import Layout from '../layouts/Layout.astro';
       </a>
     </div>
   </section>
+
+  <!-- WELCOME TEXT SECTION -->
+  <section class="welcome-section">
+    <p>
+      Welcome to the Mississippi Community Cookbook Project. For information (lists, data, maps) about
+      Mississippi community cookbooks published before 1970, visit the "Cookbooks" and "Culinary Landscapes"
+      pages. For essays that mine cookbook data for curious insights, visit the "Experimental Kitchen." These
+      essays are updated occasionally. For additional essays on all things food and cookbook related, visit the
+      blog at "Culinary Tales." Blog posts are made once a month (and the blog also is where I announce updates
+      to other parts of the website).
+    </p>
+  </section>
+
+  <SubscribeForm
+    title="Subscribe for Cookbook Updates"
+    description="Add your email to receive a note when new Culinary Tales posts or major site updates go live."
+  />
 
 
 </Layout>
@@ -315,6 +333,41 @@ import Layout from '../layouts/Layout.astro';
     background-size: cover;
   }
 
+  .welcome-section {
+    text-align: center;
+    padding: 2rem 1rem 4rem 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .welcome-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(200, 118, 61, 0.2), 
+      var(--primary-color), 
+      rgba(200, 118, 61, 0.2), 
+      transparent
+    );
+    border-radius: 1px;
+  }
+
+  .welcome-section p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 800px;
+    margin: 0 auto;
+    font-weight: 400;
+  }
+
   .highlights {
     background: linear-gradient(135deg, var(--surface) 0%, rgba(200, 118, 61, 0.05) 100%);
     padding: 4rem 2rem;
@@ -414,6 +467,10 @@ import Layout from '../layouts/Layout.astro';
 
     .tile p {
       font-size: 0.95rem;
+    }
+
+    .welcome-section p {
+      font-size: 1rem;
     }
 
     .highlights {

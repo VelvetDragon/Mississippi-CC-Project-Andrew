@@ -63,7 +63,7 @@ import Layout from '../layouts/Layout.astro';
             <p>Contributor Photo</p>
           </div>
           <!-- EDIT: To use a real image, replace the placeholder above with the line below and set the src -->
-          <img class="contributor-image face-zoom" src="/images/si1.png" alt="Contributor photo" />
+          <img class="contributor-image" src="/images/me.jpg" alt="Contributor photo" />
           <div class="contributor-info">
             <h4>Suwan Aryal</h4>
             <p class="role">Undergraduate Data Specialist/Mississippi Digital Humanities Hub</p>
@@ -386,11 +386,11 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .contributor-image-placeholder {
-    width: 96px;
-    height: 96px;
+    width: 120px;
+    height: 150px;
     background: linear-gradient(135deg, var(--border), rgba(200, 118, 61, 0.1));
     border: 2px dashed var(--primary-color);
-    border-radius: 50%;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -401,19 +401,17 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .contributor-image {
-    width: 96px;
-    height: 96px;
+    width: 120px;
+    height: 150px;
     object-fit: cover;
-    border-radius: 50%;
+    border-radius: 12px;
     display: block;
     margin-bottom: 1rem;
   }
 
-  /* Optional zoom/crop helper for landscape images to focus on faces */
-  .contributor-image.face-zoom {
-    object-position: 50% 35%;
-    transform: scale(1.22);
-    will-change: transform;
+  /* Adjust positioning for me.jpg - shift down slightly */
+  .contributor-image[src="/images/me.jpg"] {
+    object-position: center 25%;
   }
 
   /* Hide contributor placeholder when a real image is present */

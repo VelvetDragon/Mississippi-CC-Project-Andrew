@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getSessionFromRequest } from '../../../lib/auth';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
+import { notifySubscribers } from '../../../lib/email';
 
 export const prerender = false; // This is a server endpoint
 
@@ -76,6 +77,14 @@ export const POST: APIRoute = async ({ request }) => {
     
     try {
       await writeFile(filePath, content, 'utf-8');
+
+      // Notify subscribers if the post is published
+      if (published !== false) {
+        // Run in background - don't block the response
+        notifySubscribers(title, slug).catch(err => {
+          console.error('Failed to notify subscribers:', err);
+        });
+      }
       
       return new Response(
         JSON.stringify({ 

@@ -1,0 +1,367 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  compact?: boolean;
+  variant?: 'default' | 'compact' | 'minimal';
+}
+
+const {
+  title = 'Subscribe for Updates',
+  description = 'Get an email whenever new Culinary Tales posts go live.',
+  compact = false,
+  variant: variantProp,
+} = Astro.props;
+
+const variant = variantProp ?? (compact ? 'compact' : 'default');
+const isCompact = variant === 'compact';
+const isMinimal = variant === 'minimal';
+const showCopy = !isCompact && !isMinimal;
+const sectionClasses = ['subscribe-section', isCompact ? 'compact' : '', isMinimal ? 'minimal' : '']
+  .filter(Boolean)
+  .join(' ');
+
+const formId = `subscribe-form-${Math.random().toString(36).slice(2, 10)}`;
+const messageId = `${formId}-message`;
+---
+
+<section class={sectionClasses}>
+  <div class="subscribe-card">
+    {showCopy && (
+      <div class="subscribe-copy">
+        <p class="subscribe-eyebrow">Stay in the loop</p>
+        <h3>{title}</h3>
+        <p class="subscribe-description">{description}</p>
+      </div>
+    )}
+    <form
+      id={formId}
+      class="subscribe-form"
+      aria-label={title}
+    >
+      <label for={`${formId}-input`} class="sr-only">
+        Email address
+      </label>
+      <div class="input-group">
+        <input
+          id={`${formId}-input`}
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+          autocomplete="email"
+        />
+        <button type="submit">
+          <span>{isMinimal ? 'Notify' : 'Notify me'}</span>
+          <svg
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+      <p id={messageId} class="subscribe-message" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<script define:vars={{ formId, messageId }}>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById(formId);
+    const messageEl = document.getElementById(messageId);
+    
+    if (!form || !messageEl) {
+      console.warn('Subscribe form elements not found:', { formId, messageId });
+      return;
+    }
+
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (!submitBtn) {
+        console.warn('Submit button not found');
+        return;
+      }
+      
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner"></span>';
+
+      messageEl.textContent = '';
+      messageEl.classList.remove('success', 'error');
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('/api/subscribe', {
+          method: 'POST',
+          body: formData,
+        });
+        
+        if (!response.ok) {
+          throw new Error('Server error');
+        }
+        
+        const data = await response.json();
+
+        if (data.success) {
+          messageEl.textContent = data.message || 'Successfully subscribed!';
+          messageEl.classList.add('success');
+          form.reset();
+        } else {
+          messageEl.textContent = data.error || 'Failed to subscribe.';
+          messageEl.classList.add('error');
+        }
+      } catch (error) {
+        console.error('Subscription error:', error);
+        messageEl.textContent = 'Network error. Please try again.';
+        messageEl.classList.add('error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+      
+      return false;
+    });
+  });
+</script>
+
+<style>
+  .subscribe-section {
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    max-width: 900px;
+  }
+
+  .subscribe-card {
+    background: linear-gradient(135deg, rgba(200, 118, 61, 0.08), rgba(255, 255, 255, 0.95));
+    border: 1px solid rgba(200, 118, 61, 0.2);
+    border-radius: 20px;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.07);
+  }
+
+  .subscribe-section.compact {
+    padding: 1.25rem 0;
+  }
+
+  .subscribe-section.compact .subscribe-card {
+    padding: 1.5rem 1.75rem;
+    gap: 1rem;
+  }
+
+  .subscribe-section.compact .subscribe-copy h3 {
+    font-size: 1.4rem;
+  }
+
+  .subscribe-section.compact .subscribe-description {
+    font-size: 0.95rem;
+  }
+
+  .subscribe-section.compact .subscribe-form {
+    gap: 0.5rem;
+  }
+
+  .subscribe-section.compact .input-group {
+    gap: 0.5rem;
+  }
+
+  .subscribe-section.compact .input-group input,
+  .subscribe-section.compact .input-group button {
+    padding: 0.8rem 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  /* Minimal layout */
+  .subscribe-section.minimal {
+    padding: 0;
+    max-width: none;
+  }
+
+  .subscribe-section.minimal .subscribe-card {
+    padding: 0.75rem 1rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    gap: 0.5rem;
+  }
+
+  .subscribe-section.minimal .subscribe-copy {
+    display: none;
+  }
+
+  .subscribe-section.minimal .subscribe-form {
+    gap: 0.35rem;
+  }
+
+  .subscribe-section.minimal .input-group {
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+  }
+
+  .subscribe-section.minimal .input-group input {
+    min-width: 0;
+    padding: 0.65rem 0.8rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
+
+  .subscribe-section.minimal .input-group button {
+    padding: 0.65rem 0.85rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
+
+  .subscribe-section.minimal .subscribe-message {
+    font-size: 0.78rem;
+    min-height: 0.9em;
+  }
+
+  .subscribe-copy h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    margin: 0.25rem 0 0.5rem;
+    color: var(--text-dark);
+  }
+
+  .subscribe-eyebrow {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .subscribe-description {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .subscribe-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .input-group {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .input-group input {
+    flex: 1;
+    min-width: 220px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 0.95rem 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+  }
+
+  .input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(200, 118, 61, 0.15);
+  }
+
+  .input-group button {
+    border: none;
+    border-radius: 12px;
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.95rem 1.2rem;
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .input-group button:hover:not(:disabled) {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+  }
+
+  .input-group button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .subscribe-message {
+    font-size: 0.9rem;
+    min-height: 1.2em;
+  }
+
+  .subscribe-message.success {
+    color: #15803d;
+  }
+
+  .subscribe-message.error {
+    color: #b91c1c;
+  }
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  .sr-only {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .subscribe-card {
+      padding: 1.75rem;
+    }
+
+    .subscribe-copy h3 {
+      font-size: 1.6rem;
+    }
+
+    .input-group {
+      flex-direction: column;
+    }
+
+    .input-group button {
+      width: 100%;
+    }
+  }
+</style>
+

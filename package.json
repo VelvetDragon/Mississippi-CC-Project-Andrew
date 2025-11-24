@@ -10,6 +10,12 @@
   },
   "dependencies": {
     "@astrojs/netlify": "^6.6.0",
-    "astro": "^5.12.2"
+    "astro": "^5.12.2",
+    "better-sqlite3": "^12.4.6",
+    "nodemailer": "^7.0.10"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/nodemailer": "^7.0.4"
   }
 }
