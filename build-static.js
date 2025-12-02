@@ -20,7 +20,8 @@ if (existsSync(originalConfig)) {
 // Temporarily rename server-only pages with underscore prefix (Astro ignores these)
 const serverOnlyPaths = [
   'src/pages/login.astro',
-  'src/pages/dashboard',
+  'src/pages/dashboard.astro',  // Dashboard page (separate from dashboard folder)
+  'src/pages/dashboard',         // Dashboard folder
   'src/pages/api',
   'src/pages/admin'
 ];
@@ -30,12 +31,20 @@ const renamedPaths = [];
 try {
   // Rename server-only pages with underscore prefix (Astro will ignore them)
   for (const path of serverOnlyPaths) {
+    const pathParts = path.split('/');
+    const basename = pathParts.pop();
+    const dir = pathParts.join('/');
+    const renamedPath = join(dir, `_${basename}`);
+    
+    // Check if already renamed (user might have done it manually)
+    if (existsSync(renamedPath)) {
+      console.log(`✓ Already excluded: ${path} (found as ${renamedPath})\n`);
+      renamedPaths.push({ original: path, renamed: renamedPath });
+      continue;
+    }
+    
+    // Try to rename if original exists
     if (existsSync(path)) {
-      const pathParts = path.split('/');
-      const basename = pathParts.pop();
-      const dir = pathParts.join('/');
-      const renamedPath = join(dir, `_${basename}`);
-      
       try {
         // Rename with underscore prefix (Astro ignores files/folders starting with _)
         renameSync(path, renamedPath);
@@ -51,7 +60,7 @@ try {
           console.error(`   2. Close any other programs that might have files open\n`);
           console.error(`   3. Run this command again: npm run build:static\n`);
           console.error(`   OR manually rename in File Explorer:\n`);
-          console.error(`      ${path} → ${join(dir, `_${basename}`)}\n`);
+          console.error(`      ${path} → ${renamedPath}\n`);
           throw new Error(`Cannot proceed: ${path} is locked. Please close VS Code and try again.`);
         } else {
           throw error;
@@ -63,6 +72,27 @@ try {
   // Copy static config
   copyFileSync('astro.config.static.mjs', originalConfig);
   console.log('✓ Switched to static config\n');
+
+  // Clear Astro cache to ensure fresh build
+  const astroCacheDir = join(process.cwd(), '.astro');
+  if (existsSync(astroCacheDir)) {
+    try {
+      rmSync(astroCacheDir, { recursive: true, force: true });
+      console.log('✓ Cleared Astro cache\n');
+    } catch (e) {
+      console.warn('⚠ Could not clear cache (this is usually fine)\n');
+    }
+  }
+
+  // Verify all server-only paths are excluded
+  console.log('🔍 Verifying exclusions...\n');
+  for (const path of serverOnlyPaths) {
+    if (existsSync(path)) {
+      console.error(`❌ ERROR: ${path} still exists! It should have been excluded.\n`);
+      throw new Error(`Cannot proceed: ${path} was not properly excluded.`);
+    }
+  }
+  console.log('✓ All server-only pages excluded\n');
 
   // Build static site
   console.log('🔨 Running build...\n');
