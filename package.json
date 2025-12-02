@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:static": "node build-static.js",
     "preview": "astro preview",
     "astro": "astro"
   },
