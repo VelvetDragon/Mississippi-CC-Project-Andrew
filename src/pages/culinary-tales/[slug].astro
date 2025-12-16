@@ -2,6 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import { getBlogBySlug, getAllPublishedBlogs } from '../../data/blogs.js';
 
+// Pre-render this page as static HTML (required for Netlify/Reclaim static hosting)
+export const prerender = true;
+
 // For static builds, generate all blog post pages
 export async function getStaticPaths() {
   const allBlogs = await getAllPublishedBlogs();
