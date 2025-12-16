@@ -3,6 +3,7 @@ title: "Welcome to the Mississippi Community Cookbook Project!"
 slug: welcome-to-the-mississippi-community-cookbook-project
 date: 2025-12-16T20:18:00.000Z
 author: Dr. Andrew Haley
+backgroundImage: /images/thumbnail.jpg
 excerpt: "Welcome to a new website that examines Mississippi community cookbooks and their legacy."
 published: true
 ---
