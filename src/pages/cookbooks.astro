@@ -17,10 +17,10 @@ import Layout from '../layouts/Layout.astro';
     <!-- ========================================== -->
     <div class="main-text">
       <!-- EDIT: Introduction paragraph about community cookbooks -->
-      <p>Following the Civil War, community cookbooks—along with bake sales and craft sales—became an important means by which women in the United States raised funds to support charitable endeavors. The Mississippi Community Cookbook Project, the nucleus of a book manuscript, seeks to document Mississippi community cookbooks published between 1890 and 1969, and the influence of these cookbooks on life in Mississippi.</p>
+      <p>Following the Civil War, community cookbooks—along with bake sales and craft sales—became an important means by which women in the United States raised funds to support charitable endeavors. The Mississippi Community Cookbook Project, the nucleus of a book manuscript, seeks to document Mississippi community cookbooks published before 1970, and the influence of these cookbooks on life in Mississippi.</p>
       
       <!-- EDIT: Information about USM collection -->
-      <p>The largest collection of Mississippi cookbooks resides in the archives of The University of Southern Mississippi. In partnership with Jennifer Brannock, Curator of Mississippiana and Rare Books at Southern Miss, I have worked with University Libraries to amass over two hundred cookbooks published between 1890 and 1969. Additional Mississippi cookbooks are held at university and public libraries throughout the United States as well as at Mississippi's Department of History and Archives. Cookbooks were used and not all cookbooks have survived. There may be dozens, perhaps even hundreds, of cookbooks that have been lost.</p>
+    
       
       <!-- EDIT: Information about the book project -->
       <p>Collectively, these cookbooks are the basis for <em>Kissin' Don't Last, Cookery Do</em>, the tentative title of a book I am preparing that looks at the history of community cookbooks as a means of understanding the role of community cookbooks in American life. <figure class="cookbook-figure-left"><img src="/images/cookbook-rials-kitchen.jpg" alt="Rials' Kitchen Secrets cookbook cover" class="cookbook-cover-left" /><figcaption>Rials Creek Methodist Church (Magee, Miss.) 1951</figcaption></figure></p>
@@ -31,7 +31,7 @@ import Layout from '../layouts/Layout.astro';
       <p>This website will be updated nearer to the book's publication with some of the more compelling statistical findings, but for now it serves as a taxonomy, providing insights into when, where, and who published cookbooks in Mississippi. <figure class="cookbook-figure-right"><img src="/images/cookbook-whats-cooking-y.jpeg" alt="What's Cooking at the Y cookbook cover" class="cookbook-cover-right" /><figcaption>Young Women's Christian Association (Laurel, Miss.) 1968</figcaption></figure></p>
       
       <!-- EDIT: Information about USM collection -->
-      <p>The largest collection of Mississippi cookbooks resides in the archives of The University of Southern Mississippi. In partnership with Jennifer Brannock, Curator of Mississippiana and Rare Books at Southern Miss, I have worked with University Libraries to amass over two hundred cookbooks published between 1890 and 1969. Additional Mississippi cookbooks are held at university and public libraries throughout the United States as well as at Mississippi's Department of History and Archives. Cookbooks were used and not all cookbooks have survived. There may be dozens, perhaps even hundreds, of cookbooks that have been lost.</p>
+      <p>The largest collection of Mississippi cookbooks resides in the archives of The University of Southern Mississippi. In partnership with Jennifer Brannock, Curator of Mississippiana and Rare Books at Southern Miss, I have worked with University Libraries to amass over two hundred cookbooks published before 1970. Additional Mississippi cookbooks are held at university and public libraries throughout the United States as well as at Mississippi's Department of History and Archives. Not all cookbooks have survived. There may be dozens, perhaps even hundreds, of cookbooks that have been lost.</p>
     </div>
     <!-- ========================================== -->
     <!-- END EDITABLE CONTENT SECTION -->
@@ -41,7 +41,7 @@ import Layout from '../layouts/Layout.astro';
     <section class="cookbook-inventory">  
       <h2>Cookbook Inventory List</h2>
       <div class="inventory-intro">
-        <p>What follows is a master list of community cookbooks published in Mississippi between 1890 and 1969. It is incomplete. I've excluded some items that I have been unable to date (currently no more than a dozen titles). For some of the cookbooks listed, the dates are estimated. However, I have only included cookbooks where I have been able to narrow the estimated date of publication to within a few years. A few of the cookbooks I have not personally viewed. Most I have.</p>
+        <p>What follows is a master list of community cookbooks published in Mississippi before 1970. It is incomplete. I've excluded some items that I have been unable to date (currently no more than a dozen titles). For some of the cookbooks listed, the dates are estimated. However, I have only included cookbooks where I have been able to narrow the estimated date of publication to within a few years. A few of the cookbooks I have not personally viewed. Most I have.</p>
         
         <p>If a cookbook is owned by Southern Miss, I've listed it as USM (even if other locations have it). If Southern Miss has made it available online, it is listed as USM Online and linked to the source. Other large collections at Mississippi institutions are listed by abbreviations: UM is the University of Mississippi, MSU is Mississippi State University, and MDAH is the Mississippi Department of Archives and History. For all other institutions, I have provided a name. In some cases, it is possible I have listed a location that does not own the exact copy listed, but generally I have tried to list the location that owns the catalogued edition. If the location is listed as "Unknown", I have credible information that the cookbook exists (usually newspaper references) but have not located a copy.</p>
         
@@ -594,7 +594,7 @@ import Layout from '../layouts/Layout.astro';
     border-radius: 3px;
     font-size: 0.7rem;
     font-weight: 500;
-    text-transform: uppercase;
+    text-transform: capitalize;
     letter-spacing: 0.3px;
     white-space: nowrap;
     display: inline-block;
@@ -616,6 +616,13 @@ import Layout from '../layouts/Layout.astro';
     background: #fff2e6;
     color: #8b4513;
     border: 1px solid #ffd9b3;
+  }
+
+  .cookbook-type-badge.extension {
+    background: #e8f5e8;
+    color: #2d5016;
+    border: 1px solid #c3e6c3;
+    text-transform: capitalize;
   }
 
   .cookbook-source-container {
@@ -1200,10 +1207,20 @@ import Layout from '../layouts/Layout.astro';
       updatePagination();
     }
 
+    // Helper function to convert to title case
+    function toTitleCase(str) {
+      return str.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+    }
+    
+    // Make toTitleCase available globally for modal function
+    window.toTitleCase = toTitleCase;
+
     // Create cookbook artifact - improved layout
     function createCookbookArtifact(book) {
       const orgField = book['Organization (Church, Civic/Club, Business/Professional)'] || '';
+      const isExtension = orgField.toLowerCase().includes('extension');
       const typeClass = orgField.toLowerCase().replace('/', '').replace(' ', '');
+      const displayOrg = toTitleCase(orgField);
       
       let sourceDisplay = book.Source;
       
@@ -1227,7 +1244,7 @@ import Layout from '../layouts/Layout.astro';
           <div class="cookbook-meta-info">
             <div class="cookbook-community-badge">${book.Community}</div>
             ${book.County ? `<div class="cookbook-county-badge">${book.County} County</div>` : ''}
-            <span class="cookbook-type-badge ${typeClass}">${orgField}</span>
+            <span class="cookbook-type-badge ${typeClass}">${displayOrg}</span>
             ${sourceDisplay}
           </div>
         </div>
@@ -1309,7 +1326,9 @@ import Layout from '../layouts/Layout.astro';
       modal.className = 'cookbook-modal active';
       
       const orgField = book['Organization (Church, Civic/Club, Business/Professional)'] || '';
+      const isExtension = orgField.toLowerCase().includes('extension');
       const typeClass = orgField.toLowerCase().replace('/', '').replace(' ', '');
+      const displayOrg = toTitleCase(orgField);
       
       modal.innerHTML = `
         <div class="cookbook-modal-content">
@@ -1323,7 +1342,7 @@ import Layout from '../layouts/Layout.astro';
               <div class="cookbook-year-badge">${book.Date || 'Unknown'}</div>
               <div class="cookbook-community-badge">${book.Community}</div>
               ${book.County ? `<div class="cookbook-county-badge">${book.County} County</div>` : ''}
-              <span class="cookbook-type-badge ${typeClass}">${orgField}</span>
+              <span class="cookbook-type-badge ${typeClass}">${displayOrg}</span>
             </div>
           </div>
           
