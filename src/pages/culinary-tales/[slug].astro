@@ -213,6 +213,16 @@ const formattedDate = new Date(blog.date).toLocaleDateString('en-US', {
     color: var(--text-dark);
   }
 
+  /* Image Handling in Content */
+  :global(.article-content img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 2rem auto;
+    display: block;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+
   /* Navigation */
   .blog-navigation {
     text-align: center;

@@ -1,10 +1,37 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getRecentBlogs, getPastBlogs } from '../data/blogs.js';
+import { getAllPublishedBlogs } from '../data/blogs.js';
 
-const currentDate = '2025-09-10'; // Current date
-const recentBlogs = await getRecentBlogs(currentDate);
-const pastBlogs = await getPastBlogs(currentDate);
+// Get today's date for "Recent" vs "Past" logic
+const currentDate = new Date();
+const oneMonthAgo = new Date(currentDate);
+oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+// Get all published blogs sorted by date
+const allBlogs = await getAllPublishedBlogs();
+
+// Filter for fresh posts (less than 1 month old)
+const freshPosts = allBlogs.filter(blog => {
+  if (!blog.date) return false;
+  const blogDate = new Date(blog.date);
+  if (Number.isNaN(blogDate.getTime())) return false;
+  return blogDate >= oneMonthAgo;
+});
+
+// Logic: Ensure we show at least 2 posts in "Recent", or all posts from the last month
+let recentBlogs;
+if (freshPosts.length < 2) {
+  // If fewer than 2 fresh posts, grab the 2 newest posts regardless of date
+  recentBlogs = allBlogs.slice(0, 2);
+} else {
+  // If we have 2 or more fresh posts, show all of them
+  recentBlogs = freshPosts;
+}
+
+// Past blogs are whatever is left
+const recentSlugs = new Set(recentBlogs.map(b => b.slug));
+const pastBlogs = allBlogs.filter(b => !recentSlugs.has(b.slug));
+
 const pastBlogsToShow = pastBlogs.slice(0, 6); // Show 6 past blogs initially
 const hasMorePastBlogs = pastBlogs.length > 6;
 ---
