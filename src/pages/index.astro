@@ -1,6 +1,7 @@
 <!-- src/pages/index.astro -->
 ---
 import Layout from '../layouts/Layout.astro';
+import Newsletter from '../components/Newsletter.astro';
 ---
 
 <Layout title="Mississippi's Culinary Legacy" pageClass="homepage">
@@ -87,6 +88,11 @@ import Layout from '../layouts/Layout.astro';
       to other parts of the website).
     </p>
   </section>
+
+  <!-- NEWSLETTER SECTION -->
+  <div class="homepage-newsletter">
+    <Newsletter />
+  </div>
 
 </Layout>
 
@@ -490,5 +496,20 @@ import Layout from '../layouts/Layout.astro';
       grid-template-columns: 1fr;
       gap: 1.5rem;
     }
+  }
+  .homepage-newsletter {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  /* Override Newsletter component styles for homepage specific look */
+  :global(.homepage-newsletter .newsletter-signup) {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(200, 118, 61, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    margin-top: 2rem;
+    margin-bottom: 4rem;
   }
 </style>

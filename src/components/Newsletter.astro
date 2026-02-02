@@ -1,0 +1,190 @@
+---
+---
+<div class="newsletter-signup">
+  <div class="newsletter-content">
+    <h3>Subscribe to Culinary Tales</h3>
+    <p>Get the latest stories, recipes, and updates from the Mississippi Community Cookbook Project delivered to your inbox.</p>
+    
+    <form action="https://gmail.us20.list-manage.com/subscribe/post?u=89d95b1506296222cdb651ffd&id=cb0a80759d&f_id=0095cdedf0" method="post" id="newsletter-form" class="signup-form">
+      <input type="email" name="EMAIL" id="mce-EMAIL" placeholder="Your email address" required />
+      
+      <!-- Real people should not fill this in and expect good things - do not remove this or risk form bot signups -->
+      <div style="position: absolute; left: -5000px;" aria-hidden="true">
+        <input type="text" name="b_89d95b1506296222cdb651ffd_cb0a80759d" tabindex="-1" value="">
+      </div>
+
+      <button type="submit" id="subscribe-btn">Subscribe</button>
+    </form>
+    
+    <div id="form-message" class="form-message"></div>
+    
+    <p class="spam-notice">We respect your privacy. No spam, ever.</p>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('newsletter-form');
+  const messageDiv = document.getElementById('form-message');
+  const submitBtn = document.getElementById('subscribe-btn');
+
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // UI: Disable button and show loading state
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Subscribing...';
+      messageDiv.style.display = 'none';
+      messageDiv.className = 'form-message'; // Reset classes
+
+      // 1. Get the URL and convert it to JSONP format
+      // Change '/post?' to '/post-json?'
+      let url = form.getAttribute('action').replace('/post?', '/post-json?');
+      
+      // 2. Add form data
+      const formData = new FormData(form);
+      const params = new URLSearchParams();
+      for (const pair of formData.entries()) {
+        params.append(pair[0], pair[1]);
+      }
+      
+      // 3. Add the callback parameter for JSONP
+      url += '&' + params.toString() + '&c=onMailchimpResponse';
+
+      // 4. Create the JSONP script
+      const script = document.createElement('script');
+      script.src = url;
+      
+      // 5. Define the global callback function
+      window.onMailchimpResponse = function(response) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+        messageDiv.style.display = 'block';
+
+        if (response.result === 'success') {
+          // Success!
+          messageDiv.textContent = 'Thank you for subscribing!';
+          messageDiv.classList.add('success');
+          form.reset();
+        } else {
+          // Error (e.g. already subscribed, invalid email)
+          // Mailchimp errors often contain "0 - " at the start, let's clean it
+          let msg = response.msg || 'Something went wrong. Please try again.';
+          if (msg.includes('0 - ')) { msg = msg.replace('0 - ', ''); }
+          messageDiv.textContent = msg;
+          messageDiv.classList.add('error');
+        }
+
+        // Clean up script tag
+        document.body.removeChild(script);
+        delete window.onMailchimpResponse;
+      };
+
+      // Inject the script to trigger the request
+      document.body.appendChild(script);
+    });
+  }
+</script>
+
+<style>
+  .form-message {
+    display: none;
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  
+  .form-message.success {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #2e7d32;
+    border: 1px solid rgba(76, 175, 80, 0.2);
+  }
+
+  .form-message.error {
+    background-color: rgba(211, 47, 47, 0.1);
+    color: #c62828;
+    border: 1px solid rgba(211, 47, 47, 0.2);
+  }
+
+  .newsletter-signup {
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(200, 118, 61, 0.1) 100%);
+    padding: 3rem 2rem;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    margin: 4rem 0;
+    text-align: center;
+  }
+
+  .newsletter-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+  }
+
+  .signup-form {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  input[type="email"] {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+
+  input[type="email"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+
+  button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  .spam-notice {
+    font-size: 0.85rem;
+    margin-bottom: 0;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 600px) {
+    .signup-form {
+      flex-direction: column;
+    }
+    
+    button {
+      width: 100%;
+    }
+  }
+</style>
