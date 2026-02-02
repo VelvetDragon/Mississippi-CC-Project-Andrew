@@ -69,6 +69,7 @@ import Layout from '../layouts/Layout.astro';
             <option value="Church">Church</option>
             <option value="Civic/Club">Civic/Club</option>
             <option value="Business/Professional">Business/Professional</option>
+            <option value="Extension">Extension</option>
           </select>
           
           <select id="sourceFilter">
@@ -1081,9 +1082,12 @@ import Layout from '../layouts/Layout.astro';
         // Organization filter  
         const orgField = book['Organization (Church, Civic/Club, Business/Professional)'];
         const matchesOrganization = !organizationValue || 
-          (organizationValue === 'Church' && orgField === 'Church') ||
-          (organizationValue === 'Civic/Club' && orgField === 'Civic/Club') ||
-          (organizationValue === 'Business/Professional' && orgField === 'Business/Professional');
+          (orgField && (
+            (organizationValue === 'Church' && orgField === 'Church') ||
+            (organizationValue === 'Civic/Club' && orgField === 'Civic/Club') ||
+            (organizationValue === 'Business/Professional' && orgField === 'Business/Professional') ||
+            (organizationValue === 'Extension' && orgField.includes('Extension'))
+          ));
 
         // Source filter
         const matchesSource = !sourceValue || book.Source === sourceValue;
