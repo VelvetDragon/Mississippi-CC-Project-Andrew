@@ -9,10 +9,6 @@ publish_mode: editorial_workflow
 media_folder: "public/images/blog"
 public_folder: "/images/blog"
 
-# Better media library settings
-media_library:
-  max_file_size: 5120000  # 5MB max file size
-  folder_support: true
 
 # Site settings displayed in CMS
 site_url: https://mississippi-cc-project.netlify.app
@@ -85,9 +81,6 @@ collections:
         widget: "image"
         required: true
         hint: "The large image that appears at the top of the post. Recommended size: 1200x600 pixels or larger."
-        media_library:
-          config:
-            multiple: false
             
       - label: "📝 Short Summary"
         name: "excerpt"
