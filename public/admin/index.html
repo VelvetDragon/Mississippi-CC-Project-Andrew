@@ -5,6 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Content Manager - Mississippi Community Cookbook Project</title>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    
+    <!-- Custom CMS Styling -->
+    <style>
+      /* Override CMS default styles for better experience */
+      
+      /* Header/Top Bar */
+      [class*="AppHeader"] {
+        background: linear-gradient(135deg, #c8763d 0%, #a85d2a 100%) !important;
+      }
+      
+      /* Sidebar */
+      [class*="Sidebar"] {
+        background: #fafafa !important;
+      }
+      
+      /* Collection labels with emojis look better */
+      [class*="SidebarNavLink"] {
+        font-size: 15px !important;
+      }
+      
+      /* Entry cards in list view */
+      [class*="ListCard"] {
+        border-radius: 12px !important;
+        border: 1px solid #e5e5e5 !important;
+        transition: all 0.2s ease !important;
+      }
+      
+      [class*="ListCard"]:hover {
+        border-color: #c8763d !important;
+        box-shadow: 0 4px 12px rgba(200, 118, 61, 0.15) !important;
+      }
+      
+      /* Buttons */
+      [class*="ToolbarButton"], 
+      button[class*="Button"] {
+        border-radius: 8px !important;
+      }
+      
+      /* Primary action buttons */
+      [class*="PublishButton"],
+      [class*="ToolbarButton"][class*="primary"] {
+        background: linear-gradient(135deg, #c8763d 0%, #a85d2a 100%) !important;
+      }
+      
+      /* Text editor area */
+      [class*="MarkdownControl"] textarea,
+      [class*="EditorControlPane"] {
+        font-family: 'Georgia', serif !important;
+        font-size: 16px !important;
+        line-height: 1.7 !important;
+      }
+      
+      /* Image widget */
+      [class*="ImageControl"] {
+        border-radius: 12px !important;
+        border: 2px dashed #c8763d !important;
+        background: rgba(200, 118, 61, 0.05) !important;
+      }
+      
+      /* Field labels */
+      [class*="ControlLabel"] {
+        font-weight: 600 !important;
+        color: #333 !important;
+        font-size: 14px !important;
+      }
+      
+      /* Hints under fields */
+      [class*="ControlHint"] {
+        color: #666 !important;
+        font-size: 13px !important;
+      }
+      
+      /* Preview pane */
+      [class*="PreviewPane"] {
+        background: #fff !important;
+      }
+      
+      /* Media library modal */
+      [class*="MediaLibraryModal"] {
+        border-radius: 16px !important;
+      }
+      
+      /* Dropzone for uploads */
+      [class*="Dropzone"] {
+        border-radius: 12px !important;
+        border: 2px dashed #c8763d !important;
+        background: rgba(200, 118, 61, 0.03) !important;
+      }
+      
+      [class*="Dropzone"]:hover {
+        background: rgba(200, 118, 61, 0.08) !important;
+      }
+      
+      /* Toast notifications */
+      [class*="Toast"] {
+        border-radius: 8px !important;
+      }
+      
+      /* Workflow status badges */
+      [class*="WorkflowCard"] {
+        border-radius: 12px !important;
+      }
+      
+      /* Make the editor more spacious */
+      [class*="EditorContainer"] {
+        padding: 20px !important;
+      }
+      
+      /* Rich text toolbar */
+      [class*="Toolbar"] {
+        background: #f8f8f8 !important;
+        border-radius: 8px !important;
+        padding: 8px !important;
+        margin-bottom: 12px !important;
+      }
+    </style>
   </head>
   <body>
     <!-- Include the script that builds the page and powers Decap CMS -->
@@ -15,27 +131,117 @@
       CMS.registerPreviewStyle("/admin/preview.css");
       
       // Custom preview template for blog posts
-      CMS.registerPreviewTemplate("blog", ({ entry, widgetFor, widgetsFor }) => {
-        const title = entry.getIn(["data", "title"]);
-        const date = entry.getIn(["data", "date"]);
-        const category = entry.getIn(["data", "category"]);
-        const excerpt = entry.getIn(["data", "excerpt"]);
-        const body = widgetFor("body");
-        
-        return `
-          <div style="max-width: 800px; margin: 0 auto; padding: 2rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-            <div style="margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #eee;">
-              <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">
-                ${new Date(date).toLocaleDateString()} • ${category}
-              </div>
-              <h1 style="font-size: 2.5rem; margin: 0 0 1rem 0; color: #333;">${title}</h1>
-              <p style="font-size: 1.1rem; color: #666; font-style: italic;">${excerpt}</p>
-            </div>
-            <div style="line-height: 1.7; color: #333;">
-              ${body}
-            </div>
-          </div>
-        `;
+      CMS.registerPreviewTemplate("blog", createClass({
+        render: function() {
+          const entry = this.props.entry;
+          const title = entry.getIn(["data", "title"]) || "Untitled Post";
+          const date = entry.getIn(["data", "date"]);
+          const author = entry.getIn(["data", "author"]) || "Dr. Andrew Haley";
+          const excerpt = entry.getIn(["data", "excerpt"]) || "";
+          const backgroundImage = entry.getIn(["data", "backgroundImage"]);
+          const published = entry.getIn(["data", "published"]);
+          
+          // Format date nicely
+          let formattedDate = "No date set";
+          if (date) {
+            try {
+              formattedDate = new Date(date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              });
+            } catch(e) {
+              formattedDate = date;
+            }
+          }
+          
+          return h('div', {style: {fontFamily: "'Inter', -apple-system, sans-serif"}},
+            
+            // Status banner
+            !published && h('div', {style: {
+              background: '#fff3cd',
+              color: '#856404',
+              padding: '12px 20px',
+              textAlign: 'center',
+              fontWeight: '600',
+              borderBottom: '1px solid #ffc107'
+            }}, "⚠️ DRAFT - This post is not published yet"),
+            
+            // Hero section
+            h('div', {style: {
+              position: 'relative',
+              height: '300px',
+              background: backgroundImage 
+                ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${this.props.getAsset(backgroundImage).toString()}) center/cover`
+                : 'linear-gradient(135deg, #c8763d, #a85d2a)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              textAlign: 'center',
+              padding: '20px'
+            }},
+              h('div', {},
+                h('h1', {style: {
+                  fontSize: '2.5rem',
+                  margin: '0 0 1rem 0',
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                  fontFamily: "'Playfair Display', Georgia, serif"
+                }}, title),
+                h('div', {style: {fontSize: '1rem', opacity: '0.9'}}, 
+                  formattedDate + " • By " + author
+                )
+              )
+            ),
+            
+            // Content area
+            h('div', {style: {
+              maxWidth: '800px',
+              margin: '0 auto',
+              padding: '3rem 2rem',
+              background: 'white'
+            }},
+              // Excerpt
+              excerpt && h('p', {style: {
+                fontSize: '1.2rem',
+                color: '#666',
+                fontStyle: 'italic',
+                borderLeft: '4px solid #c8763d',
+                paddingLeft: '1.5rem',
+                marginBottom: '2rem'
+              }}, excerpt),
+              
+              // Main content
+              h('div', {style: {
+                fontSize: '1.1rem',
+                lineHeight: '1.8',
+                color: '#333'
+              }}, this.props.widgetFor("body"))
+            )
+          );
+        }
+      }));
+      
+      // Auto-generate slug from title
+      CMS.registerEventListener({
+        name: 'preSave',
+        handler: ({ entry }) => {
+          const title = entry.get('data').get('title');
+          const slug = entry.get('data').get('slug');
+          
+          // Only auto-generate if slug is empty
+          if (title && !slug) {
+            const generatedSlug = title
+              .toLowerCase()
+              .replace(/[^a-z0-9\s-]/g, '')
+              .replace(/\s+/g, '-')
+              .replace(/-+/g, '-')
+              .substring(0, 50);
+            
+            return entry.get('data').set('slug', generatedSlug);
+          }
+          return entry.get('data');
+        }
       });
     </script>
   </body>

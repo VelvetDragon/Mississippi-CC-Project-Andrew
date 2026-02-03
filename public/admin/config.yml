@@ -1,26 +1,115 @@
 backend:
   name: git-gateway
-  branch: main # Branch to update (master or main)
+  branch: main
 
-# Uncomment below to enable drafts
-# publish_mode: editorial_workflow
+# Enable draft/review workflow (professor can save drafts before publishing)
+publish_mode: editorial_workflow
 
-media_folder: "public/images" # Media files will be stored in the repo under public/images
-public_folder: "/images" # The src attribute for uploaded media will begin with /images
+# Where images are stored
+media_folder: "public/images/blog"
+public_folder: "/images/blog"
+
+# Better media library settings
+media_library:
+  max_file_size: 5120000  # 5MB max file size
+  folder_support: true
+
+# Site settings displayed in CMS
+site_url: https://mississippi-cc-project.netlify.app
+display_url: https://mississippi-cc-project.netlify.app
+logo_url: /images/cdh-logo.png
+
+# Localization
+locale: 'en'
 
 collections:
-  # Blog Posts Collection - Only thing professor needs for now
+  # ========================================
+  # CULINARY TALES (Blog Posts)
+  # ========================================
   - name: "blog"
-    label: "Culinary Tales"
+    label: "📝 Culinary Tales (Blog)"
+    label_singular: "Blog Post"
+    description: "Create and manage blog posts for the Culinary Tales section."
     folder: "src/content/blog"
     create: true
+    delete: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} — {{year}}/{{month}}/{{day}}"
+    sortable_fields: ['title', 'date']
+    view_filters:
+      - label: Published
+        field: published
+        pattern: true
+      - label: Drafts
+        field: published
+        pattern: false
+    view_groups:
+      - label: Year
+        field: date
+        pattern: \d{4}
     fields:
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Slug", name: "slug", widget: "string", hint: "URL-friendly version (e.g., my-blog-post)"}
-      - {label: "Publish Date", name: "date", widget: "datetime"}
-      - {label: "Author", name: "author", widget: "string", default: "Dr. Andrew Haley"}
-      - {label: "Published", name: "published", widget: "boolean", default: true}
-      - {label: "Background Image", name: "backgroundImage", widget: "image", hint: "Hero image for the blog post"}
-      - {label: "Excerpt", name: "excerpt", widget: "text", hint: "Short summary that appears on the main page"}
-      - {label: "Content", name: "body", widget: "markdown"}
+      # Basic Info Section
+      - label: "📌 Post Title"
+        name: "title"
+        widget: "string"
+        hint: "The main title of your blog post (appears at the top of the page)"
+        
+      - label: "🔗 URL Slug"
+        name: "slug"
+        widget: "string"
+        hint: "URL-friendly version. Use lowercase letters and hyphens only (e.g., 'my-great-recipe')"
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Use only lowercase letters, numbers, and hyphens"]
+        
+      - label: "📅 Publish Date"
+        name: "date"
+        widget: "datetime"
+        date_format: "MMMM D, YYYY"
+        time_format: false
+        hint: "When should this post be dated?"
+        
+      - label: "✍️ Author"
+        name: "author"
+        widget: "string"
+        default: "Dr. Andrew Haley"
+        hint: "Who wrote this post?"
+        
+      - label: "✅ Published"
+        name: "published"
+        widget: "boolean"
+        default: true
+        hint: "Uncheck to save as a draft (won't appear on the website)"
+
+      # Visual Section
+      - label: "🖼️ Hero Image"
+        name: "backgroundImage"
+        widget: "image"
+        required: true
+        hint: "The large image that appears at the top of the post. Recommended size: 1200x600 pixels or larger."
+        media_library:
+          config:
+            multiple: false
+            
+      - label: "📝 Short Summary"
+        name: "excerpt"
+        widget: "text"
+        hint: "A brief description (1-2 sentences) that appears on the blog listing page. Keep it under 200 characters."
+        pattern: ['.{10,300}', "Must be between 10 and 300 characters"]
+
+      # Main Content
+      - label: "📄 Full Article Content"
+        name: "body"
+        widget: "markdown"
+        hint: "Write your full blog post here. You can use the toolbar to add headings, bold text, images, and links."
+        buttons:
+          - bold
+          - italic
+          - link
+          - heading-two
+          - heading-three
+          - quote
+          - bulleted-list
+          - numbered-list
+        editor_components:
+          - image
+          - code-block
+        minimal: false
