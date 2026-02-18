@@ -129,14 +129,22 @@ const { title = 'Mississippi Community Cookbook Project', pageClass = '' } = Ast
 
         // Set initial active tab based on current page
         const currentPath = normalizePath(window.location.pathname);
-        let activeLink = navMenu.querySelector('a[href="/"]'); // default to home
         
-        navLinks.forEach(link => {
-          const href = normalizePath(link.getAttribute('href'));
-          if (href === currentPath) {
-            activeLink = link;
-          }
-        });
+        // Default active link logic:
+        // - Any Culinary Tales blog post (/culinary-tales/...) should highlight Culinary Tales
+        // - Otherwise, fall back to exact path matches
+        let activeLink;
+        if (currentPath.startsWith('/culinary-tales')) {
+          activeLink = navMenu.querySelector('a[data-nav="tales"]');
+        } else {
+          activeLink = navMenu.querySelector('a[href="/"]'); // default to home
+          navLinks.forEach(link => {
+            const href = normalizePath(link.getAttribute('href'));
+            if (href === currentPath) {
+              activeLink = link;
+            }
+          });
+        }
 
         // Position background on active tab
         function setBackgroundPosition(link) {
@@ -187,13 +195,21 @@ const { title = 'Mississippi Community Cookbook Project', pageClass = '' } = Ast
         // Ensure correct active state on pageshow (browser bfcache)
         window.addEventListener('pageshow', () => {
           const current = normalizePath(window.location.pathname);
-          let match = navMenu.querySelector('a[href="/"]');
-          navLinks.forEach(link => {
-            const href = normalizePath(link.getAttribute('href'));
-            if (href === current) {
-              match = link;
-            }
-          });
+          
+          // Match Culinary Tales blog posts to Culinary Tales tab
+          let match;
+          if (current.startsWith('/culinary-tales')) {
+            match = navMenu.querySelector('a[data-nav="tales"]');
+          } else {
+            match = navMenu.querySelector('a[href="/"]');
+            navLinks.forEach(link => {
+              const href = normalizePath(link.getAttribute('href'));
+              if (href === current) {
+                match = link;
+              }
+            });
+          }
+
           navLinks.forEach(l => l.classList.remove('active'));
           if (match) {
             match.classList.add('active');

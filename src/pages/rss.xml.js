@@ -9,11 +9,16 @@ export async function GET(context) {
     .filter(blog => blog.data.published !== false)
     .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
+  // Limit to most recent 20 posts for RSS feed
+  // This ensures Mailchimp only sees recent content and won't accidentally send old posts
+  // Mailchimp tracks pubDate and only sends NEW items, but limiting the feed provides extra safety
+  const recentBlogs = publishedBlogs.slice(0, 20);
+
   return rss({
     title: 'Mississippi Community Cookbook Project',
     description: 'Culinary tales, historical insights, and recipes from the Mississippi Community Cookbook Project.',
     site: context.site,
-    items: publishedBlogs.map((post) => ({
+    items: recentBlogs.map((post) => ({
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.excerpt || '',

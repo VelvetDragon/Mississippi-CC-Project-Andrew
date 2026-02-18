@@ -1,14 +1,13 @@
 ---
-title: Mississippians Discover Pizza
+title: "Mississippians Discover Pizza"
 slug: pizza-party
-date: 2025-10-15T08:39:00.000-05:00
+date: 2026-01-07T00:39:00.000Z
 author: Andrew P. Haley
-published: true
 backgroundImage: /images/talbot-pizza-pies.jpeg
-excerpt: Evidence of pizza's growing popularity in Mississippi appears in 1950s
-  community cookbooks. Its popularity was signaled not just by recipes for
-  pizza, but also by pizza-themed recipes.
+excerpt: "Evidence of pizza's growing popularity in Mississippi appears in 1950s"
+published: true
 ---
+
 Community cookbooks were most often written by middle-aged, middle-class women and so one needs to exercise some caution when looking to them to determine what was popular among the Mississippi’s youth. Yet community cookbooks can demonstrate the broad acceptance of new foods. This was the case of pizza in Mississippi in the 1950s.
 
 Perhaps inspired by the release of Dean Martin’s “[That’s Amore](https://www.youtube.com/watch?v=OnFlx2Lnr9Q)” a year earlier, Evelyn Carleton Talbot of Union, Mississippi, submitted a recipe in 1954 for “pizza pies”. It is possibly the earliest pizza recipe published in a Mississippi community cookbook (Woman’s Society of Christian Service of the Methodist Church, 54). The recipe used two packages of oven-ready biscuits to create 4-inch diameter pizzas covered with one layer of sauce, two of cheese, and then topped with mushrooms. Evelyn was 41 and unmarried but seems to have been attuned to changing trends and pizza was gaining popularity in the state. Four years later, three additional recipes for pizza were submitted to Mississippi cookbooks: one in a Tupelo cookbook and two in Jackson cookbooks.
